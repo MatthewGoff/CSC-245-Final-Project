@@ -103,7 +103,7 @@ class LevelBuilder:
 
                 elif key_pressed == "w":
                     new_y = cls.center.pos[1] - cls.deltaIncrement
-                    if new_y > cls.camera.y_offset - cls.tile_width:
+                    if new_y > cls.cmera.y_offset - cls.tile_width:
                         cls.center.pos = (cls.center.pos[0], new_y)
 
                 elif key_pressed == "s":
