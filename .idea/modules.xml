@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/CSC-245-Final-Project.iml" filepath="$PROJECT_DIR$/.idea/CSC-245-Final-Project.iml" />
       <module fileurl="file://E:/CSC245/level_builder_demo/.idea/level_builder_demo.iml" filepath="E:/CSC245/level_builder_demo/.idea/level_builder_demo.iml" />
     </modules>
   </component>
