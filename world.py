@@ -1,6 +1,12 @@
+# A class for world
+# Author: Caleb
+# Winter 2017
+
+import json
+
+import pygame
 
 from tile import Tile
-import pygame
 
 class World:
     pygame.init()
@@ -11,8 +17,8 @@ class World:
     def __init__(self, x, y, tile_width, center, spritesheet, sprite_width):
 
         self.sprite_width = sprite_width
-        self.width = x*self.sprite_width
-        self.height = y*self.sprite_width
+        self.width = x
+        self.height = y
         self.tile_sprites = pygame.sprite.Group()
         self.spritesheet = spritesheet
 
@@ -54,11 +60,37 @@ class World:
 
     def export_world(self):
         name = raw_input("Please enter the desired filename: ")
-        file = open(name + ".txt", "w")
-        for row in self.rows:
-            rowStr = ""
-            for tile in row:
-                rowStr += str(tile)
-            file.write(rowStr + "\n")
-        file.close()
 
+        write_object = []
+        for row in self.rows:
+            rowStr = []
+            for tile in row:
+                rowStr += [tile.to_json()]
+            write_object += [rowStr]
+
+        with open("worlds/"+name+'.json', 'w') as outfile:
+            json.dump(write_object, outfile)
+
+    def import_world(self):
+        name = raw_input("Please enter the desired filename: ")
+
+        try:
+            data = json.load(open("worlds/"+name+".json"))
+        except IOError:
+            print("Couldn't find that file")
+            return
+
+        self.rows = []
+        self.tile_sprites = pygame.sprite.Group()
+        for row in range(self.height):
+            self.rows += [[]]
+
+            for column in range(self.width):
+                new_tile = Tile(data[row][column]["x"],
+                                data[row][column]["y"],
+                                data[row][column]["width"],
+                                self.spritesheet,
+                                data[row][column]["spriteLoc"],
+                                data[row][column]["spriteWidth"])
+                self.tile_sprites.add(new_tile)
+                self.rows[row] += [new_tile]

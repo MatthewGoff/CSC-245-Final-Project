@@ -15,11 +15,13 @@ class SpriteViewer:
         self.image = pygame.Surface([width, height])
         self.image.fill(self.color)
         self.sprites = []
+        self.rects = []
         for i in range(spritesheet.get_width()/tile_width):
             for j in range(spritesheet.get_height()/tile_width):
                 rect = pygame.Rect(i*tile_width, j*tile_width, tile_width, tile_width)
                 image = spritesheet.subsurface(rect).copy()
                 self.sprites += [pygame.transform.smoothscale(image, (tile_width, tile_width))]
+                self.rects += [rect]
 
 
 
@@ -40,3 +42,6 @@ class SpriteViewer:
 
     def get_sprite(self):
         return self.sprites[self.curr_index]
+
+    def get_rect(self):
+        return self.rects[self.curr_index]

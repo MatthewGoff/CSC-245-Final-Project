@@ -2,7 +2,10 @@
 # Author: Matthew Anderson
 # Winter 2017
 
-import pygame, math
+import json, math
+
+import pygame
+
 from world import World
 from camera import Camera
 from cursor import Cursor
@@ -66,17 +69,9 @@ class LevelBuilder:
         start_row = cam_pos[1]/cls.tile_width
 
         tile = cls.world.get_tile(start_column + column, start_row + row)
-        tile.change_sprite(cls.sprite_viewer.get_sprite())
+        tile.change_sprite(cls.sprite_viewer.get_rect())
 
         return True
-
-
-
-
-
-
-
-
 
     @classmethod
     def handle_events(cls):
@@ -87,33 +82,34 @@ class LevelBuilder:
                 keep_going = False
 
             elif event.type == pygame.KEYDOWN:
-                # Key pressed event
-                key_pressed = chr(event.dict['key'] % 256)
-                # print "Key pressed = %s" % key_pressed
-
-                if key_pressed == "a":
+                key_pressed = event.dict['key'] % 256
+                if key_pressed == pygame.K_a:
                     new_x = cls.center.pos[0] - cls.deltaIncrement
                     if new_x > cls.camera.x_offset - cls.tile_width:
                         cls.center.pos = (new_x, cls.center.pos[1])
 
-                elif key_pressed == "d":
+                elif key_pressed == pygame.K_d:
                     new_x = cls.center.pos[0] + cls.deltaIncrement
                     if new_x < cls.world.width - cls.camera.x_offset + cls.tile_width:
                         cls.center.pos = (cls.center.pos[0] + cls.deltaIncrement, cls.center.pos[1])
 
-                elif key_pressed == "w":
+                elif key_pressed == pygame.K_w:
                     new_y = cls.center.pos[1] - cls.deltaIncrement
-                    if new_y > cls.cmera.y_offset - cls.tile_width:
+                    if new_y > cls.camera.y_offset - cls.tile_width:
                         cls.center.pos = (cls.center.pos[0], new_y)
 
-                elif key_pressed == "s":
+                elif key_pressed == pygame.K_s:
                     new_y = cls.center.pos[1] + cls.deltaIncrement
                     if new_y < cls.world.height - cls.camera.y_offset + cls.tile_width:
                         cls.center.pos = (cls.center.pos[0], cls.center.pos[1] + cls.deltaIncrement)
 
-                elif pygame.K_ESCAPE:
+                elif key_pressed == pygame.K_ESCAPE:
                     cls.export_level()
                     keep_going = False
+
+                elif key_pressed == pygame.K_0:
+                    cls.import_level()
+
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # print "Button pressed:", event.dict['button'], "@", event.dict['pos']
@@ -149,6 +145,10 @@ class LevelBuilder:
     @classmethod
     def export_level(cls):
         cls.world.export_world()
+
+    @classmethod
+    def import_level(cls):
+        cls.world.import_world()
 
     @classmethod
     def run(cls):
