@@ -11,5 +11,6 @@ Winter 17 class project
 
 ### World Editor
 - Fix mouse positions
+- Saving/loading during full screen crashes -> Create popup dialog
 
 ### Main Game
