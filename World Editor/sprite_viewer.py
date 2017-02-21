@@ -22,9 +22,9 @@ class SpriteViewer:
         self.select_indicator.fill(self.color)
         self.sprites = []
         self.rects = []
-        for i in range(spritesheet.get_width()/sprite_width):
-            for j in range(spritesheet.get_height()/sprite_width):
-                rect = pygame.Rect(i*sprite_width, j*sprite_width, sprite_width, sprite_width)
+        for i in range(spritesheet.get_height()/sprite_width):
+            for j in range(spritesheet.get_width()/sprite_width):
+                rect = pygame.Rect(j*sprite_width, i*sprite_width, sprite_width, sprite_width)
                 image = spritesheet.subsurface(rect).copy()
                 self.sprites += [pygame.transform.smoothscale(image, (tile_width, tile_width))]
                 self.rects += [rect]
