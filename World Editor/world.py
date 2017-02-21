@@ -26,7 +26,7 @@ class World:
             self.rows += [[]]
 
             for column in range(x):
-                newTile = Tile(column*tile_width, row*tile_width, tile_width, self.spritesheet, (512, 128), self.sprite_width)
+                newTile = Tile(column*tile_width, row*tile_width, tile_width, self.spritesheet, (33, 33), self.sprite_width)
                 self.tile_sprites.add(newTile)
 
                 self.rows[row] += [newTile]
