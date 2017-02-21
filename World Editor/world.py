@@ -68,14 +68,14 @@ class World:
                 rowStr += [tile.to_json()]
             write_object += [rowStr]
 
-        with open("worlds/"+name+'.json', 'w') as outfile:
+        with open("../worlds/"+name+'.json', 'w') as outfile:
             json.dump(write_object, outfile)
 
     def import_world(self):
         name = raw_input("Please enter the desired filename: ")
 
         try:
-            data = json.load(open("worlds/"+name+".json"))
+            data = json.load(open("../worlds/"+name+".json"))
         except IOError:
             print("Couldn't find that file")
             return
