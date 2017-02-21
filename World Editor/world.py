@@ -11,7 +11,7 @@ from tile import Tile
 class World:
     pygame.init()
     pygame.display.set_mode((1, 1), pygame.NOFRAME)
-    spritesheet = pygame.image.load("images/HolySheet.png").convert_alpha()
+    spritesheet = pygame.image.load("../images/HolySheet.png").convert_alpha()
     rows = []
 
     def __init__(self, x, y, tile_width, center, spritesheet, sprite_width):

@@ -12,6 +12,7 @@ from cursor import Cursor
 from sprite_viewer import SpriteViewer
 from tile import Tile
 
+
 class LevelBuilder:
     pygame.init()
     pygame.display.set_mode((1, 1), pygame.NOFRAME)
@@ -30,51 +31,51 @@ class LevelBuilder:
     camera = None
     cam_width = 320
     cam_height = 240
-    spritesheet = pygame.image.load("images/OtherSheet.png").convert_alpha()
+    spritesheet = pygame.image.load("../images/OtherSheet.png").convert_alpha()
     sprite_width = 32
+    camera_speed = 5
 
-    @classmethod
-    def init(cls):
+    def __init__(self):
         pygame.init()
 
         # Create a player on left side of game.
-        cls.center = Cursor(200, 200)
+        self.center = Cursor(200, 200)
 
         # Size of the foreground camera viewport.
-        width = cls.cam_width
-        height = cls.cam_height
+        width = self.cam_width
+        height = self.cam_height
 
-        cls.world = World(cls.world_columns, cls.world_rows, cls.tile_width, cls.center, cls.spritesheet, cls.sprite_width)
+        self.world = World(self.world_columns, self.world_rows, self.tile_width, self.center, self.spritesheet, self.sprite_width)
 
-        cls.sprite_viewer = SpriteViewer(0,0, cls.sidebar_width, cls.height, cls.spritesheet, cls.sprite_width)
+        self.sprite_viewer = SpriteViewer(0,0, self.sidebar_width, self.height, self.spritesheet, self.sprite_width)
 
-        # Make three cameras focused on player with increasingly large viewports of the three worlds.
-        cls.camera = Camera(cls.center,width,height,cls.world)
-        # Set initial change in x/y for the center to be zero
-        cls.dx = 0
-        cls.dy = 0
+        self.camera = Camera(self.center,width,height,self.world)
+        self.camera_bounds = pygame.Rect(width / 2,
+                                         height / 2,
+                                         self.world.get_border().width - width,
+                                         self.world.get_border().height - height)
+        self.dx = 0
+        self.dy = 0
 
-    @classmethod
-    def click_tile(cls, pos):
-        adjusted_pos = (pos[0]-cls.sidebar_width, pos[1])
-        x_scalar = cls.width/cls.cam_width
-        y_scalar = cls.height/cls.cam_height
+    def click_tile(self, pos):
+        adjusted_pos = (pos[0]-self.sidebar_width, pos[1])
+        x_scalar = self.width/self.cam_width
+        y_scalar = self.height/self.cam_height
         true_x = adjusted_pos[0]/x_scalar
         true_y = adjusted_pos[1]/y_scalar
-        column = true_x/cls.tile_width
-        row = true_y/cls.tile_width
+        column = true_x/self.tile_width
+        row = true_y/self.tile_width
 
-        cam_pos = cls.camera.get_location()
-        start_column = cam_pos[0]/cls.tile_width
-        start_row = cam_pos[1]/cls.tile_width
+        cam_pos = self.camera.get_location()
+        start_column = cam_pos[0]/self.tile_width
+        start_row = cam_pos[1]/self.tile_width
 
-        tile = cls.world.get_tile(start_column + column, start_row + row)
-        tile.change_sprite(cls.sprite_viewer.get_rect())
+        tile = self.world.get_tile(start_column + column, start_row + row)
+        tile.change_sprite(self.sprite_viewer.get_rect())
 
         return True
 
-    @classmethod
-    def handle_events(cls):
+    def handle_events(self):
 
         keep_going = True
         for event in pygame.event.get():
@@ -84,78 +85,64 @@ class LevelBuilder:
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:
-                    print "a"
-                    new_x = cls.center.pos[0] - cls.deltaIncrement
-                    if new_x > cls.camera.x_offset - cls.tile_width:
-                        cls.center.pos = (new_x, cls.center.pos[1])
-
+                    self.dx = -LevelBuilder.camera_speed
                 elif key_pressed == pygame.K_d:
-                    print "d"
-                    new_x = cls.center.pos[0] + cls.deltaIncrement
-                    if new_x < cls.world.width - cls.camera.x_offset + cls.tile_width:
-                        cls.center.pos = (cls.center.pos[0] + cls.deltaIncrement, cls.center.pos[1])
-
+                    self.dx = LevelBuilder.camera_speed
                 elif key_pressed == pygame.K_w:
-                    print "w"
-                    new_y = cls.center.pos[1] - cls.deltaIncrement
-                    if new_y > cls.camera.y_offset - cls.tile_width:
-                        cls.center.pos = (cls.center.pos[0], new_y)
-
+                    self.dy = -LevelBuilder.camera_speed
                 elif key_pressed == pygame.K_s:
-                    print "s"
-                    new_y = cls.center.pos[1] + cls.deltaIncrement
-                    if new_y < cls.world.height - cls.camera.y_offset + cls.tile_width:
-                        cls.center.pos = (cls.center.pos[0], cls.center.pos[1] + cls.deltaIncrement)
-
+                    self.dy = LevelBuilder.camera_speed
                 elif key_pressed == pygame.K_ESCAPE:
-                    cls.export_level()
-                    keep_going = False
-
+                    self.export_level()
                 elif key_pressed == pygame.K_0:
-                    cls.import_level()
-
-
+                    self.import_level()
+            elif event.type == pygame.KEYUP:
+                key_released = event.dict['key'] % 256
+                if key_released == pygame.K_a or key_released == pygame.K_d:
+                    self.dx = 0
+                if key_released == pygame.K_s or key_released == pygame.K_w:
+                    self.dy = 0
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # print "Button pressed:", event.dict['button'], "@", event.dict['pos']
                 button_pressed = event.dict['button']
                 target = event.dict['pos']
-                if button_pressed == 1 and target[0] > cls.sidebar_width:  # Left click
-                    keep_going = cls.click_tile(target)
-                elif button_pressed == 5 and cls.sprite_viewer.curr_index < len(cls.sprite_viewer.sprites)-1:
-                    cls.sprite_viewer.curr_index += 1
-                elif button_pressed == 4 and cls.sprite_viewer.curr_index > 0:
-                    cls.sprite_viewer.curr_index -= 1
+                if button_pressed == 1 and target[0] > self.sidebar_width:  # Left click
+                    keep_going = self.click_tile(target)
+                elif button_pressed == 5 and self.sprite_viewer.curr_index < len(self.sprite_viewer.sprites)-1:
+                    self.sprite_viewer.curr_index += 1
+                elif button_pressed == 4 and self.sprite_viewer.curr_index > 0:
+                    self.sprite_viewer.curr_index -= 1
 
         return keep_going
 
+    def apply_rules(cls):
+        next_pos = (cls.center.pos[0]+cls.dx,
+                    cls.center.pos[1]+cls.dy)
+        if cls.camera_bounds.collidepoint(next_pos[0], next_pos[1]):
+            cls.center.pos = next_pos
 
-    @classmethod
-    def draw(cls):
+    def draw(self):
         # Draw Background
-        cls.my_win.fill(pygame.color.Color("LightGrey"))
+        self.my_win.fill(pygame.color.Color("LightGrey"))
 
 
         # Draw cameras front to back
-        cls.camera.draw(cls.sidebar_width, 0, 640, 480, cls.my_win)
-        cls.sprite_viewer.draw(cls.my_win)
+        self.camera.draw(self.sidebar_width, 0, 640, 480, self.my_win)
+        self.sprite_viewer.draw(self.my_win)
 
         # Swap display
         pygame.display.update()
 
-    @classmethod
-    def quit(cls):
+    def quit(self):
         pygame.quit()
 
-    @classmethod
-    def export_level(cls):
-        cls.world.export_world()
+    def export_level(self):
+        self.world.export_world()
 
-    @classmethod
-    def import_level(cls):
-        cls.world.import_world()
+    def import_level(self):
+        self.world.import_world()
 
-    @classmethod
-    def run(cls):
+    def run(self):
 
         frame_rate = 30
         tick_time = int(1.0 / frame_rate * 1000)
@@ -167,14 +154,16 @@ class LevelBuilder:
             pygame.time.wait(tick_time)
 
             # 1. Handle events.
-            keep_going = cls.handle_events()
+            keep_going = self.handle_events()
+
+            # 2. Apply rules
+            self.apply_rules()
 
             # 4. Draw frame
-            cls.draw()
+            self.draw()
 
-        cls.quit()
+        self.quit()
 
 
-
-LevelBuilder.init()
-LevelBuilder.run()
+level_builder = LevelBuilder()
+level_builder.run()
