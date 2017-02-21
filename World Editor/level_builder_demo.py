@@ -14,23 +14,20 @@ from tile import Tile
 
 
 class LevelBuilder:
-    pygame.init()
-    pygame.display.set_mode((1, 1), pygame.NOFRAME)
 
-    width = 640
-    height = 480
-    sidebar_width = 200
+    width = 720
+    height = 560
+    sidebar_width = 400
     world_rows = 20
     world_columns = 20
     my_win = pygame.display.set_mode((width + sidebar_width, height))
-    deltaIncrement = 40
     tile_width = 40
     selected_tile = None
     center = None
     world = None
     camera = None
-    cam_width = 320
-    cam_height = 240
+    cam_width = width/2
+    cam_height = height/2
     spritesheet = pygame.image.load("../images/OtherSheet.png").convert_alpha()
     sprite_width = 32
     camera_speed = 5
@@ -38,7 +35,7 @@ class LevelBuilder:
     def __init__(self):
         pygame.init()
 
-        # Create a player on left side of game.
+        # The center of the camera
         self.center = Cursor(200, 200)
 
         # Size of the foreground camera viewport.
@@ -47,7 +44,7 @@ class LevelBuilder:
 
         self.world = World(self.world_columns, self.world_rows, self.tile_width, self.center, self.spritesheet, self.sprite_width)
 
-        self.sprite_viewer = SpriteViewer(0,0, self.sidebar_width, self.height, self.spritesheet, self.sprite_width)
+        self.sprite_viewer = SpriteViewer(0,0, self.sidebar_width, self.height, self.spritesheet, self.sprite_width, self.tile_width)
 
         self.camera = Camera(self.center,width,height,self.world)
         self.camera_bounds = pygame.Rect(width / 2,
@@ -63,12 +60,17 @@ class LevelBuilder:
         y_scalar = self.height/self.cam_height
         true_x = adjusted_pos[0]/x_scalar
         true_y = adjusted_pos[1]/y_scalar
-        column = true_x/self.tile_width
-        row = true_y/self.tile_width
 
-        cam_pos = self.camera.get_location()
-        start_column = cam_pos[0]/self.tile_width
-        start_row = cam_pos[1]/self.tile_width
+        cam_x, cam_y = self.camera.get_location()[0], self.camera.get_location()[1]
+
+        x_adj = true_x + cam_x % self.tile_width
+        y_adj = true_y + cam_y % self.tile_width
+
+        column = x_adj/self.tile_width
+        row = y_adj/self.tile_width
+
+        start_column = int(float(cam_x)/self.tile_width)
+        start_row = int(float(cam_y)/self.tile_width)
 
         tile = self.world.get_tile(start_column + column, start_row + row)
         tile.change_sprite(self.sprite_viewer.get_rect())
@@ -92,10 +94,12 @@ class LevelBuilder:
                     self.dy = -LevelBuilder.camera_speed
                 elif key_pressed == pygame.K_s:
                     self.dy = LevelBuilder.camera_speed
-                elif key_pressed == pygame.K_ESCAPE:
+                elif key_pressed == pygame.K_RETURN:
                     self.export_level()
                 elif key_pressed == pygame.K_0:
                     self.import_level()
+                elif key_pressed == pygame.K_ESCAPE:
+                    keep_going = False
             elif event.type == pygame.KEYUP:
                 key_released = event.dict['key'] % 256
                 if key_released == pygame.K_a or key_released == pygame.K_d:
@@ -108,10 +112,12 @@ class LevelBuilder:
                 target = event.dict['pos']
                 if button_pressed == 1 and target[0] > self.sidebar_width:  # Left click
                     keep_going = self.click_tile(target)
-                elif button_pressed == 5 and self.sprite_viewer.curr_index < len(self.sprite_viewer.sprites)-1:
-                    self.sprite_viewer.curr_index += 1
-                elif button_pressed == 4 and self.sprite_viewer.curr_index > 0:
-                    self.sprite_viewer.curr_index -= 1
+                elif button_pressed == 1 and target[0] <= self.sidebar_width:
+                    self.sprite_viewer.click_sprite(target)
+                elif button_pressed == 5 and self.sprite_viewer.curr_row < len(self.sprite_viewer.sprites)-1:
+                    self.sprite_viewer.curr_row += 1
+                elif button_pressed == 4 and self.sprite_viewer.curr_row > 0:
+                    self.sprite_viewer.curr_row -= 1
 
         return keep_going
 
@@ -127,7 +133,7 @@ class LevelBuilder:
 
 
         # Draw cameras front to back
-        self.camera.draw(self.sidebar_width, 0, 640, 480, self.my_win)
+        self.camera.draw(self.sidebar_width, 0, self.width, self.height, self.my_win)
         self.sprite_viewer.draw(self.my_win)
 
         # Swap display
