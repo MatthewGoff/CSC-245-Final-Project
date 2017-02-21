@@ -85,6 +85,7 @@ class World:
 
         with open("../worlds/"+name+'.json', 'w') as outfile:
             json.dump(write_object, outfile)
+            print "saved world!"
 
     def import_world(self):
         name = raw_input("Please enter the desired filename: ")

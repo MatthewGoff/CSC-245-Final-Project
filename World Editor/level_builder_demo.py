@@ -15,49 +15,58 @@ from tile import Tile
 
 class LevelBuilder:
 
-    width = 720
-    height = 560
-    sidebar_width = 400
-    world_rows = 20
-    world_columns = 20
-    my_win = pygame.display.set_mode((width + sidebar_width, height))
+    DISPLAY_WIDTH = 720
+    DISPLAY_HEIGHT = 560
+    SIDEBAR_WIDTH = 400
+
     tile_width = 40
     selected_tile = None
-    center = None
-    world = None
-    camera = None
-    cam_width = width/2
-    cam_height = height/2
-    spritesheet = pygame.image.load("../images/OtherSheet.png").convert_alpha()
+    cam_width = DISPLAY_WIDTH / 2
+    cam_height = DISPLAY_HEIGHT / 2
+    SPRITESHEET = pygame.image.load("../images/OtherSheet.png").convert_alpha()
     sprite_width = 32
     camera_speed = 5
 
     def __init__(self):
         pygame.init()
 
+        self.window_width = LevelBuilder.DISPLAY_WIDTH + LevelBuilder.SIDEBAR_WIDTH
+        self.window_height = LevelBuilder.DISPLAY_HEIGHT
+        self.my_win = pygame.display.set_mode((self.window_width, self.window_height))
+
         # The center of the camera
         self.center = Cursor(200, 200)
 
-        # Size of the foreground camera viewport.
-        width = self.cam_width
-        height = self.cam_height
+        self.world_rows = 20
+        self.world_columns = 20
+        self.world = World(self.world_columns,
+                           self.world_rows,
+                           self.tile_width,
+                           self.center,
+                           self.SPRITESHEET,
+                           self.sprite_width)
 
-        self.world = World(self.world_columns, self.world_rows, self.tile_width, self.center, self.spritesheet, self.sprite_width)
+        self.sprite_viewer = SpriteViewer(0,
+                                          0,
+                                          LevelBuilder.SIDEBAR_WIDTH,
+                                          self.window_height,
+                                          self.SPRITESHEET,
+                                          self.sprite_width,
+                                          self.tile_width)
 
-        self.sprite_viewer = SpriteViewer(0,0, self.sidebar_width, self.height, self.spritesheet, self.sprite_width, self.tile_width)
-
-        self.camera = Camera(self.center,width,height,self.world)
-        self.camera_bounds = pygame.Rect(width / 2,
-                                         height / 2,
-                                         self.world.get_border().width - width,
-                                         self.world.get_border().height - height)
+        self.camera = Camera(self.center,self.cam_width,self.cam_height,self.world)
+        self.camera_bounds = pygame.Rect(self.cam_width / 2,
+                                         self.cam_height / 2,
+                                         self.world.get_border().width - self.cam_width,
+                                         self.world.get_border().height - self.cam_height)
+        self.fullscreen = False
         self.dx = 0
         self.dy = 0
 
     def click_tile(self, pos, is_foreground):
-        adjusted_pos = (pos[0]-self.sidebar_width, pos[1])
-        x_scalar = self.width/self.cam_width
-        y_scalar = self.height/self.cam_height
+        adjusted_pos = (pos[0]-LevelBuilder.SIDEBAR_WIDTH, pos[1])
+        x_scalar = LevelBuilder.DISPLAY_WIDTH / self.cam_width
+        y_scalar = self.window_height / self.cam_height
         true_x = adjusted_pos[0]/x_scalar
         true_y = adjusted_pos[1]/y_scalar
 
@@ -106,7 +115,15 @@ class LevelBuilder:
                 elif key_pressed == pygame.K_0:
                     self.import_level()
                 elif key_pressed == pygame.K_ESCAPE:
-                    keep_going = False
+                    if self.fullscreen:
+                        pygame.display.set_mode((self.window_width,
+                                                 self.window_height))
+                        self.fullscreen = False
+                    else:
+                        pygame.display.set_mode((self.window_width,
+                                                 self.window_height),
+                                                pygame.FULLSCREEN)
+                        self.fullscreen = True
             elif event.type == pygame.KEYUP:
                 key_released = event.dict['key'] % 256
                 if key_released == pygame.K_a or key_released == pygame.K_d:
@@ -117,11 +134,12 @@ class LevelBuilder:
                 # print "Button pressed:", event.dict['button'], "@", event.dict['pos']
                 button_pressed = event.dict['button']
                 target = event.dict['pos']
+
                 if button_pressed == 1 and pygame.key.get_mods() and pygame.KMOD_CTRL:
                     keep_going = self.click_tile(target, True)
-                elif button_pressed == 1 and target[0] > self.sidebar_width:  # Left click
+                elif button_pressed == 1 and target[0] > LevelBuilder.SIDEBAR_WIDTH:  # Left click
                     keep_going = self.click_tile(target, False)
-                elif button_pressed == 1 and target[0] <= self.sidebar_width:
+                elif button_pressed == 1 and target[0] <= LevelBuilder.SIDEBAR_WIDTH:
                     self.sprite_viewer.click_sprite(target)
                 elif button_pressed == 5 and self.sprite_viewer.curr_row < len(self.sprite_viewer.sprites)-1:
                     self.sprite_viewer.curr_row += 1
@@ -140,9 +158,12 @@ class LevelBuilder:
         # Draw Background
         self.my_win.fill(pygame.color.Color("LightGrey"))
 
-
         # Draw cameras front to back
-        self.camera.draw(self.sidebar_width, 0, self.width, self.height, self.my_win)
+        self.camera.draw(LevelBuilder.SIDEBAR_WIDTH,
+                         0,
+                         LevelBuilder.DISPLAY_WIDTH,
+                         self.window_height,
+                         self.my_win)
         self.sprite_viewer.draw(self.my_win)
 
         # Swap display

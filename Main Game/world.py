@@ -1,1 +1,0 @@
-# World class stores world information
