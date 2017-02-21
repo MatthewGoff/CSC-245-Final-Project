@@ -84,21 +84,25 @@ class LevelBuilder:
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:
+                    print "a"
                     new_x = cls.center.pos[0] - cls.deltaIncrement
                     if new_x > cls.camera.x_offset - cls.tile_width:
                         cls.center.pos = (new_x, cls.center.pos[1])
 
                 elif key_pressed == pygame.K_d:
+                    print "d"
                     new_x = cls.center.pos[0] + cls.deltaIncrement
                     if new_x < cls.world.width - cls.camera.x_offset + cls.tile_width:
                         cls.center.pos = (cls.center.pos[0] + cls.deltaIncrement, cls.center.pos[1])
 
                 elif key_pressed == pygame.K_w:
+                    print "w"
                     new_y = cls.center.pos[1] - cls.deltaIncrement
                     if new_y > cls.camera.y_offset - cls.tile_width:
                         cls.center.pos = (cls.center.pos[0], new_y)
 
                 elif key_pressed == pygame.K_s:
+                    print "s"
                     new_y = cls.center.pos[1] + cls.deltaIncrement
                     if new_y < cls.world.height - cls.camera.y_offset + cls.tile_width:
                         cls.center.pos = (cls.center.pos[0], cls.center.pos[1] + cls.deltaIncrement)
