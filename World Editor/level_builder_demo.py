@@ -136,19 +136,14 @@ class LevelBuilder:
                 target = event.dict['pos']
 
                 if button_pressed == 1 and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                    print "ctrl click"
                     keep_going = self.click_tile(target, True)
                 elif button_pressed == 1 and target[0] > LevelBuilder.SIDEBAR_WIDTH:  # Left click
-                    print "reg click"
                     keep_going = self.click_tile(target, False)
                 elif button_pressed == 1 and target[0] <= LevelBuilder.SIDEBAR_WIDTH:
-                    print "sidebar click"
                     self.sprite_viewer.click_sprite(target)
                 elif button_pressed == 5 and self.sprite_viewer.curr_row < len(self.sprite_viewer.sprites)-1:
-                    print "scroll up"
                     self.sprite_viewer.curr_row += 1
                 elif button_pressed == 4 and self.sprite_viewer.curr_row > 0:
-                    print "scroll down"
                     self.sprite_viewer.curr_row -= 1
 
         return keep_going
