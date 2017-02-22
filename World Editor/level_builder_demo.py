@@ -63,7 +63,7 @@ class LevelBuilder:
         self.dx = 0
         self.dy = 0
 
-    def click_tile(self, pos):
+    def click_tile(self, pos, is_foreground):
         adjusted_pos = (pos[0]-LevelBuilder.SIDEBAR_WIDTH, pos[1])
         x_scalar = LevelBuilder.DISPLAY_WIDTH / self.cam_width
         y_scalar = self.window_height / self.cam_height
@@ -81,8 +81,15 @@ class LevelBuilder:
         start_column = int(float(cam_x)/self.tile_width)
         start_row = int(float(cam_y)/self.tile_width)
 
-        tile = self.world.get_tile(start_column + column, start_row + row)
-        tile.change_sprite(self.sprite_viewer.get_rect())
+        if is_foreground:
+            tile = self.world.get_fg_tile(start_column + column, start_row + row)
+            if tile is None:
+                self.world.add_foreground_tile(start_column + column, start_row + row, self.sprite_viewer.get_rect())
+            else:
+                tile.change_sprite(self.sprite_viewer.get_rect())
+        else:
+            tile = self.world.get_bg_tile(start_column + column, start_row + row)
+            tile.change_sprite(self.sprite_viewer.get_rect())
 
         return True
 
@@ -127,8 +134,11 @@ class LevelBuilder:
                 # print "Button pressed:", event.dict['button'], "@", event.dict['pos']
                 button_pressed = event.dict['button']
                 target = event.dict['pos']
-                if button_pressed == 1 and target[0] > LevelBuilder.SIDEBAR_WIDTH:  # Left click
-                    keep_going = self.click_tile(target)
+
+                if button_pressed == 1 and pygame.key.get_mods() and pygame.KMOD_CTRL:
+                    keep_going = self.click_tile(target, True)
+                elif button_pressed == 1 and target[0] > LevelBuilder.SIDEBAR_WIDTH:  # Left click
+                    keep_going = self.click_tile(target, False)
                 elif button_pressed == 1 and target[0] <= LevelBuilder.SIDEBAR_WIDTH:
                     self.sprite_viewer.click_sprite(target)
                 elif button_pressed == 5 and self.sprite_viewer.curr_row < len(self.sprite_viewer.sprites)-1:
