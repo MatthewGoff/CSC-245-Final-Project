@@ -5,7 +5,7 @@
 import json
 
 import pygame
-from src.main_game.tile import Tile
+from main_game.tile import Tile
 
 
 class World:

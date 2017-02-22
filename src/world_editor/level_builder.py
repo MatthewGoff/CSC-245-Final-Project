@@ -5,8 +5,8 @@
 import pygame
 
 from sprite_viewer import SpriteViewer
-from src.main_game.camera import Camera
-from src.main_game.world import World
+from main_game.camera import Camera
+from main_game.world import World
 
 
 class LevelBuilder:
