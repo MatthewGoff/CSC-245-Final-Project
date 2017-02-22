@@ -39,7 +39,8 @@ class SpriteViewer:
 
         y = self.padding
         for i in range(self.num_rows):
-            self.draw_row(self.curr_row + i, y, window)
+            if i < len(self.sprites)/self.sprites_per_row:
+                self.draw_row(self.curr_row + i, y, window)
             y += self.tile_width + self.padding
 
     def draw_row(self, row, y, window):
@@ -47,7 +48,8 @@ class SpriteViewer:
         for i in range(self.sprites_per_row):
             if row * self.sprites_per_row + i == self.selected_index:
                 window.blit(self.select_indicator, (x-4, y-4))
-            window.blit(self.sprites[row * self.sprites_per_row + i], (x, y))
+            if row * self.sprites_per_row + i < len(self.sprites):
+                window.blit(self.sprites[row * self.sprites_per_row + i], (x, y))
             x += self.tile_width + self.padding
 
     def click_sprite(self, pos):
@@ -59,7 +61,9 @@ class SpriteViewer:
 
     def select_sprite(self, column, row):
         true_row = self.curr_row + row
-        self.selected_index = true_row * self.sprites_per_row + column
+        selected_index = true_row * self.sprites_per_row + column
+        if selected_index < len(self.sprites):
+            self.selected_index = selected_index
 
     def get_rect(self):
         return self.rects[self.selected_index]

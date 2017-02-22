@@ -138,7 +138,8 @@ class LevelBuilder:
                     keep_going = self.click_tile(target, False)
                 elif button_pressed == 1 and target[0] <= LevelBuilder.SIDEBAR_WIDTH:
                     self.sprite_viewer.click_sprite(target)
-                elif button_pressed == 5 and self.sprite_viewer.curr_row < len(self.sprite_viewer.sprites)-1:
+                elif button_pressed == 5 and self.sprite_viewer.curr_row < (len(self.sprite_viewer.sprites))\
+                        /self.sprite_viewer.sprites_per_row - self.sprite_viewer.num_rows:
                     self.sprite_viewer.curr_row += 1
                 elif button_pressed == 4 and self.sprite_viewer.curr_row > 0:
                     self.sprite_viewer.curr_row -= 1
