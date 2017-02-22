@@ -11,9 +11,23 @@ right click on src folder>"Mark Directory As">"Sources Root"
 ### World Editor
 - Good enough, no more required
 - [ ] Saving/loading during full screen crashes -> Create popup dialog
+- [ ] Create list of available worlds
 - [x] Add support for foreground sprites to import/export functions
 
 ### Main Game
-- [ ] Make a mini-demo with simple walking
-- [ ] Write method stubs for each class based on the UML diagram
-    - Maybe start on init methods
+
+- [ ] Create menu to choose between editor and campaign
+- [ ] Make world zoomable (Caleb?)
+
+#### Campaign
+- [ ] Create Demo (Matt, Josh)
+    - [ ] Display world
+    - [ ] Display user
+    - [ ] Move user
+    - [ ] Restrict user movement
+    - [ ] Enter battle demo
+- [ ] Create animation (Monica)
+- [ ] Make fullscreen
+
+#### Battle
+- [ ] Demo (Caleb)
