@@ -1,5 +1,9 @@
+#
+# Author: Caleb
+# Winter 17
 
 import pygame
+
 
 class SpriteViewer:
     color = pygame.color.Color("Red")

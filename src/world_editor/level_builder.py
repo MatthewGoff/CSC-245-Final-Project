@@ -1,16 +1,12 @@
-# A simple platforming game
-# Author: Matthew Anderson
+# Level Builder
+# Author: Caleb, Matt
 # Winter 2017
-
-import json, math
 
 import pygame
 
-from world import World
-from camera import Camera
-from cursor import Cursor
 from sprite_viewer import SpriteViewer
-from tile import Tile
+from src.main_game.camera import Camera
+from src.main_game.world import World
 
 
 class LevelBuilder:
@@ -23,7 +19,6 @@ class LevelBuilder:
     selected_tile = None
     cam_width = DISPLAY_WIDTH / 2
     cam_height = DISPLAY_HEIGHT / 2
-    SPRITESHEET = pygame.image.load("../images/OtherSheet.png").convert_alpha()
     sprite_width = 32
     camera_speed = 5
 
@@ -34,27 +29,29 @@ class LevelBuilder:
         self.window_height = LevelBuilder.DISPLAY_HEIGHT
         self.my_win = pygame.display.set_mode((self.window_width, self.window_height))
 
-        # The center of the camera
-        self.center = Cursor(200, 200)
+        self.spritesheet = pygame.image.load(
+            "../assets/images/OtherSheet.png").convert_alpha()
 
         self.world_rows = 20
         self.world_columns = 20
         self.world = World(self.world_columns,
                            self.world_rows,
                            self.tile_width,
-                           self.center,
-                           self.SPRITESHEET,
+                           self.spritesheet,
                            self.sprite_width)
 
         self.sprite_viewer = SpriteViewer(0,
                                           0,
                                           LevelBuilder.SIDEBAR_WIDTH,
                                           self.window_height,
-                                          self.SPRITESHEET,
+                                          self.spritesheet,
                                           self.sprite_width,
                                           self.tile_width)
 
-        self.camera = Camera(self.center,self.cam_width,self.cam_height,self.world)
+        self.camera = Camera((200, 200),
+                             self.cam_width,
+                             self.cam_height,
+                             self.world)
         self.camera_bounds = pygame.Rect(self.cam_width / 2,
                                          self.cam_height / 2,
                                          self.world.get_border().width - self.cam_width,
@@ -148,11 +145,11 @@ class LevelBuilder:
 
         return keep_going
 
-    def apply_rules(cls):
-        next_pos = (cls.center.pos[0]+cls.dx,
-                    cls.center.pos[1]+cls.dy)
-        if cls.camera_bounds.collidepoint(next_pos[0], next_pos[1]):
-            cls.center.pos = next_pos
+    def apply_rules(self):
+        next_pos = (self.camera.center[0]+self.dx,
+                    self.camera.center[1]+self.dy)
+        if self.camera_bounds.collidepoint(next_pos[0], next_pos[1]):
+            self.camera.center = next_pos
 
     def draw(self):
         # Draw Background
@@ -200,6 +197,3 @@ class LevelBuilder:
 
         self.quit()
 
-
-level_builder = LevelBuilder()
-level_builder.run()

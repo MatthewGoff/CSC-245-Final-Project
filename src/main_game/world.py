@@ -5,17 +5,12 @@
 import json
 
 import pygame
+from src.main_game.tile import Tile
 
-from tile import Tile
 
 class World:
-    pygame.init()
-    pygame.display.set_mode((1, 1), pygame.NOFRAME)
-    spritesheet = pygame.image.load("../images/HolySheet.png").convert_alpha()
-    foreground_tiles = []
-    background_tiles = []
 
-    def __init__(self, x, y, tile_width, center, spritesheet, sprite_width):
+    def __init__(self, x, y, tile_width, spritesheet, sprite_width):
 
         self.sprite_width = sprite_width
         self.width = x
@@ -25,6 +20,8 @@ class World:
         self.fg_sprites = pygame.sprite.Group()
         self.spritesheet = spritesheet
 
+        self.foreground_tiles = []
+        self.background_tiles = []
         for row in range(y):
             self.foreground_tiles += [[]]
             self.background_tiles += [[]]
@@ -35,7 +32,6 @@ class World:
                 self.foreground_tiles[row] += [None]
                 self.background_tiles[row] += [newTile]
         self.border = pygame.Rect(0, 0, x * tile_width, y * tile_width)
-        self.center = center
 
     def draw(self, window):
         self.bg_sprites.draw(window)
@@ -97,7 +93,7 @@ class World:
             "foreground": foreground_tiles
         }
 
-        with open("../worlds/"+name+'.json', 'w') as outfile:
+        with open("../assets/worlds/"+name+'.json', 'w') as outfile:
             try:
                 json.dump(write_object, outfile)
                 print "Saved world!"
@@ -108,7 +104,7 @@ class World:
         name = raw_input("Please enter the filename to load: ")
 
         try:
-            data = json.load(open("../worlds/"+name+".json"))
+            data = json.load(open("../assets/worlds/"+name+".json"))
         except IOError:
             print("Couldn't find that file")
             return

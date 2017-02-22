@@ -3,7 +3,7 @@
 # Winter 2017
 
 import pygame
-from world import World
+
 
 class Camera:
 
@@ -30,7 +30,7 @@ class Camera:
     # Clamps the camera to stay within the boundaries of the world.
     def update_viewport(self):
 
-        self.viewport = pygame.Rect(self.center.pos[0] - self.x_offset, self.center.pos[1] - self.y_offset,
+        self.viewport = pygame.Rect(self.center[0] - self.x_offset, self.center[1] - self.y_offset,
                                     self.width, self.height)
         self.viewport.clamp_ip(self.world.get_border())
 

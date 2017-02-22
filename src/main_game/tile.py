@@ -1,5 +1,9 @@
+#
+# Author: Caleb, Matt
+# Winter 2017
 
 import pygame
+
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, x, y, width, spritesheet, spriteLoc, spriteWidth):

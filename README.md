@@ -1,4 +1,4 @@
-# ![avatar](images/avatar.png) CSC-245 Final Project
+# ![avatar](assets/images/avatar.png) CSC-245 Final Project
 Winter 17 class project
 
 ## Todo
