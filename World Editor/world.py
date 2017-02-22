@@ -73,21 +73,39 @@ class World:
         self.foreground_tiles[y][x] = tile
 
     def export_world(self):
-        name = raw_input("Please enter the desired filename: ")
+        name = raw_input("Please enter the filename to save: ")
 
-        write_object = []
+        background_tiles = []
         for row in self.background_tiles:
-            rowStr = []
+            json_tiles = []
             for tile in row:
-                rowStr += [tile.to_json()]
-            write_object += [rowStr]
+                json_tiles += [tile.to_json()]
+            background_tiles += [json_tiles]
+
+        foreground_tiles = []
+        for row in self.foreground_tiles:
+            json_tiles = []
+            for tile in row:
+                if tile:
+                    json_tiles += [tile.to_json()]
+                else:
+                    json_tiles += [None]
+            foreground_tiles += [json_tiles]
+
+        write_object = {
+            "background": background_tiles,
+            "foreground": foreground_tiles
+        }
 
         with open("../worlds/"+name+'.json', 'w') as outfile:
-            json.dump(write_object, outfile)
-            print "saved world!"
+            try:
+                json.dump(write_object, outfile)
+                print "Saved world!"
+            except IOError:
+                print "Couldn't save file"
 
     def import_world(self):
-        name = raw_input("Please enter the desired filename: ")
+        name = raw_input("Please enter the filename to load: ")
 
         try:
             data = json.load(open("../worlds/"+name+".json"))
@@ -101,11 +119,34 @@ class World:
             self.background_tiles += [[]]
 
             for column in range(self.width):
-                new_tile = Tile(data[row][column]["x"],
-                                data[row][column]["y"],
-                                data[row][column]["width"],
+                tile_json = data["background"][row][column]
+                new_tile = Tile(tile_json["x"],
+                                tile_json["y"],
+                                tile_json["width"],
                                 self.spritesheet,
-                                data[row][column]["spriteLoc"],
-                                data[row][column]["spriteWidth"])
+                                tile_json["spriteLoc"],
+                                tile_json["spriteWidth"])
                 self.bg_sprites.add(new_tile)
                 self.background_tiles[row] += [new_tile]
+
+        self.foreground_tiles = []
+        self.fg_sprites = pygame.sprite.Group()
+        for row in range(self.height):
+            self.foreground_tiles += [[]]
+
+            for column in range(self.width):
+                tile_json = data["foreground"][row][column]
+                if tile_json:
+                    new_tile = Tile(tile_json["x"],
+                                    tile_json["y"],
+                                    tile_json["width"],
+                                    self.spritesheet,
+                                    tile_json["spriteLoc"],
+                                    tile_json["spriteWidth"])
+                    self.fg_sprites.add(new_tile)
+                    self.foreground_tiles[row] += [new_tile]
+                else:
+                    new_tile = None
+                    self.foreground_tiles[row] += [new_tile]
+
+        print "Successfully loaded "+str(name)
