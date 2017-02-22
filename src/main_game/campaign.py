@@ -13,33 +13,18 @@ from world import World
 class Campaign:
 
     WINDOW_WIDTH = 640
-    WINDOW_HEIGHT = 420
-    SIDEBAR_WIDTH = 400
-
-    tile_width = 40
-    selected_tile = None
-    cam_width = DISPLAY_WIDTH / 2
-    cam_height = DISPLAY_HEIGHT / 2
-    sprite_width = 32
-    camera_speed = 5
+    WINDOW_HEIGHT = 480
 
     def __init__(self):
         pygame.init()
 
-        self.window_width = LevelBuilder.DISPLAY_WIDTH + LevelBuilder.SIDEBAR_WIDTH
-        self.window_height = LevelBuilder.DISPLAY_HEIGHT
+        self.window_width = Campaign.WINDOW_WIDTH
+        self.window_height = Campaign.WINDOW_HEIGHT
         self.my_win = pygame.display.set_mode((self.window_width, self.window_height))
-
-        self.spritesheet = pygame.image.load(
-            "../assets/images/OtherSheet.png").convert_alpha()
 
         self.world_rows = 20
         self.world_columns = 20
-        self.world = World(self.world_columns,
-                           self.world_rows,
-                           self.tile_width,
-                           self.spritesheet,
-                           self.sprite_width)
+        self.world = World.load("portal_forest")
 
         self.camera = Camera((200, 200),
                              self.cam_width,
@@ -129,6 +114,9 @@ class Campaign:
 
         # Swap display
         pygame.display.update()
+
+    def simulate(self):
+        pass
 
     def quit(self):
         pygame.quit()

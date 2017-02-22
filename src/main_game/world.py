@@ -9,13 +9,15 @@ from main_game.tile import Tile
 
 
 class World:
+    TILE_WIDTH = 40
+    SPRITE_WIDTH = 32
 
-    def __init__(self, x, y, tile_width, spritesheet, sprite_width):
+    def __init__(self, x, y, spritesheet):
 
-        self.sprite_width = sprite_width
         self.width = x
         self.height = y
-        self.tile_width = tile_width
+        self.tile_width = World.TILE_WIDTH
+        self.sprite_width = World.SPRITE_WIDTH
         self.bg_sprites = pygame.sprite.Group()
         self.fg_sprites = pygame.sprite.Group()
         self.spritesheet = spritesheet
@@ -27,11 +29,23 @@ class World:
             self.background_tiles += [[]]
 
             for column in range(x):
-                newTile = Tile(column*tile_width, row*tile_width, tile_width, self.spritesheet, (1856, 448), self.sprite_width)
+                newTile = Tile(column*self.tile_width,
+                               row*self.tile_width,
+                               self.tile_width,
+                               self.spritesheet,
+                               (1856, 448),
+                               World.SPRITE_WIDTH)
                 self.bg_sprites.add(newTile)
                 self.foreground_tiles[row] += [None]
                 self.background_tiles[row] += [newTile]
-        self.border = pygame.Rect(0, 0, x * tile_width, y * tile_width)
+        self.border = pygame.Rect(0, 0, x * self.tile_width, y * self.tile_width)
+
+    @classmethod
+    def load(cls, name):
+        world = World(0, 0, pygame.image.load(
+            "../assets/images/OtherSheet.png").convert_alpha())
+        world.import_world("../assets/worlds/"+name+".json")
+        return world
 
     def draw(self, window):
         self.bg_sprites.draw(window)
@@ -68,9 +82,7 @@ class World:
         self.fg_sprites.add(tile)
         self.foreground_tiles[y][x] = tile
 
-    def export_world(self):
-        name = raw_input("Please enter the filename to save: ")
-
+    def export_world(self, path):
         background_tiles = []
         for row in self.background_tiles:
             json_tiles = []
@@ -93,21 +105,11 @@ class World:
             "foreground": foreground_tiles
         }
 
-        with open("../assets/worlds/"+name+'.json', 'w') as outfile:
-            try:
-                json.dump(write_object, outfile)
-                print "Saved world!"
-            except IOError:
-                print "Couldn't save file"
+        with open(path, 'w') as outfile:
+            json.dump(write_object, outfile)
 
-    def import_world(self):
-        name = raw_input("Please enter the filename to load: ")
-
-        try:
-            data = json.load(open("../assets/worlds/"+name+".json"))
-        except IOError:
-            print("Couldn't find that file")
-            return
+    def import_world(self, path):
+        data = json.load(open(path))
 
         self.background_tiles = []
         self.bg_sprites = pygame.sprite.Group()
@@ -144,5 +146,3 @@ class World:
                 else:
                     new_tile = None
                     self.foreground_tiles[row] += [new_tile]
-
-        print "Successfully loaded "+str(name)

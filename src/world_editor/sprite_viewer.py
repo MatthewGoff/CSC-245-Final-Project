@@ -10,8 +10,9 @@ class SpriteViewer:
     curr_row = 0
     padding = 8
     selected_index = 0
+    SPRITE_WIDTH = 32
 
-    def __init__(self, x, y, width, height, spritesheet, sprite_width, tile_width):
+    def __init__(self, x, y, width, height, spritesheet, tile_width):
         self.x = x
         self.y = y
         self.width = width
@@ -19,16 +20,18 @@ class SpriteViewer:
         self.tile_width = tile_width
         self.sprites_per_row = (width - self.padding) / (tile_width + self.padding)
         self.num_rows = (height - self.padding) / (tile_width + self.padding)
-        self.sprite_width = sprite_width
         self.image = pygame.Surface([width, height])
         self.image.fill(self.color)
         self.select_indicator = pygame.Surface((tile_width + 8, tile_width + 8))
         self.select_indicator.fill(self.color)
         self.sprites = []
         self.rects = []
-        for i in range(spritesheet.get_height()/sprite_width):
-            for j in range(spritesheet.get_width()/sprite_width):
-                rect = pygame.Rect(j*sprite_width, i*sprite_width, sprite_width, sprite_width)
+        for i in range(spritesheet.get_height()/SpriteViewer.SPRITE_WIDTH):
+            for j in range(spritesheet.get_width()/SpriteViewer.SPRITE_WIDTH):
+                rect = pygame.Rect(j*SpriteViewer.SPRITE_WIDTH,
+                                   i*SpriteViewer.SPRITE_WIDTH,
+                                   SpriteViewer.SPRITE_WIDTH,
+                                   SpriteViewer.SPRITE_WIDTH)
                 image = spritesheet.subsurface(rect).copy()
                 self.sprites += [pygame.transform.smoothscale(image, (tile_width, tile_width))]
                 self.rects += [rect]

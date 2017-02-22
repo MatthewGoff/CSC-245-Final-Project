@@ -14,13 +14,13 @@ class LevelBuilder:
     DISPLAY_WIDTH = 720
     DISPLAY_HEIGHT = 560
     SIDEBAR_WIDTH = 400
+    TILE_WIDTH = 40
 
-    tile_width = 40
     selected_tile = None
     cam_width = DISPLAY_WIDTH / 2
     cam_height = DISPLAY_HEIGHT / 2
-    sprite_width = 32
-    camera_speed = 5
+    SPRITE_WIDTH = 32
+    CAMERA_SPEED = 5
 
     def __init__(self):
         pygame.init()
@@ -32,21 +32,20 @@ class LevelBuilder:
         self.spritesheet = pygame.image.load(
             "../assets/images/OtherSheet.png").convert_alpha()
 
-        self.world_rows = 20
-        self.world_columns = 20
-        self.world = World(self.world_columns,
-                           self.world_rows,
-                           self.tile_width,
-                           self.spritesheet,
-                           self.sprite_width)
+        self.tile_width = 40
+        self.world_width = 20
+        self.world_height = 20
+        self.world = World(self.world_width,
+                           self.world_height,
+                           self.spritesheet)
 
+        self.sprite_width = LevelBuilder.SPRITE_WIDTH
         self.sprite_viewer = SpriteViewer(0,
                                           0,
                                           LevelBuilder.SIDEBAR_WIDTH,
                                           self.window_height,
                                           self.spritesheet,
-                                          self.sprite_width,
-                                          self.tile_width)
+                                          self.sprite_width)
 
         self.camera = Camera((200, 200),
                              self.cam_width,
@@ -100,13 +99,13 @@ class LevelBuilder:
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:
-                    self.dx = -LevelBuilder.camera_speed
+                    self.dx = -LevelBuilder.CAMERA_SPEED
                 elif key_pressed == pygame.K_d:
-                    self.dx = LevelBuilder.camera_speed
+                    self.dx = LevelBuilder.CAMERA_SPEED
                 elif key_pressed == pygame.K_w:
-                    self.dy = -LevelBuilder.camera_speed
+                    self.dy = -LevelBuilder.CAMERA_SPEED
                 elif key_pressed == pygame.K_s:
-                    self.dy = LevelBuilder.camera_speed
+                    self.dy = LevelBuilder.CAMERA_SPEED
                 elif key_pressed == pygame.K_RETURN:
                     self.export_level()
                 elif key_pressed == pygame.K_0:
@@ -171,10 +170,21 @@ class LevelBuilder:
         pygame.quit()
 
     def export_level(self):
-        self.world.export_world()
+        name = raw_input("Please enter the filename to save: ")
+        try:
+            self.world.export_world("../assets/worlds/"+name+".json")
+            print "Successfully saved "+name
+        except IOError:
+            print "Couldn't save world '"+name+"'"
 
     def import_level(self):
-        self.world.import_world()
+        name = raw_input("Please enter the filename to load: ")
+
+        try:
+            self.world.import_world("../assets/worlds/"+name+".json")
+            print "Successfully loaded "+name
+        except IOError:
+            print "Couldn't load world '"+name+"'"
 
     def run(self):
 
