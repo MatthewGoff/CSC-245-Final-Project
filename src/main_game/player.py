@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.y = y
 
     def attack(self, enemy):
-        amount = random.randint(5, 20)
+        amount = random.randint(15, 25)
 
         self.energy.change(-10)
         enemy.hp.change(-amount)

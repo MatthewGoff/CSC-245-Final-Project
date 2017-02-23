@@ -19,7 +19,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 ### Main Game
 
 - [ ] Create menu to choose between editor and campaign
-- [ ] Make world zoomable (Caleb?)
+- [ ] Make world zoomable (Caleb - eventually)
 
 #### Campaign
 - [ ] Create Demo (Matt, Josh)
@@ -33,6 +33,6 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 #### Battle
 - [x] Basic Demo (Caleb)
-    - [ ] Add abilities functionality (Caleb)
+    - [ ] Add abilities functionality
     - [ ] Add non-arbitrary player placement
-    - [ ] Add more players to each team
+    - [x] Add more players to each team

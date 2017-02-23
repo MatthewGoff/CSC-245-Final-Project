@@ -91,7 +91,7 @@ class Battle:
 
     # Attacks random opponent
     def ai_turn(self):
-        if not self.player_turn and not self.curr_combatant >= len(self.combatants):
+        if not self.player_turn:
             curr_combatant = self.combatants[self.curr_combatant]
             pygame.time.wait(1000)
 
@@ -113,6 +113,8 @@ class Battle:
         keep_going = True
         for p in self.friendlies:
             if p.dead:
+                if p.is_player:
+                    self.player_turn = False
                 self.friendlies.remove(p)
                 self.combatants.remove(p)
                 self.friendly_sprites.remove(p)
@@ -123,11 +125,15 @@ class Battle:
                 self.combatants.remove(p)
                 self.enemy_sprites.remove(p)
 
+        if self.curr_combatant >= len(self.combatants):
+            self.curr_combatant = 0
+
         if len(self.friendlies) == 0:
             keep_going = False
         elif len(self.enemies) == 0:
             self.won = True
             keep_going = False
+
         return keep_going
 
     def draw(self, window):
@@ -162,7 +168,8 @@ class Battle:
             # 1. Apply rules
             running = self.apply_rules()
             # 2. AI turn
-            self.ai_turn()
+            if running:
+                self.ai_turn()
 
             # 3. Handle events.
             if running:
@@ -179,6 +186,8 @@ class Battle:
 
 my_win = pygame.display.set_mode((640, 480))
 player = Player(20, 200, 68, 98, "../assets/images/player.png", 53, 96, 34, 49, True)
+friend = Player(20, 350, 68, 98, "../assets/images/player.png", 53, 96, 34, 49, False)
 enemy = Player(550, 200, 68, 98, "../assets/images/player.png", 57, 48, 34, 49, False)
-battle = Battle([player], [enemy], (0, 0), my_win, False)
+enemy2 = Player(550, 50, 68, 98, "../assets/images/player.png", 57, 48, 34, 49, False)
+battle = Battle([player, friend], [enemy, enemy2], (0, 0), my_win, False)
 battle.run()
