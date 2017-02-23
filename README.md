@@ -5,6 +5,8 @@ Winter 17 class project
 - Pycharm will claim that it can't find modules even if it runs. To resolve this
 right click on src folder>"Mark Directory As">"Sources Root"
 
+- Uncomment the import statement in main_game and then run it to see the battle demo.
+
 ## Todo
 - Have beta version ready for March 6th
 
@@ -30,4 +32,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [ ] Make fullscreen
 
 #### Battle
-- [ ] Demo (Caleb)
+- [x] Basic Demo (Caleb)
+    - [ ] Add abilities functionality (Caleb)
+    - [ ] Add non-arbitrary player placement
+    - [ ] Add more players to each team
