@@ -25,23 +25,34 @@ class Battle:
         self.enemy_sprites = pygame.sprite.Group()
         self.bars = pygame.sprite.Group()
         combatants = Queue.PriorityQueue()
-        for p in self.friendlies:
-            combatants.put((p.speed, p))
-            self.friendly_sprites.add(p)
-            self.friendly_sprites.add(p.hp)
-            self.friendly_sprites.add(p.energy)
-            self.bars.add(p.bar_bg)
-        for p in self.enemies:
-            combatants.put((p.speed, p))
-            self.enemy_sprites.add(p)
-            self.enemy_sprites.add(p.hp)
-            self.enemy_sprites.add(p.energy)
-            self.bars.add(p.bar_bg)
+        self.place_combatants(self.friendlies, self.enemies, combatants)
         self.combatants = []
         for i in range(len(self.friendlies)+len(self.enemies)):
             self.combatants.append(combatants.get()[1])
         self.curr_combatant = -1
         self.next_turn()
+
+    def place_combatants(self, friends, enemies, p_queue):
+        n = 1
+        for p in friends:
+            p.set_pos(self.width / 8, n * (self.height / (len(friends) + 1)))
+            p_queue.put((p.speed, p))
+            self.friendly_sprites.add(p)
+            self.friendly_sprites.add(p.hp)
+            self.friendly_sprites.add(p.energy)
+            self.bars.add(p.bar_bg)
+            n += 1
+        n = 1
+        for p in enemies:
+            p.set_pos(self.width - p.width - self.width / 8, n * (self.height / (len(enemies) + 1)))
+            p_queue.put((p.speed, p))
+            self.enemy_sprites.add(p)
+            self.enemy_sprites.add(p.hp)
+            self.enemy_sprites.add(p.energy)
+            self.bars.add(p.bar_bg)
+            n += 1
+
+
 
     def handle_events(self):
         keep_going = True

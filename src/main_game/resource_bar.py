@@ -31,6 +31,9 @@ class ResourceBar(pygame.sprite.Sprite):
         self.image = pygame.Surface((int(self.width*scalar), BAR_WIDTH,))
         self.image.fill(pygame.color.Color(self.color))
 
+    def set_pos(self, x, y):
+        self.rect = pygame.Rect(x, y, self.width, BAR_WIDTH)
+
 # Background for the health/energy bars
 class BarBG(pygame.sprite.Sprite):
     def __init__(self, x, y, width):
@@ -41,3 +44,6 @@ class BarBG(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.rect = pygame.Rect(x, y, width, BAR_WIDTH*2)
+
+    def set_pos(self, x, y):
+        self.rect = pygame.Rect(x, y, self.width, BAR_WIDTH * 2)
