@@ -33,6 +33,11 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 #### Battle
 - [x] Basic Demo (Caleb)
-    - [ ] Add abilities functionality
-    - [ ] Add non-arbitrary player placement
+    - [x] Add abilities functionality
+    - [x] Add non-arbitrary player placement
     - [x] Add more players to each team
+    - [ ] Animations
+        - [ ] Melee
+        - [ ] Projectile
+        - [ ] Effects? (death, non-offensive ability use, melee animations, collision anims)
+    - [ ] Buffs?

@@ -29,6 +29,7 @@ class Player(pygame.sprite.Sprite):
         self.int = 0
         self.stam = 0
         self.dead = False
+        self.abilities = []
 
     def set_pos(self, x, y):
         self.x = x
@@ -45,6 +46,15 @@ class Player(pygame.sprite.Sprite):
         enemy.hp.change(-amount)
         if enemy.hp.curr == 0:
             enemy.dead = True
+
+    def use_ability(self, ability, target):
+        ability.apply_cost(self)
+        ability.apply_effects(target)
+
+    def can_use(self, ability, target):
+        return ability.can_be_used_by(self) and ability.can_be_used_on(target)
+
+
 
 
 

@@ -2,13 +2,21 @@
 
 import pygame, Queue, random
 from player import Player
+from ability_bar import AbilityBar
+from abilities.fireball import Fireball
+from abilities.energize import Energize
+from abilities.heal import Heal
+from abilities.power_attack import PowerAttack
+
+
+TURN_MSG = "Player Turn"
+ABIL_BAR_HEIGHT = 60
 
 class Battle:
 
-    WIDTH = 640
-    HEIGHT = 480
 
     def __init__(self, party1, party2, location, window, fullscreen):
+        pygame.init()
         self.won = False
         self.spritesheet = pygame.image.load(
             "../assets/images/player.png").convert_alpha()
@@ -24,8 +32,11 @@ class Battle:
         self.friendly_sprites = pygame.sprite.Group()
         self.enemy_sprites = pygame.sprite.Group()
         self.bars = pygame.sprite.Group()
+        self.font = pygame.font.SysFont("monospace", 25)
+        self.turn_msg =  self.font.render(TURN_MSG, 0, (0, 0, 0))
         combatants = Queue.PriorityQueue()
         self.place_combatants(self.friendlies, self.enemies, combatants)
+        self.ability_bar = AbilityBar(0, self.height - ABIL_BAR_HEIGHT, self.width, ABIL_BAR_HEIGHT, self.abilities)
         self.combatants = []
         for i in range(len(self.friendlies)+len(self.enemies)):
             self.combatants.append(combatants.get()[1])
@@ -41,6 +52,8 @@ class Battle:
             self.friendly_sprites.add(p.hp)
             self.friendly_sprites.add(p.energy)
             self.bars.add(p.bar_bg)
+            if p.is_player:
+                self.abilities = p.abilities
             n += 1
         n = 1
         for p in enemies:
@@ -52,6 +65,9 @@ class Battle:
             self.bars.add(p.bar_bg)
             n += 1
 
+    def draw_interface(self, window):
+        window.blit(self.turn_msg, (self.width/2 - self.turn_msg.get_width()/2, 0))
+        self.ability_bar.draw(window)
 
 
     def handle_events(self):
@@ -90,14 +106,17 @@ class Battle:
         else:
             self.player_turn = False
 
-    # If clicked on an enemy, attack that enemy
+    # Selects the ability the mouse is over, or attacks the enemy the mouse is over with the selected ability
     def click(self, pos):
-        enemy = None
-        for e in self.enemies:
-            if e.rect.collidepoint(pos):
-                enemy = e
-        if not enemy is None:
-            self.combatants[self.curr_combatant].attack(enemy)
+        self.ability_bar.click_ability(pos)
+        valid_targets = self.ability_bar.get_valid_targets(self.friendlies, self.enemies)
+        target = None
+        for t in valid_targets:
+            if t.rect.collidepoint(pos):
+                target = t
+        player = self.combatants[self.curr_combatant]
+        if not target is None and player.can_use(self.ability_bar.selected_ability, target):
+            player.use_ability(self.ability_bar.selected_ability, target)
             self.next_turn()
 
     # Attacks random opponent
@@ -107,12 +126,18 @@ class Battle:
             pygame.time.wait(1000)
 
             if self.friendlies.count(curr_combatant) > 0:
-                rand_index = random.randint(0, len(self.enemies)-1)
-                curr_combatant.attack(self.enemies[rand_index])
+                if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
+                    curr_combatant.use_ability(Heal, curr_combatant)
+                else:
+                    rand_index = random.randint(0, len(self.enemies)-1)
+                    curr_combatant.attack(self.enemies[rand_index])
                 self.next_turn()
             else:
-                rand_index = random.randint(0, len(self.friendlies) - 1)
-                curr_combatant.attack(self.friendlies[rand_index])
+                if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
+                    curr_combatant.use_ability(Heal, curr_combatant)
+                else:
+                    rand_index = random.randint(0, len(self.friendlies) - 1)
+                    curr_combatant.attack(self.friendlies[rand_index])
                 self.next_turn()
 
     # Will use to animate, probably
@@ -154,6 +179,9 @@ class Battle:
         self.bars.draw(window)
         self.friendly_sprites.draw(window)
         self.enemy_sprites.draw(window)
+
+        if self.player_turn:
+            self.draw_interface(window)
         # Swap display
         pygame.display.update()
 
@@ -194,9 +222,10 @@ class Battle:
                 self.end_battle()
 
         self.quit()
-
+pygame.init()
 my_win = pygame.display.set_mode((640, 480))
 player = Player(20, 200, 68, 98, "../assets/images/player.png", 53, 96, 34, 49, True)
+player.abilities = [Energize(), Fireball(0,0,0), PowerAttack(), Heal()]
 friend = Player(20, 350, 68, 98, "../assets/images/player.png", 53, 96, 34, 49, False)
 enemy = Player(550, 200, 68, 98, "../assets/images/player.png", 57, 48, 34, 49, False)
 enemy2 = Player(550, 50, 68, 98, "../assets/images/player.png", 57, 48, 34, 49, False)
