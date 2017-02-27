@@ -47,3 +47,4 @@ right click on src folder>"Mark Directory As">"Sources Root"
 ### Other
 - [ ] Make world able to load different sizes (update world.border) (matt)
 - [ ] Make camera center start at the center of the world (matt)
+- [ ] Make executable (matt)
