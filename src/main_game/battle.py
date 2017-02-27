@@ -227,11 +227,11 @@ class Battle:
 def demo():
     pygame.init()
     my_win = pygame.display.set_mode((640, 480))
-    player = Player(20, 200, 68, 98, "../assets/images/player.png", 53, 96, 34, 49, True)
+    player = Player(20, 200, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, True)
     player.abilities = [Energize(), Fireball(0,0,0), PowerAttack(), Heal()]
-    friend = Player(20, 350, 68, 98, "../assets/images/player.png", 53, 96, 34, 49, False)
-    enemy = Player(550, 200, 68, 98, "../assets/images/player.png", 57, 48, 34, 49, False)
-    enemy2 = Player(550, 50, 68, 98, "../assets/images/player.png", 57, 48, 34, 49, False)
+    friend = Player(20, 350, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, False)
+    enemy = Player(550, 200, 68, 98, "../assets/images/player.png", 240, 0, 38, 48, False)
+    enemy2 = Player(550, 50, 68, 98, "../assets/images/player.png", 240, 0, 38, 48, False)
     battle = Battle([player, friend], [enemy, enemy2], (0, 0), my_win, False)
     battle.run()
 
