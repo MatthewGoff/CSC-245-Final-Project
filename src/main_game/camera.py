@@ -32,7 +32,7 @@ class Camera:
 
         self.viewport = pygame.Rect(self.center[0] - self.x_offset, self.center[1] - self.y_offset,
                                     self.width, self.height)
-        self.viewport.clamp_ip(self.world.get_border())
+        #self.viewport.clamp_ip(self.world.get_border())
 
     # Draw the view of the camera into the given window at position x,y with dimension width, height.
     def draw(self, x,y, width, height, window):
@@ -43,7 +43,9 @@ class Camera:
         # only draw what the camera could actually see.  (This is called clipping.)
         world_buffer = self.world.get_draw_buffer(self.viewport)
         # Extracts the view from the full world.
-        view = world_buffer.subsurface(self.viewport)
+        view = pygame.Surface((self.width, self.height))
+        view.blit(world_buffer, (-1*self.viewport.left,
+                                 -1*self.viewport.top))
         # Scales view to the appropriate size.
         view = pygame.transform.smoothscale(view,(width,height))
         # Display the resulting view to the visible window.

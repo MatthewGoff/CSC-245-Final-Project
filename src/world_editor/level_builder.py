@@ -51,10 +51,6 @@ class LevelBuilder:
                              self.cam_width,
                              self.cam_height,
                              self.world)
-        self.camera_bounds = pygame.Rect(self.cam_width / 2,
-                                         self.cam_height / 2,
-                                         self.world.get_border().width - self.cam_width,
-                                         self.world.get_border().height - self.cam_height)
         self.fullscreen = False
         self.dx = 0
         self.dy = 0
@@ -162,8 +158,7 @@ class LevelBuilder:
     def apply_rules(self):
         next_pos = (self.camera.center[0]+self.dx,
                     self.camera.center[1]+self.dy)
-        if self.camera_bounds.collidepoint(next_pos[0], next_pos[1]):
-            self.camera.center = next_pos
+        self.camera.center = next_pos
 
     def draw(self):
         # Draw Background
