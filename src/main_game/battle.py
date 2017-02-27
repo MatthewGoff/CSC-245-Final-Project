@@ -52,7 +52,7 @@ class Battle:
             self.friendly_sprites.add(p.hp)
             self.friendly_sprites.add(p.energy)
             self.bars.add(p.bar_bg)
-            if p.is_player:
+            if p.is_human:
                 self.abilities = p.abilities
             n += 1
         n = 1
@@ -101,7 +101,7 @@ class Battle:
             self.curr_combatant = 0
         else:
             self.curr_combatant += 1
-        if self.combatants[self.curr_combatant].is_player:
+        if self.combatants[self.curr_combatant].is_human:
             self.player_turn = True
         else:
             self.player_turn = False
@@ -149,7 +149,7 @@ class Battle:
         keep_going = True
         for p in self.friendlies:
             if p.dead:
-                if p.is_player:
+                if p.is_human:
                     self.player_turn = False
                 self.friendlies.remove(p)
                 self.combatants.remove(p)
