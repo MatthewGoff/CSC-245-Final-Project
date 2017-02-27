@@ -6,10 +6,11 @@ import pygame
 
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, spritesheet, spriteLoc, spriteWidth):
+    def __init__(self, x, y, width, spritesheet, spriteLoc, spriteWidth, world_loc):
         pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(x, y, width, width)
 
+        self.world_loc = world_loc
         self.x = x
         self.y = y
         self.width = width

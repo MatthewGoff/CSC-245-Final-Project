@@ -72,4 +72,15 @@ class Camera:
         window.blit(view, (x, y))
 
     def get_location(self):
-        return (self.viewport.x, self.viewport.y)
+        return self.viewport.x, self.viewport.y
+
+    def get_click_location(self, click_loc):
+        """
+        Take a click position on the camera view and translate it to a click
+        position on the world
+        :param click_loc:
+        :return:
+        """
+
+        return (click_loc[0]*self.zoom+self.viewport.left,
+                click_loc[1]*self.zoom+self.viewport.top)

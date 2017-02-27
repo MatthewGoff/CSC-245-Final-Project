@@ -55,32 +55,16 @@ class LevelBuilder:
         self.dx = 0
         self.dy = 0
 
-    def click_tile(self, pos, is_foreground):
-        adjusted_pos = (pos[0]-LevelBuilder.SIDEBAR_WIDTH, pos[1])
-        x_scalar = LevelBuilder.DISPLAY_WIDTH / self.cam_width
-        y_scalar = self.window_height / self.cam_height
-        true_x = adjusted_pos[0]/x_scalar
-        true_y = adjusted_pos[1]/y_scalar
-
-        cam_x, cam_y = self.camera.get_location()[0], self.camera.get_location()[1]
-
-        x_adj = true_x + cam_x % self.tile_width
-        y_adj = true_y + cam_y % self.tile_width
-
-        column = x_adj/self.tile_width
-        row = y_adj/self.tile_width
-
-        start_column = int(float(cam_x)/self.tile_width)
-        start_row = int(float(cam_y)/self.tile_width)
+    def click_tile(self, loc, is_foreground):
 
         if is_foreground:
-            tile = self.world.get_fg_tile(start_column + column, start_row + row)
+            tile = self.world.foreground_tiles[loc[0]][loc[1]]
             if tile is None:
-                self.world.add_foreground_tile(start_column + column, start_row + row, self.sprite_viewer.get_rect())
+                self.world.add_foreground_tile(loc[0], loc[1], self.sprite_viewer.get_rect())
             else:
                 tile.change_sprite(self.sprite_viewer.get_rect())
         else:
-            tile = self.world.get_bg_tile(start_column + column, start_row + row)
+            tile = self.world.get_bg_tile(loc[0], loc[1])
             tile.change_sprite(self.sprite_viewer.get_rect())
 
         return True
@@ -129,10 +113,20 @@ class LevelBuilder:
                 if mouse_pos[0] > LevelBuilder.SIDEBAR_WIDTH:
 
                     if button_pressed == 1:
-                        if pygame.key.get_mods() & pygame.KMOD_CTRL:
-                            keep_going = self.click_tile(mouse_pos, True)
-                        else:
-                            keep_going = self.click_tile(mouse_pos, False)
+                        camera_pos = (mouse_pos[0] - LevelBuilder.SIDEBAR_WIDTH,
+                                      mouse_pos[1])
+                        world_pos = self.camera.get_click_location(camera_pos)
+
+                        clicked_tiles = [tile for tile in self.world.bg_sprites
+                                         if
+                                         tile.rect.collidepoint(world_pos)]
+
+                        if clicked_tiles:
+                            click_loc = clicked_tiles[0].world_loc
+                            if pygame.key.get_mods() & pygame.KMOD_CTRL:
+                                keep_going = self.click_tile(click_loc, True)
+                            else:
+                                keep_going = self.click_tile(click_loc, False)
                     elif button_pressed == 5:
                         self.camera.zoom_out()
 

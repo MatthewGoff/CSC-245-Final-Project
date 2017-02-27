@@ -8,6 +8,7 @@ import pygame
 
 from camera import Camera
 from world import World
+from party import Party
 import constants
 
 
@@ -21,6 +22,8 @@ class Campaign:
         self.fullscreen = False
         self.init_screen()
         self.world = World.load("portal_forest")
+        #player_image =
+        #self.user = Party(position, radius, image, world)
         self.init_camera()
 
         self.spritesheet = pygame.image.load(

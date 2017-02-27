@@ -34,7 +34,8 @@ class World:
                                self.tile_width,
                                self.spritesheet,
                                (1856, 448),
-                               World.SPRITE_WIDTH)
+                               World.SPRITE_WIDTH,
+                               (column, row))
                 self.bg_sprites.add(newTile)
                 self.foreground_tiles[row] += [None]
                 self.background_tiles[row] += [newTile]
@@ -76,7 +77,7 @@ class World:
         return self.foreground_tiles[y][x]
 
     def add_foreground_tile(self, x, y, sprite_rect):
-        tile = Tile(x*self.tile_width, y*self.tile_width, self.tile_width, self.spritesheet, (33, 33), self.sprite_width)
+        tile = Tile(x*self.tile_width, y*self.tile_width, self.tile_width, self.spritesheet, (33, 33), self.sprite_width, (x, y))
         tile.change_sprite(sprite_rect)
         self.fg_sprites.add(tile)
         self.foreground_tiles[y][x] = tile
@@ -122,7 +123,8 @@ class World:
                                 tile_json["width"],
                                 self.spritesheet,
                                 tile_json["spriteLoc"],
-                                tile_json["spriteWidth"])
+                                tile_json["spriteWidth"],
+                                (row, column))
                 self.bg_sprites.add(new_tile)
                 self.background_tiles[row] += [new_tile]
 
@@ -139,7 +141,8 @@ class World:
                                     tile_json["width"],
                                     self.spritesheet,
                                     tile_json["spriteLoc"],
-                                    tile_json["spriteWidth"])
+                                    tile_json["spriteWidth"]
+                                    (row, column))
                     self.fg_sprites.add(new_tile)
                     self.foreground_tiles[row] += [new_tile]
                 else:

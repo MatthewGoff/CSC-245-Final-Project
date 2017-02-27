@@ -8,9 +8,9 @@ BAR_WIDTH = 10
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, x, y, width, height, spritesheet_path, sprite_x, sprite_y, sprite_w, sprite_h, is_player):
+    def __init__(self, x, y, width, height, spritesheet_path, sprite_x, sprite_y, sprite_w, sprite_h, is_human):
         pygame.sprite.Sprite.__init__(self)
-        self.is_player = is_player
+        self.is_human = is_human
         self.x = x
         self.y = y
         self.width = width
@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(x, y, width, height)
         spritesheet = pygame.image.load(spritesheet_path).convert_alpha()
         sprite_rect = pygame.Rect(sprite_x, sprite_y, sprite_w, sprite_h)
-        image = spritesheet.subsurface(sprite_rect).copy()
+        image = spritesheet.subsurface(sprite_rect).copy() # error
         self.image = pygame.transform.smoothscale(image, (width, height))
         self.speed = 1
         self.hp = ResourceBar(x, y - BAR_WIDTH*2, width, 100, "green")

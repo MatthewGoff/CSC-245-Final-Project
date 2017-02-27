@@ -14,9 +14,9 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - Good enough, no more required
 - [ ] Make it possibile to create different sized world (get click event from sprite) (matt)
     - Remove cam_width and cam_height attributes
-- [ ] Fix inability to edit while zoomed in/out (caleb? - talk with matt)
+- [x] Fix inability to edit while zoomed in/out (caleb? - talk with matt)
 - [ ] Saving/loading during full screen crashes -> Create popup dialog
-- [ ] Create list of available worlds
+    - Create list of available worlds
 - [x] Add support for foreground sprites to import/export functions
 
 ### Main Game
@@ -32,6 +32,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
     - [ ] Enter battle demo
 - [ ] Create animation (Monica)
 - [x] Make fullscreen
+- [ ] (Optional) Create FOW
 
 #### Battle
 - [x] Basic Demo (Caleb)
