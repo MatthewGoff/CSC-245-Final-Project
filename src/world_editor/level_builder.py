@@ -135,12 +135,10 @@ class LevelBuilder:
                         else:
                             keep_going = self.click_tile(mouse_pos, False)
                     elif button_pressed == 5:
-                        pass
-                        # self.camera.zoom_out()
+                        self.camera.zoom_out()
 
                     elif button_pressed == 4:
-                        pass
-                        # self.camera.zoom_in()
+                        self.camera.zoom_in()
 
                 else:
                     if button_pressed == 1:

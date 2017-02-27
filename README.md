@@ -10,6 +10,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 ### World Editor
 - Good enough, no more required
+- [ ] Fix inability to edit while zoomed in/out
 - [ ] Saving/loading during full screen crashes -> Create popup dialog
 - [ ] Create list of available worlds
 - [x] Add support for foreground sprites to import/export functions

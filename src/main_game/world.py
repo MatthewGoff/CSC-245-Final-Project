@@ -51,7 +51,6 @@ class World:
         self.bg_sprites.draw(window)
         self.fg_sprites.draw(window)
 
-
     # Returns a the result of drawing the world, but only actually draws the part that will appear in the
     # clip_rect.  This saves a lot of resources because the world may be much larger than the part that will
     # appear on the screen.
