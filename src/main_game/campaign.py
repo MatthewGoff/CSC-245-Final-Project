@@ -8,33 +8,42 @@ import pygame
 
 from camera import Camera
 from world import World
+import constants
 
 
 class Campaign:
-    WINDOW_WIDTH = 640
-    WINDOW_HEIGHT = 480
+    WINDOW_SIZE = (640, 480)
     CAMERA_SPEED = 10
 
     def __init__(self):
         pygame.init()
 
-        self.window_width = Campaign.WINDOW_WIDTH
-        self.window_height = Campaign.WINDOW_HEIGHT
-        self.my_win = pygame.display.set_mode(
-            (self.window_width, self.window_height))
+        self.fullscreen = False
+        self.init_screen()
+        self.world = World.load("portal_forest")
+        self.init_camera()
 
         self.spritesheet = pygame.image.load(
             "../assets/images/OtherSheet.png").convert_alpha()
 
-        self.world = World.load("portal_forest")
-
-        self.camera = Camera((400, 400),
-                             Campaign.WINDOW_WIDTH,
-                             Campaign.WINDOW_HEIGHT,
-                             self.world)
-        self.fullscreen = False
         self.dx = 0
         self.dy = 0
+
+    def init_screen(self):
+        if self.fullscreen:
+            self.window_size = constants.NATIVE_SCREEN_SIZE
+            pygame.display.set_mode(self.window_size,
+                                    pygame.FULLSCREEN)
+        else:
+            self.window_size = Campaign.WINDOW_SIZE
+            self.my_win = pygame.display.set_mode(self.window_size)
+
+    def init_camera(self):
+        self.camera = Camera((self.window_size[0]/2,
+                              self.window_size[1]/2),
+                             self.window_size[0],
+                             self.window_size[1],
+                             self.world)
 
     def handle_events(self):
 
@@ -55,14 +64,13 @@ class Campaign:
                     self.dy = Campaign.CAMERA_SPEED
                 elif key_pressed == pygame.K_ESCAPE:
                     if self.fullscreen:
-                        pygame.display.set_mode((self.window_width,
-                                                 self.window_height))
                         self.fullscreen = False
+                        self.init_screen()
+                        self.init_camera()
                     else:
-                        pygame.display.set_mode((self.window_width,
-                                                 self.window_height),
-                                                pygame.FULLSCREEN)
                         self.fullscreen = True
+                        self.init_screen()
+                        self.init_camera()
             elif event.type == pygame.KEYUP:
                 key_released = event.dict['key'] % 256
                 if key_released == pygame.K_a or key_released == pygame.K_d:
@@ -93,8 +101,8 @@ class Campaign:
         # Draw cameras front to back
         self.camera.draw(0,
                          0,
-                         Campaign.WINDOW_WIDTH,
-                         Campaign.WINDOW_HEIGHT,
+                         self.window_size[0],
+                         self.window_size[1],
                          self.my_win)
 
         # Swap display

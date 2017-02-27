@@ -5,6 +5,7 @@ from resource_bar import ResourceBar, BarBG
 
 BAR_WIDTH = 10
 
+
 class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y, width, height, spritesheet_path, sprite_x, sprite_y, sprite_w, sprite_h, is_player):

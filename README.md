@@ -21,7 +21,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 ### Main Game
 - [ ] Create menu to choose between editor and campaign
-- [x] Make world zoomable (matt)
+- [x] Make world zoomable (caleb, matt)
 
 #### Campaign
 - [ ] Create Demo (Matt, Josh)
@@ -31,7 +31,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
     - [ ] Restrict user movement
     - [ ] Enter battle demo
 - [ ] Create animation (Monica)
-- [ ] Make fullscreen
+- [x] Make fullscreen
 
 #### Battle
 - [x] Basic Demo (Caleb)
@@ -46,5 +46,5 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 ### Other
 - [ ] Make world able to load different sizes (update world.border) (matt)
-- [ ] Make camera center start at the center of the world (matt)
+- [x] Make camera center start at the center of the world (matt)
 - [ ] Make executable (matt)
