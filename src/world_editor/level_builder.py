@@ -154,8 +154,8 @@ class LevelBuilder:
         return keep_going
 
     def apply_rules(self):
-        next_pos = (self.camera.center[0]+self.dx,
-                    self.camera.center[1]+self.dy)
+        next_pos = (self.camera.center[0] + self.dx * self.camera.zoom,
+                    self.camera.center[1] + self.dy * self.camera.zoom)
         self.camera.center = next_pos
 
     def draw(self):

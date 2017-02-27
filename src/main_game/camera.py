@@ -7,6 +7,7 @@ import pygame
 
 class Camera:
     ZOOM_FACTOR = 0.9
+    CAMERA_SPEED = 5
 
     def __init__(self, center, width, height, world):
 
@@ -24,6 +25,22 @@ class Camera:
 
     def zoom_out(self):
         self.zoom /= Camera.ZOOM_FACTOR
+
+    def move_up(self):
+        self.center = (self.center[0],
+                       self.center[1]-Camera.CAMERA_SPEED*Camera.ZOOM_FACTOR)
+
+    def move_down(self):
+        self.center = (self.center[0],
+                       self.center[1]+Camera.CAMERA_SPEED*Camera.ZOOM_FACTOR)
+
+    def move_left(self):
+        self.center = (self.center[0]-Camera.CAMERA_SPEED*Camera.ZOOM_FACTOR,
+                       self.center[1])
+
+    def move_right(self):
+        self.center = (self.center[0]+Camera.CAMERA_SPEED*Camera.ZOOM_FACTOR,
+                       self.center[1])
 
     # Moves the camera to follow the position of the center.
     # Clamps the camera to stay within the boundaries of the world.

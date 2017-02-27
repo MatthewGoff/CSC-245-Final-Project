@@ -36,8 +36,6 @@ class SpriteViewer:
                 self.sprites += [pygame.transform.smoothscale(image, (tile_width, tile_width))]
                 self.rects += [rect]
 
-
-
     def draw(self, window):
 
         y = self.padding
