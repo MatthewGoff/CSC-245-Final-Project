@@ -16,11 +16,8 @@ class LevelBuilder:
     SIDEBAR_WIDTH = 400
     TILE_WIDTH = 40
 
-    selected_tile = None
-    cam_width = DISPLAY_WIDTH / 2
-    cam_height = DISPLAY_HEIGHT / 2
     SPRITE_WIDTH = 32
-    CAMERA_SPEED = 5
+    CAMERA_SPEED = 10
 
     def __init__(self):
         pygame.init()
@@ -47,9 +44,12 @@ class LevelBuilder:
                                           self.spritesheet,
                                           self.sprite_width)
 
+        self.selected_tile = None
+        self.cam_width = LevelBuilder.DISPLAY_WIDTH
+        self.cam_height = LevelBuilder.DISPLAY_HEIGHT
         self.camera = Camera((200, 200),
-                             self.cam_width,
-                             self.cam_height,
+                             LevelBuilder.DISPLAY_WIDTH,
+                             LevelBuilder.DISPLAY_HEIGHT,
                              self.world)
         self.fullscreen = False
         self.dx = 0
@@ -123,7 +123,6 @@ class LevelBuilder:
                 if key_released == pygame.K_s or key_released == pygame.K_w:
                     self.dy = 0
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                # print "Button pressed:", event.dict['button'], "@", event.dict['pos']
                 button_pressed = event.dict['button']
                 mouse_pos = event.dict['pos']
 
@@ -166,7 +165,7 @@ class LevelBuilder:
         self.camera.draw(LevelBuilder.SIDEBAR_WIDTH,
                          0,
                          LevelBuilder.DISPLAY_WIDTH,
-                         self.window_height,
+                         LevelBuilder.DISPLAY_HEIGHT,
                          self.my_win)
         self.sprite_viewer.draw(self.my_win)
 

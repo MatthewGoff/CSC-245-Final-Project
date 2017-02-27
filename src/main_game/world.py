@@ -42,7 +42,7 @@ class World:
 
     @classmethod
     def load(cls, name):
-        world = World(0, 0, pygame.image.load(
+        world = World(20, 20, pygame.image.load(
             "../assets/images/OtherSheet.png").convert_alpha())
         world.import_world("../assets/worlds/"+name+".json")
         return world
