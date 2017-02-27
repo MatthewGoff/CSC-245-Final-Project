@@ -129,19 +129,33 @@ class LevelBuilder:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # print "Button pressed:", event.dict['button'], "@", event.dict['pos']
                 button_pressed = event.dict['button']
-                target = event.dict['pos']
+                mouse_pos = event.dict['pos']
 
-                if button_pressed == 1 and pygame.key.get_mods() & pygame.KMOD_CTRL:
-                    keep_going = self.click_tile(target, True)
-                elif button_pressed == 1 and target[0] > LevelBuilder.SIDEBAR_WIDTH:  # Left click
-                    keep_going = self.click_tile(target, False)
-                elif button_pressed == 1 and target[0] <= LevelBuilder.SIDEBAR_WIDTH:
-                    self.sprite_viewer.click_sprite(target)
-                elif button_pressed == 5 and self.sprite_viewer.curr_row < (len(self.sprite_viewer.sprites))\
-                        /self.sprite_viewer.sprites_per_row - self.sprite_viewer.num_rows:
-                    self.sprite_viewer.curr_row += 1
-                elif button_pressed == 4 and self.sprite_viewer.curr_row > 0:
-                    self.sprite_viewer.curr_row -= 1
+                if mouse_pos[0] > LevelBuilder.SIDEBAR_WIDTH:
+
+                    if button_pressed == 1:
+                        if pygame.key.get_mods() & pygame.KMOD_CTRL:
+                            keep_going = self.click_tile(mouse_pos, True)
+                        else:
+                            keep_going = self.click_tile(mouse_pos, False)
+                    elif button_pressed == 5:
+                        pass
+                        # self.camera.zoom_out()
+
+                    elif button_pressed == 4:
+                        pass
+                        # self.camera.zoom_in()
+
+                else:
+                    if button_pressed == 1:
+                        self.sprite_viewer.click_sprite(mouse_pos)
+                    elif button_pressed == 5 and self.sprite_viewer.curr_row < (
+                            len(
+                                self.sprite_viewer.sprites)) \
+                            / self.sprite_viewer.sprites_per_row - self.sprite_viewer.num_rows:
+                        self.sprite_viewer.curr_row += 1
+                    elif button_pressed == 4 and self.sprite_viewer.curr_row > 0:
+                        self.sprite_viewer.curr_row -= 1
 
         return keep_going
 
