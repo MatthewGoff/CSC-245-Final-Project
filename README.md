@@ -5,22 +5,23 @@ Winter 17 class project
 - Pycharm will claim that it can't find modules even if it runs. To resolve this
 right click on src folder>"Mark Directory As">"Sources Root"
 
+- Uncomment the import statement in main_game and then run it to see the battle demo.
+
 ## Todo
 - Have beta version ready for March 6th
 
 ### World Editor
 - Good enough, no more required
-- [ ] Make it possibile to create different sized world (get click event from sprite)
+- [ ] Make it possibile to create different sized world (get click event from sprite) (matt)
     - Remove cam_width and cam_height attributes
-- [ ] Fix inability to edit while zoomed in/out
+- [ ] Fix inability to edit while zoomed in/out (caleb? - talk with matt)
 - [ ] Saving/loading during full screen crashes -> Create popup dialog
 - [ ] Create list of available worlds
 - [x] Add support for foreground sprites to import/export functions
 
 ### Main Game
-
 - [ ] Create menu to choose between editor and campaign
-- [x] Make world zoomable (Caleb?)
+- [x] Make world zoomable (matt)
 
 #### Campaign
 - [ ] Create Demo (Matt, Josh)
@@ -33,7 +34,16 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [ ] Make fullscreen
 
 #### Battle
-- [ ] Demo (Caleb)
+- [x] Basic Demo (Caleb)
+    - [x] Add abilities functionality
+    - [x] Add non-arbitrary player placement
+    - [x] Add more players to each team
+    - [ ] Animations
+        - [ ] Melee
+        - [ ] Projectile
+        - [ ] Effects? (death, non-offensive ability use, melee animations, collision anims)
+    - [ ] Buffs?
 
 ### Other
-- [ ] Make world able to load different sizes (update world.border)
+- [ ] Make world able to load different sizes (update world.border) (matt)
+- [ ] Make camera center start at the center of the world (matt)

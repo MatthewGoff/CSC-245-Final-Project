@@ -47,7 +47,7 @@ class LevelBuilder:
         self.selected_tile = None
         self.cam_width = LevelBuilder.DISPLAY_WIDTH
         self.cam_height = LevelBuilder.DISPLAY_HEIGHT
-        self.camera = Camera((200, 200),
+        self.camera = Camera((400, 400),
                              LevelBuilder.DISPLAY_WIDTH,
                              LevelBuilder.DISPLAY_HEIGHT,
                              self.world)
