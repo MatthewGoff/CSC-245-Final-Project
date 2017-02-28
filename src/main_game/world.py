@@ -5,40 +5,35 @@
 import json
 
 import pygame
+
 from main_game.tile import Tile
+from constants import TILE_WIDTH
 
 
 class World:
-    TILE_WIDTH = 40
-    SPRITE_WIDTH = 32
 
     def __init__(self, x, y, spritesheet):
 
         self.width = x
         self.height = y
-        self.tile_width = World.TILE_WIDTH
-        self.sprite_width = World.SPRITE_WIDTH
+        self.tile_width = TILE_WIDTH
         self.bg_sprites = pygame.sprite.Group()
         self.fg_sprites = pygame.sprite.Group()
         self.spritesheet = spritesheet
 
         self.foreground_tiles = []
         self.background_tiles = []
-        for row in range(y):
+        for column in range(x):
             self.foreground_tiles += [[]]
             self.background_tiles += [[]]
 
-            for column in range(x):
-                newTile = Tile(column*self.tile_width,
-                               row*self.tile_width,
-                               self.tile_width,
-                               self.spritesheet,
+            for row in range(y):
+                newTile = Tile(self.spritesheet,
                                (1856, 448),
-                               World.SPRITE_WIDTH,
                                (column, row))
                 self.bg_sprites.add(newTile)
-                self.foreground_tiles[row] += [None]
-                self.background_tiles[row] += [newTile]
+                self.foreground_tiles[column] += [None]
+                self.background_tiles[column] += [newTile]
         self.border = pygame.Rect(0, 0, x * self.tile_width, y * self.tile_width)
 
     @classmethod
@@ -71,36 +66,37 @@ class World:
         return self.border
 
     def get_bg_tile(self, x, y):
-        return self.background_tiles[y][x]
+        return self.background_tiles[x][y]
 
     def get_fg_tile(self, x, y):
-        return self.foreground_tiles[y][x]
+        return self.foreground_tiles[x][y]
 
     def add_foreground_tile(self, x, y, sprite_rect):
-        tile = Tile(x*self.tile_width, y*self.tile_width, self.tile_width, self.spritesheet, (33, 33), self.sprite_width, (x, y))
+        tile = Tile(self.spritesheet, (33, 33), (x, y))
         tile.change_sprite(sprite_rect)
         self.fg_sprites.add(tile)
-        self.foreground_tiles[y][x] = tile
+        self.foreground_tiles[x][y] = tile
 
     def export_world(self, path):
         background_tiles = []
-        for row in self.background_tiles:
-            json_tiles = []
-            for tile in row:
-                json_tiles += [tile.to_json()]
-            background_tiles += [json_tiles]
-
         foreground_tiles = []
-        for row in self.foreground_tiles:
-            json_tiles = []
-            for tile in row:
+        for x in range(0, self.width):
+            background_column = []
+            foreground_column = []
+            for y in range(0, self.height):
+                background_column += [self.background_tiles[x][y].to_json()]
+
+                tile = self.foreground_tiles[x][y]
                 if tile:
-                    json_tiles += [tile.to_json()]
+                    foreground_column += [tile.to_json()]
                 else:
-                    json_tiles += [None]
-            foreground_tiles += [json_tiles]
+                    foreground_column += [None]
+            background_tiles += [background_column]
+            foreground_tiles += [foreground_column]
 
         write_object = {
+            "width = ": self.width,
+            "height = ": self.height,
             "background": background_tiles,
             "foreground": foreground_tiles
         }
@@ -112,39 +108,29 @@ class World:
         data = json.load(open(path))
 
         self.background_tiles = []
-        self.bg_sprites = pygame.sprite.Group()
-        for row in range(self.height):
-            self.background_tiles += [[]]
-
-            for column in range(self.width):
-                tile_json = data["background"][row][column]
-                new_tile = Tile(tile_json["x"],
-                                tile_json["y"],
-                                tile_json["width"],
-                                self.spritesheet,
-                                tile_json["spriteLoc"],
-                                tile_json["spriteWidth"],
-                                (row, column))
-                self.bg_sprites.add(new_tile)
-                self.background_tiles[row] += [new_tile]
-
         self.foreground_tiles = []
+        self.bg_sprites = pygame.sprite.Group()
         self.fg_sprites = pygame.sprite.Group()
-        for row in range(self.height):
+
+        for column in range(self.width):
+            self.background_tiles += [[]]
             self.foreground_tiles += [[]]
 
-            for column in range(self.width):
-                tile_json = data["foreground"][row][column]
-                if tile_json:
-                    new_tile = Tile(tile_json["x"],
-                                    tile_json["y"],
-                                    tile_json["width"],
-                                    self.spritesheet,
-                                    tile_json["spriteLoc"],
-                                    tile_json["spriteWidth"]
-                                    (row, column))
-                    self.fg_sprites.add(new_tile)
-                    self.foreground_tiles[row] += [new_tile]
+            for row in range(self.height):
+                background_tile = data["background"][column][row]
+                foreground_tile = data["foreground"][column][row]
+
+                background_tile = Tile(self.spritesheet,
+                                       background_tile["sprite_loc"],
+                                       (column, row))
+                self.bg_sprites.add(background_tile)
+                self.background_tiles[column] += [background_tile]
+
+                if foreground_tile:
+                    foreground_tile = Tile(self.spritesheet,
+                                           foreground_tile["sprite_loc"],
+                                           (column, row))
+                    self.fg_sprites.add(foreground_tile)
+                    self.foreground_tiles[column] += [foreground_tile]
                 else:
-                    new_tile = None
-                    self.foreground_tiles[row] += [new_tile]
+                    self.foreground_tiles[column] += [None]

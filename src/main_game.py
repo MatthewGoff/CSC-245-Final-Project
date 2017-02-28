@@ -7,7 +7,7 @@ from main_game.campaign import Campaign
 from main_game.battle import demo
 
 if __name__ == "__main__":
-    mode = "builder"
+    mode = "campaign"
 
     if mode == "builder":
         level_builder = LevelBuilder()

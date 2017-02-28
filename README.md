@@ -22,6 +22,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 ### Main Game
 - [ ] Create menu to choose between editor and campaign
 - [x] Make world zoomable (caleb, matt)
+- [ ] Create some sort of main menu
 
 #### Campaign
 - [ ] Create Demo (Matt, Josh)

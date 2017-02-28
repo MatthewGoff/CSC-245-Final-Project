@@ -14,9 +14,7 @@ class LevelBuilder:
     DISPLAY_WIDTH = 720
     DISPLAY_HEIGHT = 560
     SIDEBAR_WIDTH = 400
-    TILE_WIDTH = 40
 
-    SPRITE_WIDTH = 32
     CAMERA_SPEED = 10
 
     def __init__(self):
@@ -36,13 +34,11 @@ class LevelBuilder:
                            self.world_height,
                            self.spritesheet)
 
-        self.sprite_width = LevelBuilder.SPRITE_WIDTH
         self.sprite_viewer = SpriteViewer(0,
                                           0,
                                           LevelBuilder.SIDEBAR_WIDTH,
                                           self.window_height,
-                                          self.spritesheet,
-                                          self.sprite_width)
+                                          self.spritesheet)
 
         self.selected_tile = None
         self.cam_width = LevelBuilder.DISPLAY_WIDTH

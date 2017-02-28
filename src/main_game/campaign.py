@@ -21,7 +21,7 @@ class Campaign:
 
         self.fullscreen = False
         self.init_screen()
-        self.world = World.load("portal_forest")
+        self.world = World.load("garden")
         #player_image =
         #self.user = Party(position, radius, image, world)
         self.init_camera()
@@ -58,13 +58,13 @@ class Campaign:
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:
-                    self.dx = -Campaign.CAMERA_SPEED
+                    self.dx += -Campaign.CAMERA_SPEED
                 elif key_pressed == pygame.K_d:
-                    self.dx = Campaign.CAMERA_SPEED
+                    self.dx += Campaign.CAMERA_SPEED
                 elif key_pressed == pygame.K_w:
-                    self.dy = -Campaign.CAMERA_SPEED
+                    self.dy += -Campaign.CAMERA_SPEED
                 elif key_pressed == pygame.K_s:
-                    self.dy = Campaign.CAMERA_SPEED
+                    self.dy += Campaign.CAMERA_SPEED
                 elif key_pressed == pygame.K_ESCAPE:
                     if self.fullscreen:
                         self.fullscreen = False
@@ -76,10 +76,14 @@ class Campaign:
                         self.init_camera()
             elif event.type == pygame.KEYUP:
                 key_released = event.dict['key'] % 256
-                if key_released == pygame.K_a or key_released == pygame.K_d:
-                    self.dx = 0
-                if key_released == pygame.K_s or key_released == pygame.K_w:
-                    self.dy = 0
+                if key_released == pygame.K_a:
+                    self.dx -= -Campaign.CAMERA_SPEED
+                elif key_released == pygame.K_d:
+                    self.dx -= Campaign.CAMERA_SPEED
+                elif key_released == pygame.K_w:
+                    self.dy -= -Campaign.CAMERA_SPEED
+                elif key_released == pygame.K_s:
+                    self.dy -= Campaign.CAMERA_SPEED
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 button_pressed = event.dict['button']
 

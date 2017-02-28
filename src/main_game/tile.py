@@ -4,34 +4,37 @@
 
 import pygame
 
+import constants
+
 
 class Tile(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, spritesheet, spriteLoc, spriteWidth, world_loc):
+    def __init__(self, spritesheet, sprite_loc, world_coords):
         pygame.sprite.Sprite.__init__(self)
+
+        x = world_coords[0] * constants.TILE_WIDTH
+        y = world_coords[1] * constants.TILE_WIDTH
+        width = constants.TILE_WIDTH
         self.rect = pygame.Rect(x, y, width, width)
 
-        self.world_loc = world_loc
+        self.world_loc = world_coords
         self.x = x
         self.y = y
         self.width = width
         self.spritesheet = spritesheet
-        self.spriteLoc = spriteLoc
-        self.spriteWidth = spriteWidth
-        rect = pygame.Rect(spriteLoc[0], spriteLoc[1], self.spriteWidth, self.spriteWidth)
+        self.sprite_loc = sprite_loc
+        self.spriteWidth = width
+        rect = pygame.Rect(sprite_loc[0], sprite_loc[1], self.spriteWidth, self.spriteWidth)
         image = spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (width, width))
 
     def to_json(self):
         return {
-            "x": self.x,
-            "y": self.y,
-            "width": self.width,
-            "spriteLoc": self.spriteLoc,
-            "spriteWidth": self.spriteWidth
+            "world_loc": self.world_loc,
+            "sprite_loc": self.sprite_loc
         }
 
-    def readable_string(self):
-        return "sprite at position " + str(self.spriteLoc) + " at (" + str(self.x) + ", " + str(self.y) + ")"
+    def __str__(self):
+        return "sprite at position " + str(self.sprite_loc) + " at (" + str(self.x) + ", " + str(self.y) + ")"
 
     def draw(self, window):
         window.blit(self.image, (self.x, self.y))
@@ -40,6 +43,6 @@ class Tile(pygame.sprite.Sprite):
         self.image = pygame.transform.smoothscale(sprite, (self.width, self.width))
 
     def change_sprite(self, rect):
-        self.spriteLoc = [rect.left, rect.top]
+        self.sprite_loc = [rect.left, rect.top]
         image = self.spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (self.width, self.width))
