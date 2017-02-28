@@ -1,6 +1,8 @@
-# ![avatar](assets/images/avatar.png) CSC-245 Final Project
+# ![avatar](assets/icon/icon.png) CSC-245 Final Project
 Winter 17 class project
 
+## Sources
+- Buttons: https://pythonprogramming.net/pygame-python-3-part-1-intro/
 ## Dev Notes
 - Pycharm will claim that it can't find modules even if it runs. To resolve this
 right click on src folder>"Mark Directory As">"Sources Root"
@@ -20,9 +22,8 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [x] Add support for foreground sprites to import/export functions
 
 ### Main Game
-- [ ] Create menu to choose between editor and campaign
+- [x] Create menu to choose between editor and campaign
 - [x] Make world zoomable (caleb, matt)
-- [ ] Create some sort of main menu
 
 #### Campaign
 - [ ] Create Demo (Matt, Josh)

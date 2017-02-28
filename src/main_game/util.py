@@ -58,3 +58,11 @@ class Vec2D:
 
     def __str__(self):
         return "<"+str(self.get_x())+","+str(self.get_y())+">"
+
+
+def draw_text(center, text, font_size, window):
+    font = pygame.font.SysFont("freesansbold.ttf", font_size)
+    text_surface = font.render(text, True, pygame.Color("black"))
+    text_rect = text_surface.get_rect()
+    text_rect.center = center
+    window.blit(text_surface, text_rect)

@@ -2,12 +2,11 @@
 # Author: Matthew Goff
 # Winter 2017
 
-from world_editor.level_builder import LevelBuilder
-from main_game.campaign import Campaign
-from main_game.battle import demo
+from main_menu.main_menu import MainMenu
 
-if __name__ == "__main__":
-    mode = "campaign"
+
+def main():
+    '''mode = "campaign"
 
     if mode == "builder":
         level_builder = LevelBuilder()
@@ -16,4 +15,10 @@ if __name__ == "__main__":
         campaign = Campaign()
         campaign.run()
     elif mode == "battle":
-        demo()
+        demo()'''
+    menu = MainMenu()
+    menu.run()
+
+if __name__ == "__main__":
+    main()
+

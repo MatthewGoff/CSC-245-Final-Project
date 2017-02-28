@@ -93,7 +93,6 @@ class Campaign:
                 elif button_pressed == 4:
                     self.camera.zoom_in()
 
-
         return keep_going
 
     def apply_rules(self):
@@ -137,4 +136,4 @@ class Campaign:
             # 4. Draw frame
             self.draw()
 
-        self.quit()
+        #self.quit()
