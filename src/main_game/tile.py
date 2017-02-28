@@ -26,18 +26,20 @@ class Tile(pygame.sprite.Sprite):
         rect = pygame.Rect(sprite_loc[0], sprite_loc[1], self.spriteWidth, self.spriteWidth)
         image = spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (width, width))
+        self.sprite_flipped = False
 
     def to_json(self):
         return {
             "world_loc": self.world_loc,
-            "sprite_loc": self.sprite_loc
+            "sprite_loc": self.sprite_loc,
+            "flipped": self.sprite_flipped
         }
 
     def __str__(self):
         return "sprite at position " + str(self.sprite_loc) + " at (" + str(self.x) + ", " + str(self.y) + ")"
 
     def draw(self, window):
-        window.blit(self.image, (self.x, self.y))
+            window.blit(self.image, (self.x, self.y))
 
     def change_sprite2(self, sprite):
         self.image = pygame.transform.smoothscale(sprite, (self.width, self.width))

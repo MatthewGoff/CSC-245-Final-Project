@@ -38,7 +38,8 @@ class World:
 
     @classmethod
     def load(cls, name):
-        world = World(20, 20, pygame.image.load(
+        data = json.load(open("../assets/worlds/" + name + ".json"))
+        world = World(data["width = "], data["height = "], pygame.image.load(
             "../assets/images/OtherSheet.png").convert_alpha())
         world.import_world("../assets/worlds/"+name+".json")
         return world
@@ -117,19 +118,25 @@ class World:
             self.foreground_tiles += [[]]
 
             for row in range(self.height):
-                background_tile = data["background"][column][row]
-                foreground_tile = data["foreground"][column][row]
+                background_tile_data = data["background"][column][row]
+                foreground_tile_data = data["foreground"][column][row]
 
                 background_tile = Tile(self.spritesheet,
-                                       background_tile["sprite_loc"],
+                                       background_tile_data["sprite_loc"],
                                        (column, row))
+                if background_tile_data["flipped"]:
+                    background_tile.sprite_flipped = True
+                    background_tile.image = pygame.transform.flip(background_tile.image, True, False)
                 self.bg_sprites.add(background_tile)
                 self.background_tiles[column] += [background_tile]
 
-                if foreground_tile:
+                if foreground_tile_data:
                     foreground_tile = Tile(self.spritesheet,
-                                           foreground_tile["sprite_loc"],
+                                           foreground_tile_data["sprite_loc"],
                                            (column, row))
+                    if foreground_tile_data["flipped"]:
+                        foreground_tile.sprite_flipped = True
+                        foreground_tile.image = pygame.transform.flip(foreground_tile.image, True, False)
                     self.fg_sprites.add(foreground_tile)
                     self.foreground_tiles[column] += [foreground_tile]
                 else:

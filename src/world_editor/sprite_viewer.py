@@ -16,12 +16,14 @@ class SpriteViewer:
         self.curr_row = 0
         self.padding = SpriteViewer.PADDING
         self.selected_index = 0
+        self.spritesheet = spritesheet
 
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.tile_width = TILE_WIDTH
+
         self.sprites_per_row = (width - self.padding) / (self.tile_width + self.padding)
         self.num_rows = (height - self.padding) / (self.tile_width + self.padding)
         self.image = pygame.Surface([width, height])
@@ -40,6 +42,18 @@ class SpriteViewer:
                 self.sprites += [pygame.transform.smoothscale(image, (self.tile_width, self.tile_width))]
                 self.rects += [rect]
 
+        self.curr_display = pygame.Surface((width / 4, width / 4))
+        self.curr_display.fill(pygame.color.Color("darkgrey"))
+        self.display_current()
+        self.sprite_flipped = False
+
+
+    def display_current(self):
+        selected_rect = self.rects[self.selected_index]
+        image = self.spritesheet.subsurface(selected_rect).copy()
+        self.selected_sprite = pygame.transform.smoothscale(image, ((self.width / 4), (self.width / 4)))
+
+
     def draw(self, window):
 
         y = self.padding
@@ -47,6 +61,9 @@ class SpriteViewer:
             if i < len(self.sprites)/self.sprites_per_row:
                 self.draw_row(self.curr_row + i, y, window)
             y += self.tile_width + self.padding
+        curr_display_pos = (int(self.width *.75), self.height - self.width/4)
+        window.blit(self.curr_display, curr_display_pos)
+        window.blit(self.selected_sprite, curr_display_pos)
 
     def draw_row(self, row, y, window):
         x = self.padding
@@ -69,6 +86,8 @@ class SpriteViewer:
         selected_index = true_row * self.sprites_per_row + column
         if selected_index < len(self.sprites):
             self.selected_index = selected_index
+            self.display_current()
+            self.sprite_flipped = False
 
     def get_rect(self):
         return self.rects[self.selected_index]

@@ -2,7 +2,7 @@
 # Author: Caleb, Matt
 # Winter 2017
 
-import pygame
+import pygame, json
 
 from sprite_viewer import SpriteViewer
 from main_game.camera import Camera
@@ -28,8 +28,8 @@ class LevelBuilder:
             "../assets/images/OtherSheet.png").convert_alpha()
 
         self.tile_width = 40
-        self.world_width = 20
-        self.world_height = 20
+        self.world_width = 1
+        self.world_height = 1
         self.world = World(self.world_width,
                            self.world_height,
                            self.spritesheet)
@@ -57,11 +57,18 @@ class LevelBuilder:
             tile = self.world.foreground_tiles[loc[0]][loc[1]]
             if tile is None:
                 self.world.add_foreground_tile(loc[0], loc[1], self.sprite_viewer.get_rect())
+                if self.sprite_viewer.sprite_flipped:
+                    tile = self.world.foreground_tiles[loc[0]][loc[1]]
             else:
                 tile.change_sprite(self.sprite_viewer.get_rect())
         else:
             tile = self.world.get_bg_tile(loc[0], loc[1])
             tile.change_sprite(self.sprite_viewer.get_rect())
+
+        if self.sprite_viewer.sprite_flipped:
+            tile.image = pygame.transform.flip(tile.image, True, False)
+            tile.sprite_flipped = True
+
 
         return True
 
@@ -86,6 +93,13 @@ class LevelBuilder:
                     self.export_level()
                 elif key_pressed == pygame.K_0:
                     self.import_level()
+                elif key_pressed == pygame.K_SPACE:
+                    curr_sprite = self.sprite_viewer.selected_sprite
+                    if self.sprite_viewer.sprite_flipped:
+                        self.sprite_viewer.sprite_flipped = False
+                    else:
+                        self.sprite_viewer.sprite_flipped = True
+                    self.sprite_viewer.selected_sprite = pygame.transform.flip(curr_sprite, True, False)
                 elif key_pressed == pygame.K_ESCAPE:
                     if self.fullscreen:
                         pygame.display.set_mode((self.window_width,
@@ -177,6 +191,14 @@ class LevelBuilder:
         name = raw_input("Please enter the filename to load: ")
 
         try:
+            data = json.load(open("../assets/worlds/"+name+".json"))
+            self.world = World(data["width = "],
+                           data["height = "],
+                           self.spritesheet)
+            self.camera = Camera((400, 400),
+                                 LevelBuilder.DISPLAY_WIDTH,
+                                 LevelBuilder.DISPLAY_HEIGHT,
+                                 self.world)
             self.world.import_world("../assets/worlds/"+name+".json")
             print "Successfully loaded "+name
         except IOError:
