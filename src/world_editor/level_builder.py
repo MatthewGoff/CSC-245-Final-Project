@@ -28,8 +28,8 @@ class LevelBuilder:
             "../assets/images/OtherSheet.png").convert_alpha()
 
         self.tile_width = 40
-        self.world_width = 1
-        self.world_height = 1
+        self.world_width = 20
+        self.world_height = 20
         self.world = World(self.world_width,
                            self.world_height,
                            self.spritesheet)
