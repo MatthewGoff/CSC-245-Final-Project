@@ -40,7 +40,7 @@ class MainMenu:
                                 "World Editor",
                                 self.editor)]
 
-        self.icon = pygame.image.load("../assets/icon/icon.png").convert_alpha()
+        self.icon = pygame.image.load("../assets/icon/icon_new2.png").convert_alpha()
         self.icon = pygame.transform.smoothscale(self.icon, MainMenu.ICON_SIZE)
 
         self.keep_going = False
@@ -93,7 +93,7 @@ class MainMenu:
                          (MainMenu.WINDOW_SIZE[0]-20, 70),
                          3)
 
-        self.window.blit(self.icon, (20, 100))
+        self.window.blit(self.icon, (20, 85))
         for button in self.buttons:
             button.draw(self.window)
 
