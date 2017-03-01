@@ -14,12 +14,10 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 ### World Editor
 - Good enough, no more required
-- [ ] Make it possibile to create different sized world (get click event from sprite) (matt)
-    - Remove cam_width and cam_height attributes
-- [x] Fix inability to edit while zoomed in/out (caleb? - talk with matt)
-- [ ] Saving/loading during full screen crashes -> Create popup dialog
+- [ ] (optional) Saving/loading during full screen crashes -> Create popup dialog
     - Create list of available worlds
-- [x] Add support for foreground sprites to import/export functions
+- [ ] (optional) Make wold size editable in game
+- [ ] Place impassible tiles (with some visual indication)
 
 ### Main Game
 - [x] Create menu to choose between editor and campaign
@@ -27,13 +25,9 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 #### Campaign
 - [ ] Create Demo (Matt, Josh)
-    - [x] Display world
-    - [ ] Display user
-    - [ ] Move user
     - [ ] Restrict user movement
     - [ ] Enter battle demo
 - [ ] Create animation (Monica)
-- [x] Make fullscreen
 - [ ] (Optional) Create FOW
 
 #### Battle
@@ -48,6 +42,6 @@ right click on src folder>"Mark Directory As">"Sources Root"
     - [ ] Buffs?
 
 ### Other
-- [ ] Make world able to load different sizes (update world.border) (matt)
-- [x] Make camera center start at the center of the world (matt)
 - [ ] Make executable (matt)
+- [ ] (Optional) Add version number to menu
+- [ ] (Optional) Add Credits
