@@ -5,7 +5,7 @@
 import pygame, json
 
 from sprite_viewer import SpriteViewer
-from main_game.camera import Camera
+from main_game.camera import UnboundCamera
 from main_game.world import World
 
 
@@ -43,10 +43,10 @@ class LevelBuilder:
         self.selected_tile = None
         self.cam_width = LevelBuilder.DISPLAY_WIDTH
         self.cam_height = LevelBuilder.DISPLAY_HEIGHT
-        self.camera = Camera((400, 400),
-                             LevelBuilder.DISPLAY_WIDTH,
-                             LevelBuilder.DISPLAY_HEIGHT,
-                             self.world)
+        self.camera = UnboundCamera((400, 400),
+                                    LevelBuilder.DISPLAY_WIDTH,
+                                    LevelBuilder.DISPLAY_HEIGHT,
+                                    self.world)
         self.fullscreen = False
         self.dx = 0
         self.dy = 0
@@ -68,7 +68,6 @@ class LevelBuilder:
         if self.sprite_viewer.sprite_flipped:
             tile.image = pygame.transform.flip(tile.image, True, False)
             tile.sprite_flipped = True
-
 
         return True
 

@@ -8,16 +8,14 @@ import pygame
 class Camera:
     ZOOM_FACTOR = 0.9
 
-    def __init__(self, center, width, height, world):
+    def __init__(self, width, height, world):
 
         self.width = width
         self.height = height
-        self.center = center
         self.world = world
         self.zoom = 1.0
 
         self.viewport = None
-        self.update_viewport()
 
     def zoom_in(self):
         self.zoom *= Camera.ZOOM_FACTOR
@@ -25,17 +23,8 @@ class Camera:
     def zoom_out(self):
         self.zoom /= Camera.ZOOM_FACTOR
 
-    # Moves the camera to follow the position of the center.
-    # Clamps the camera to stay within the boundaries of the world.
     def update_viewport(self):
-        width = int(self.width * self.zoom)
-        height = int(self.height * self.zoom)
-
-        self.viewport = pygame.Rect(self.center[0] - width/2,
-                                    self.center[1] - height/2,
-                                    width,
-                                    height)
-        #self.viewport.clamp_ip(self.world.get_border())
+        pass
 
     # Draw the view of the camera into the given window at position x,y with dimension width, height.
     def draw(self, x, y, width, height, window):
@@ -67,3 +56,47 @@ class Camera:
 
         return (click_loc[0]*self.zoom+self.viewport.left,
                 click_loc[1]*self.zoom+self.viewport.top)
+
+"""
+A Camera which always follows a party
+"""
+class BoundCamera(Camera):
+
+    def __init__(self, party, width, height, world):
+        Camera.__init__(self, width, height, world)
+        self.party = party
+
+    # Moves the camera to follow the position of the center.
+    # Clamps the camera to stay within the boundaries of the world.
+    def update_viewport(self):
+        width = int(self.width * self.zoom)
+        height = int(self.height * self.zoom)
+
+        self.viewport = pygame.Rect(self.party.position.x - width/2,
+                                    self.party.position.y - height/2,
+                                    width,
+                                    height)
+        self.viewport.clamp_ip(self.world.get_border())
+
+
+"""
+A Camera which goes wherever
+"""
+class UnboundCamera(Camera):
+
+    def __init__(self, center, width, height, world):
+
+        Camera.__init__(self, width, height, world)
+        self.center = center
+
+
+    # Moves the camera to follow the position of the center.
+    # Clamps the camera to stay within the boundaries of the world.
+    def update_viewport(self):
+        width = int(self.width * self.zoom)
+        height = int(self.height * self.zoom)
+
+        self.viewport = pygame.Rect(self.center[0] - width/2,
+                                    self.center[1] - height/2,
+                                    width,
+                                    height)

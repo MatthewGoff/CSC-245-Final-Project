@@ -6,9 +6,10 @@
 
 import pygame
 
-from camera import Camera
+from camera import BoundCamera
 from world import World
 from party import Party
+from util import Vec2D
 import constants
 
 
@@ -22,8 +23,15 @@ class Campaign:
         self.fullscreen = False
         self.init_screen()
         self.world = World.load("garden")
-        #player_image =
-        #self.user = Party(position, radius, image, world)
+
+        player_image = pygame.image.load("../assets/images/player.png").convert_alpha()
+        player_rect = pygame.Rect(0, 0, 48, 48)
+        player_image = player_image.subsurface(player_rect).copy()
+        self.user = Party(self.world.get_border().center,
+                          16,
+                          player_image,
+                          self.world)
+        self.world.add_party(self.user)
         self.init_camera()
 
         self.spritesheet = pygame.image.load(
@@ -42,11 +50,10 @@ class Campaign:
             self.my_win = pygame.display.set_mode(self.window_size)
 
     def init_camera(self):
-        self.camera = Camera((self.window_size[0]/2,
-                              self.window_size[1]/2),
-                             self.window_size[0],
-                             self.window_size[1],
-                             self.world)
+        self.camera = BoundCamera(self.user,
+                                  self.window_size[0],
+                                  self.window_size[1],
+                                  self.world)
 
     def handle_events(self):
 
@@ -96,9 +103,13 @@ class Campaign:
         return keep_going
 
     def apply_rules(self):
-        next_pos = (self.camera.center[0] + self.dx * self.camera.zoom,
+        self.user.set_velocity(self.dx, self.dy)
+        '''next_pos = (self.camera.center[0] + self.dx * self.camera.zoom,
                     self.camera.center[1] + self.dy * self.camera.zoom)
-        self.camera.center = next_pos
+        self.camera.center = next_pos'''
+
+    def simulate(self):
+        self.world.simulate()
 
     def draw(self):
         # Draw Background
@@ -132,6 +143,9 @@ class Campaign:
 
             # 2. Apply rules
             self.apply_rules()
+
+            # 3. Simulate
+            self.world.simulate()
 
             # 4. Draw frame
             self.draw()

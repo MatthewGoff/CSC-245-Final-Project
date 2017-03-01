@@ -12,7 +12,7 @@ class Party(pygame.sprite.Sprite):
     def __init__(self, position, radius, image, world):
         pygame.sprite.Sprite.__init__(self)
 
-        self.position = position
+        self.position = Vec2D(position[0],position[1])
         self.velocity = Vec2D(0, 0)
         self.radius = radius
 
@@ -37,6 +37,7 @@ class Party(pygame.sprite.Sprite):
     def simulate(self, dt):
         next_position = self.position + self.velocity*dt
         self.position = next_position
+        self.update_rect()
 
     def draw(self, window):
         window.blit(self.image,

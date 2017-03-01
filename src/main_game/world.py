@@ -36,6 +36,8 @@ class World:
                 self.background_tiles[column] += [newTile]
         self.border = pygame.Rect(0, 0, x * self.tile_width, y * self.tile_width)
 
+        self.parties = []
+
     @classmethod
     def load(cls, name):
         data = json.load(open("../assets/worlds/" + name + ".json"))
@@ -44,9 +46,19 @@ class World:
         world.import_world("../assets/worlds/"+name+".json")
         return world
 
+    def add_party(self, party):
+        self.parties += [party]
+
+    def simulate(self):
+        for party in self.parties:
+            party.simulate(1)
+
     def draw(self, window):
         self.bg_sprites.draw(window)
         self.fg_sprites.draw(window)
+
+        for party in self.parties:
+            party.draw(window)
 
     # Returns a the result of drawing the world, but only actually draws the part that will appear in the
     # clip_rect.  This saves a lot of resources because the world may be much larger than the part that will
