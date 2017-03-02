@@ -3,8 +3,8 @@
 # Winter 2017
 
 import pygame
-
 import constants
+from constants import IMPASSIBLE_OVERLAY_PATH
 
 
 class Tile(pygame.sprite.Sprite):
@@ -15,7 +15,6 @@ class Tile(pygame.sprite.Sprite):
         y = world_coords[1] * constants.TILE_WIDTH
         width = constants.TILE_WIDTH
         self.rect = pygame.Rect(x, y, width, width)
-
         self.world_loc = world_coords
         self.x = x
         self.y = y
@@ -26,13 +25,21 @@ class Tile(pygame.sprite.Sprite):
         rect = pygame.Rect(sprite_loc[0], sprite_loc[1], self.spriteWidth, self.spriteWidth)
         image = spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (width, width))
+        # Stores an alternate image, for purposes of the level editor
+        impassible_overlay = pygame.image.load(IMPASSIBLE_OVERLAY_PATH).convert_alpha()
+        self.impassible_overlay = pygame.transform.smoothscale(impassible_overlay, (width, width))
+        self.alt_img = pygame.transform.smoothscale(image, (width, width))
+        self.alt_img.blit(self.impassible_overlay, (0, 0))
+
         self.sprite_flipped = False
+        self.passable = True
 
     def to_json(self):
         return {
             "world_loc": self.world_loc,
             "sprite_loc": self.sprite_loc,
-            "flipped": self.sprite_flipped
+            "flipped": self.sprite_flipped,
+            "passable": self.passable
         }
 
     def __str__(self):
@@ -48,3 +55,10 @@ class Tile(pygame.sprite.Sprite):
         self.sprite_loc = [rect.left, rect.top]
         image = self.spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (self.width, self.width))
+        self.alt_img = pygame.transform.smoothscale(image, (self.width, self.width))
+        self.alt_img.blit(self.impassible_overlay, (0, 0))
+
+    def swap_image(self):
+        temp = self.alt_img
+        self.alt_img = self.image
+        self.image = temp

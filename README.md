@@ -17,7 +17,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [ ] (optional) Saving/loading during full screen crashes -> Create popup dialog
     - Create list of available worlds
 - [ ] (optional) Make wold size editable in game
-- [ ] Place impassible tiles (with some visual indication)
+- [x] Place impassible tiles (with some visual indication)
 
 #### Campaign
 - [ ] Create Demo (Matt, Josh)
