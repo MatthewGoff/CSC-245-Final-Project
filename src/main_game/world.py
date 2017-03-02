@@ -136,9 +136,13 @@ class World:
                 background_tile = Tile(self.spritesheet,
                                        background_tile_data["sprite_loc"],
                                        (column, row))
+                if not background_tile_data["passable"]:
+                    background_tile.passable = False
                 if background_tile_data["flipped"]:
                     background_tile.sprite_flipped = True
                     background_tile.image = pygame.transform.flip(background_tile.image, True, False)
+                    background_tile.alt_img = pygame.transform.flip(background_tile.alt_img, True, False)
+
                 self.bg_sprites.add(background_tile)
                 self.background_tiles[column] += [background_tile]
 
@@ -146,9 +150,13 @@ class World:
                     foreground_tile = Tile(self.spritesheet,
                                            foreground_tile_data["sprite_loc"],
                                            (column, row))
+                    if not foreground_tile_data["passable"]:
+                        foreground_tile.passable = False
                     if foreground_tile_data["flipped"]:
                         foreground_tile.sprite_flipped = True
                         foreground_tile.image = pygame.transform.flip(foreground_tile.image, True, False)
+                        foreground_tile.alt_img = pygame.transform.flip(foreground_tile.alt_img, True, False)
+
                     self.fg_sprites.add(foreground_tile)
                     self.foreground_tiles[column] += [foreground_tile]
                 else:
