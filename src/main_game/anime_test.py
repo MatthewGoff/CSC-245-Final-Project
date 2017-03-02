@@ -13,13 +13,6 @@ class AnimeTest(object):
     my_win = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
     players = pygame.sprite.Group()
 
-    # Current frame - the current number of frame, also means how many
-    #           frames have passed.
-    current_frame = 0
-    # Animation frame - how many frames should passed before switching
-    #           to next animation
-    animation_frame = 5
-
     # Instead of boolean, int is used here to determine which direction
     # is the player moving to.
     # 0 - stop
@@ -117,22 +110,28 @@ class AnimeTest(object):
 
         frame_rate = 30
         tick_time = int(1.0 / frame_rate * 1000)
+        # Current frame - the current number of frame, also means how many
+        #           frames have passed.
+        current_frame = 0
+        # Animation frame - how many frames should passed before switching
+        #           to next animation
+        animation_frame = frame_rate / 10
 
         # The game loop starts here.
         keep_going = True
         while keep_going:
 
             # Keeps track of frames since last image was changed
-            cls.current_frame += 1
+            current_frame += 1
 
             keep_going = cls.handle_events()
 
             # Changes images when it's time to change
-            if cls.current_frame > cls.animation_frame:
+            if current_frame > animation_frame:
                 cls.apply_animation()
                 # Resets tracking frame to zero again to restart
                 # a new checking progress
-                cls.current_frame = 0
+                current_frame = 0
 
             pygame.time.wait(tick_time)
 

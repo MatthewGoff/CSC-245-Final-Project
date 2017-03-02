@@ -40,11 +40,16 @@ class PlayerAnimation(pygame.sprite.Sprite):
 
         # Separates sprites into two list: one keeps all moving
         # sprites, one keeps all standing/stop sprites.
-        self.stp_imgs = [self.mov_imgs[1], self.mov_imgs[4], self.mov_imgs[7], self.mov_imgs[10]]
-        for i in range(0, len(self.stp_imgs)):
+        self.stp_imgs = [self.mov_imgs[1], self.mov_imgs[10], self.mov_imgs[4], self.mov_imgs[7]]
+
+        # Why len - 2 here? Because when the player is moving
+        # to the left or right, three sprites (left step, stand,
+        # right step)
+        for i in range(0, len(self.stp_imgs)-2):
             self.mov_imgs.remove(self.stp_imgs[i])
 
         # Standard requirements of Sprite obj for drawing
+        self.image = self.stp_imgs[self.index]
         self.image = self.stp_imgs[self.index]
         self.rect = pygame.Rect(x, y, self._width, self._height)
 
@@ -72,29 +77,29 @@ class PlayerAnimation(pygame.sprite.Sprite):
     # When pressing s, player moves down to the screen by steps
     def face_moving(self):
         self.index += 1
-        if self.index > 1:
+        if not 0 <= self.index <= 1:
             self.index = 0
         self.image = self.mov_imgs[self.index]
 
     # When pressing w, player moves up to the screen by steps
     def back_moving(self):
         self.index += 1
-        if self.index > 7 or self.index < 6:
-            self.index = 6
+        if not 8 <= self.index <= 9:
+            self.index = 8
         self.image = self.mov_imgs[self.index]
 
     # When pressing a, player moves left to the screen by steps
     def left_moving(self):
         self.index += 1
-        if self.index > 3 or self.index < 2:
+        if not 2 <= self.index <= 4:
             self.index = 2
         self.image = self.mov_imgs[self.index]
 
     # When pressing d, player moves right to the screen by steps
     def right_moving(self):
         self.index += 1
-        if self.index > 5 or self.index < 4:
-            self.index = 4
+        if not 5 <= self.index <= 7:
+            self.index = 5
         self.image = self.mov_imgs[self.index]
 
     # Sets the player to stop, facing to the screen
@@ -103,12 +108,12 @@ class PlayerAnimation(pygame.sprite.Sprite):
 
     # Sets the player to stop, turning back to the screen
     def back_stop(self):
-        self.image = self.stp_imgs[3]
+        self.image = self.stp_imgs[1]
 
     # Sets the player to stop, facing to the left
     def left_stop(self):
-        self.image = self.stp_imgs[1]
+        self.image = self.stp_imgs[2]
 
     # Sets the player to stop, facing to the right
     def right_stop(self):
-        self.image = self.stp_imgs[2]
+        self.image = self.stp_imgs[3]
