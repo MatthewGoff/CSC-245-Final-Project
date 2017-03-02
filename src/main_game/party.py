@@ -15,6 +15,7 @@ class Party(pygame.sprite.Sprite):
         self.position = Vec2D(position[0],position[1])
         self.velocity = Vec2D(0, 0)
         self.radius = radius
+        self.world = world
 
         # 3. Define self.image
         self.image = image
@@ -36,7 +37,22 @@ class Party(pygame.sprite.Sprite):
 
     def simulate(self, dt):
         next_position = self.position + self.velocity*dt
-        self.position = next_position
+        parties = self.world.collide_parties(self)
+        for party in parties:
+            pass
+            # Battle
+
+        tiles = self.world.collide_tiles(self)
+        move = True
+        for tile in tiles:
+            if tile.door:
+                pass
+            elif tile.impassible:
+                move = False
+
+        if move:
+            self.position = next_position
+
         self.update_rect()
 
     def draw(self, window):

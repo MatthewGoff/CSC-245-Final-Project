@@ -104,9 +104,6 @@ class Campaign:
 
     def apply_rules(self):
         self.user.set_velocity(self.dx, self.dy)
-        '''next_pos = (self.camera.center[0] + self.dx * self.camera.zoom,
-                    self.camera.center[1] + self.dy * self.camera.zoom)
-        self.camera.center = next_pos'''
 
     def simulate(self):
         self.world.simulate()

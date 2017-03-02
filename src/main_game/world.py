@@ -90,6 +90,24 @@ class World:
         self.fg_sprites.add(tile)
         self.foreground_tiles[x][y] = tile
 
+    def collide_parties(self, collider):
+        '''
+        Get a list of parties colliding with the collider
+        :param collider:
+        :return:
+        '''
+
+        pass
+
+    def collide_tiles(self, collider):
+        '''
+        Get a list of tiles colliding with the collider
+        :param collider:
+        :return:
+        '''
+
+        pass
+
     def export_world(self, path):
         background_tiles = []
         foreground_tiles = []

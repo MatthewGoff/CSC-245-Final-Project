@@ -19,16 +19,15 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [ ] (optional) Make wold size editable in game
 - [ ] Place impassible tiles (with some visual indication)
 
-### Main Game
-- [x] Create menu to choose between editor and campaign
-- [x] Make world zoomable (caleb, matt)
-
 #### Campaign
 - [ ] Create Demo (Matt, Josh)
     - [ ] Restrict user movement
     - [ ] Enter battle demo
 - [ ] Create animation (Monica)
-- [ ] (Optional) Create FOW
+- [ ] (Optional) Create fog of war
+- [ ] (Future) Inventory
+- [ ] (Future) Tutorial
+    - Make a state machine
 
 #### Battle
 - [x] Basic Demo (Caleb)
@@ -40,8 +39,13 @@ right click on src folder>"Mark Directory As">"Sources Root"
         - [ ] Projectile
         - [ ] Effects? (death, non-offensive ability use, melee animations, collision anims)
     - [ ] Buffs?
+- [ ] (Future) Option to flee
+- [ ] Background image
 
 ### Other
 - [ ] Make executable (matt)
 - [ ] (Optional) Add version number to menu
 - [ ] (Optional) Add Credits
+- [ ] (Optional) Drop down menu
+- [ ] (Optional) Menu
+- [ ] (Optional) Improve switching between screens
