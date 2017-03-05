@@ -18,7 +18,7 @@ class LevelBuilder:
     # Speed of panning
     CAMERA_SPEED = 10
     # File path to the sprite sheet
-    SPRITESHEET_PATH = "../assets/images/OtherSheet.png"
+    SPRITESHEET_PATH = "../assets/images/background_sheet.png"
 
     def __init__(self):
         pygame.init()
@@ -30,7 +30,7 @@ class LevelBuilder:
         self.spritesheet = pygame.image.load(
             LevelBuilder.SPRITESHEET_PATH).convert_alpha()
         # Initialize world
-        self.tile_width = 40
+        #self.tile_width = 40
         self.world_width = 20
         self.world_height = 20
         self.world = World(self.world_width,

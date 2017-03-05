@@ -29,7 +29,7 @@ class World:
 
             for row in range(y):
                 newTile = Tile(self.spritesheet,
-                               (1856, 448),
+                               (0, 0),
                                (column, row))
                 self.bg_sprites.add(newTile)
                 self.foreground_tiles[column] += [None]
@@ -42,7 +42,7 @@ class World:
     def load(cls, name):
         data = json.load(open("../assets/worlds/" + name + ".json"))
         world = World(data["width = "], data["height = "], pygame.image.load(
-            "../assets/images/OtherSheet.png").convert_alpha())
+            "../assets/images/background_sheet.png").convert_alpha())
         world.import_world("../assets/worlds/"+name+".json")
         return world
 

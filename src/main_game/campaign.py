@@ -22,7 +22,7 @@ class Campaign:
 
         self.fullscreen = False
         self.init_screen()
-        self.world = World.load("garden")
+        self.world = World.load("olin107")
 
         player_image = pygame.image.load("../assets/images/player.png").convert_alpha()
         player_rect = pygame.Rect(0, 0, 48, 48)
@@ -35,7 +35,7 @@ class Campaign:
         self.init_camera()
 
         self.spritesheet = pygame.image.load(
-            "../assets/images/OtherSheet.png").convert_alpha()
+            "../assets/images/background_sheet.png").convert_alpha()
 
         self.dx = 0
         self.dy = 0
