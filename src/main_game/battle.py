@@ -27,6 +27,9 @@ class Battle:
         self.height = Battle.WINDOW_SIZE[1]
         self.fullscreen = fullscreen
         self.pos = location
+        if location == "demo":
+            self.bg = pygame.image.load("../assets/images/battle_demo_bg.jpg").convert_alpha()
+            self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
         self.party1 = party1
         self.party2 = party2
         self.friendlies = party1#.members
@@ -182,7 +185,8 @@ class Battle:
 
     def draw(self, window):
         # Fill BG
-        window.fill(pygame.color.Color("grey"))
+        window.blit(self.bg, (0,0))
+            #fill(pygame.color.Color("grey"))
         # Draw combatants
         self.bars.draw(window)
         self.friendly_sprites.draw(window)
@@ -236,6 +240,6 @@ def demo(window):
     friend = Player(20, 350, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, False)
     enemy = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png",2016, 224, 32, 32, False)
     enemy2 = Player(550, 50, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
-    battle = Battle([player, friend], [enemy, enemy2], (0, 0), window, False)
+    battle = Battle([player, friend], [enemy, enemy2], "demo", window, False)
     return battle.run()
 
