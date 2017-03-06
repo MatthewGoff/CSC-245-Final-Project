@@ -85,8 +85,12 @@ class Campaign:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     button_pressed = event.dict['button']
                     mouse_pos = event.dict['pos']
-                    if button_pressed == 1 and self.prompt.check_collisions(mouse_pos):
-                        self.in_prompt = False
+                    tup = self.prompt.check_collisions(mouse_pos)
+                    if button_pressed == 1 and tup[0]:
+                        if tup[1]:
+                            keep_going = False
+                        else:
+                            self.in_prompt = False
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:

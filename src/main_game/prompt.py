@@ -105,8 +105,10 @@ class Prompt:
         adj_pos = (mouse_pos[0] - (self.x + BORDER), mouse_pos[1] - (self.y + BORDER))
         clicked_buttons = [button for button in self.buttons if
                            button.rect.collidepoint(adj_pos)]
+        #if clicked_buttons and clicked_buttons[0].action == exit:
+            #pygame.quit()
         if clicked_buttons:
-            return True
+            return (True, clicked_buttons[0].action == exit)
 
 '''Prompts. These will probably be moved eventually.'''
 # Prompt for the battle class
