@@ -7,6 +7,7 @@ from abilities.fireball import Fireball
 from abilities.energize import Energize
 from abilities.heal import Heal
 from abilities.power_attack import PowerAttack
+from prompt import battle_start
 
 
 TURN_MSG = "Player Turn"
@@ -42,6 +43,8 @@ class Battle:
             self.combatants.append(combatants.get()[1])
         self.curr_combatant = -1
         self.next_turn()
+        self.in_prompt = True
+        self.prompt = battle_start()
 
     def place_combatants(self, friends, enemies, p_queue):
         n = 1
@@ -75,6 +78,12 @@ class Battle:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 keep_going = False
+            elif self.in_prompt:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    button_pressed = event.dict['button']
+                    mouse_pos = event.dict['pos']
+                    if button_pressed == 1 and self.prompt.check_collisions(mouse_pos):
+                        self.in_prompt = False
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_ESCAPE:
@@ -179,8 +188,9 @@ class Battle:
         self.bars.draw(window)
         self.friendly_sprites.draw(window)
         self.enemy_sprites.draw(window)
-
-        if self.player_turn:
+        if self.in_prompt:
+            self.prompt.draw(window)
+        elif self.player_turn:
             self.draw_interface(window)
         # Swap display
         pygame.display.update()
@@ -207,7 +217,7 @@ class Battle:
             # 1. Apply rules
             running = self.apply_rules()
             # 2. AI turn
-            if running:
+            if running and not self.in_prompt:
                 self.ai_turn()
 
             # 3. Handle events.
