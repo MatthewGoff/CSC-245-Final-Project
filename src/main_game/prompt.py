@@ -142,6 +142,8 @@ def campaign_start(native_screen_size):
     prompt.add_text("...or are they already here??!", "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(10)
     prompt.add_text("Use the WASD keys to navigate through Union College", "freesansbold.ttf", 20, True, "White")
+    prompt.add_text("Use the scoll wheel to zoom in and out",
+                    "freesansbold.ttf", 20, True, "White")
     prompt.add_button("Begin Journey", 25,
                       prompt.subsurface.get_width() / 2 - 60,
                       prompt.subsurface.get_height() - 40, 120, 40, "loof")
