@@ -2,11 +2,14 @@
 Winter 17 class project
 
 ## Sources
-- Buttons: https://pythonprogramming.net/pygame-python-3-part-1-intro/
+- Buttons: https://pythonprogramming.net/pygame-python-3-part-1-intro/www.2get.com 2gei Free Game Tiled
+- 60 different kinds of tiled
+- http://www.2gei.com/view/4149.html?order=name&page=4
+- RPG Maker VX Ace Tiled
+
 ## Dev Notes
 - Pycharm will claim that it can't find modules even if it runs. To resolve this
 right click on src folder>"Mark Directory As">"Sources Root"
-
 - Uncomment the import statement in main_game and then run it to see the battle demo.
 
 ## Todo
