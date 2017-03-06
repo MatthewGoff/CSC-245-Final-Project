@@ -182,4 +182,4 @@ class Campaign:
             # 4. Draw frame
             self.draw()
 
-        #self.quit()
+        self.quit()
