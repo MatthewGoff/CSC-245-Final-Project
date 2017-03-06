@@ -96,7 +96,12 @@ class World:
         :param collider:
         :return:
         '''
-        pass
+        parties = []
+
+        for party in self.parties:
+            if party != collider and party.hitbox.colliderect(collider.hitbox):
+                parties += [party]
+        return parties
 
     def collide_tiles(self, collider):
         '''

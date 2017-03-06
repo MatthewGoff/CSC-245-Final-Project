@@ -15,9 +15,9 @@ ABIL_BAR_HEIGHT = 60
 
 
 class Battle:
+    WINDOW_SIZE = (640, 480)
 
     def __init__(self, party1, party2, location, window, fullscreen):
-        pygame.init()
         self.won = False
         self.spritesheet = pygame.image.load(
             "../assets/images/player.png").convert_alpha()
@@ -88,12 +88,10 @@ class Battle:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_ESCAPE:
                     if self.fullscreen:
-                        pygame.display.set_mode((self.width,
-                                                 self.height))
+                        pygame.display.set_mode(Battle.WINDOW_SIZE)
                         self.fullscreen = False
                     else:
-                        pygame.display.set_mode((self.width,
-                                                 self.height),
+                        pygame.display.set_mode(Battle.WINDOW_SIZE,
                                                 pygame.FULLSCREEN)
                         self.fullscreen = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -234,14 +232,12 @@ class Battle:
         self.quit()
 
 
-def demo():
-    pygame.init()
-    my_win = pygame.display.set_mode((640, 480))
+def demo(window):
     player = Player(20, 200, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, True)
     player.abilities = [Energize(), Fireball(0,0,0), PowerAttack(), Heal()]
     friend = Player(20, 350, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, False)
     enemy = Player(550, 200, 68, 98, "../assets/images/player.png", 240, 0, 38, 48, False)
     enemy2 = Player(550, 50, 68, 98, "../assets/images/player.png", 240, 0, 38, 48, False)
-    battle = Battle([player, friend], [enemy, enemy2], (0, 0), my_win, False)
+    battle = Battle([player, friend], [enemy, enemy2], (0, 0), window, False)
     battle.run()
 

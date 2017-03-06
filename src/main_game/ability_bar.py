@@ -41,7 +41,6 @@ class AbilityBar:
         bot_bound = self.y + self.height - PADDING
         if x > left_bound and x < right_bound and y > top_bound and y < bot_bound:
             self.selected_ability = self.abilities[(x - left_bound)/(ICON_SIZE + PADDING)]
-            print self.selected_ability
 
     def get_valid_targets(self, friends, enemies):
         valid_targets = []

@@ -9,6 +9,7 @@ import pygame
 from camera import BoundCamera
 from world import World
 from party import Party
+from battle import demo
 from util import Vec2D
 import constants
 
@@ -23,6 +24,16 @@ class Campaign:
         self.fullscreen = True
         self.init_screen()
         self.world = World.load("olin107")
+        enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
+        enemy_rect = pygame.Rect(2016, 224, 32, 32)
+        enemy_image = enemy_image.subsurface(enemy_rect).copy()
+        enemy = Party((500, 500),
+                      32,
+                      (32, 32),
+                      enemy_image,
+                      self.world,
+                      self.battle)
+        self.world.add_party(enemy)
 
         player_image = pygame.image.load("../assets/images/player.png").convert_alpha()
         player_rect = pygame.Rect(0, 0, 48, 48)
@@ -31,7 +42,8 @@ class Campaign:
                           32,
                           (10,10),
                           player_image,
-                          self.world)
+                          self.world,
+                          self.battle)
         self.world.add_party(self.user)
         self.init_camera()
 
@@ -41,13 +53,13 @@ class Campaign:
         self.dx = 0
         self.dy = 0
 
-        self.camera.set_zoom(.2)
+        self.camera.set_zoom(.4)
 
     def init_screen(self):
         if self.fullscreen:
             self.window_size = constants.NATIVE_SCREEN_SIZE
             self.my_win = pygame.display.set_mode(self.window_size,
-                                    pygame.FULLSCREEN)
+                                                  pygame.FULLSCREEN)
         else:
             self.window_size = Campaign.WINDOW_SIZE
             self.my_win = pygame.display.set_mode(self.window_size)
@@ -124,6 +136,11 @@ class Campaign:
 
         # Swap display
         pygame.display.update()
+
+    def battle(self, enemy):
+        # A battle between the plyer and the enemy party needs resolving
+        if enemy != self.user:
+            demo(self.my_win) # demo battle
 
     def quit(self):
         pygame.quit()

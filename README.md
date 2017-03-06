@@ -14,6 +14,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 ### Known bugs
 - Can't slide on walls when pressing two direction keys
+- Fullscreen in battle
 
 ## Todo
 
@@ -24,10 +25,11 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [x] Place impassible tiles (with some visual indication)
 
 #### Campaign
-- [ ] Create Demo (Matt, Josh)
-    - [ ] Restrict user movement
-    - [ ] Enter battle demo
+- [x] Create Demo (Matt, Josh)
+    - [x] Restrict user movement
+    - [x] Enter battle demo
 - [ ] Create animation (Monica)
+- [ ] Make user inherit from party (Matt)
 - [ ] (Optional) Create fog of war
 - [ ] (Future) Inventory
 - [ ] (Future) Tutorial

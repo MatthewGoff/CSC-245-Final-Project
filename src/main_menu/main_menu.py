@@ -53,8 +53,7 @@ class MainMenu:
 
     def battle(self):
         self.keep_going = False
-        pygame.quit()
-        demo()
+        demo(self.window)
 
     def editor(self):
         self.keep_going = False

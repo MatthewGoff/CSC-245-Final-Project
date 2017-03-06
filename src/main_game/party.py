@@ -9,7 +9,7 @@ from util import Vec2D
 
 class Party(pygame.sprite.Sprite):
 
-    def __init__(self, position, sprite_width, hitbox, image, world):
+    def __init__(self, position, sprite_width, hitbox, image, world, battle_listener):
         """
 
         :param position:
@@ -39,6 +39,8 @@ class Party(pygame.sprite.Sprite):
                                   hitbox[0],
                                   hitbox[1])
 
+        self.battle_listener = battle_listener
+
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
@@ -54,10 +56,8 @@ class Party(pygame.sprite.Sprite):
         self.update_rect()
 
         parties = self.world.collide_parties(self)
-        '''for party in parties:
-            pass
-            # Battle'''
-
+        for party in parties:
+            self.battle_listener(party)
         tiles = self.world.collide_tiles(self)
         collision = False
         for tile in tiles:
