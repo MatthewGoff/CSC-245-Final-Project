@@ -233,8 +233,8 @@ def demo(window):
     player = Player(20, 200, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, True)
     player.abilities = [Energize(), Fireball(0,0,0), PowerAttack(), Heal()]
     friend = Player(20, 350, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, False)
-    enemy = Player(550, 200, 68, 98, "../assets/images/player.png", 240, 0, 38, 48, False)
-    enemy2 = Player(550, 50, 68, 98, "../assets/images/player.png", 240, 0, 38, 48, False)
+    enemy = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png",2016, 224, 32, 32, False)
+    enemy2 = Player(550, 50, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
     battle = Battle([player, friend], [enemy, enemy2], (0, 0), window, False)
     return battle.run()
 

@@ -54,7 +54,9 @@ class Campaign:
         self.dx = 0
         self.dy = 0
 
-        self.prompt = campaign_start()
+        self.camera.set_zoom(.4)
+
+        self.prompt = campaign_start(constants.NATIVE_SCREEN_SIZE)
         self.in_prompt = True
 
     def init_screen(self):

@@ -126,8 +126,9 @@ def battle_start():
     return prompt
 
 # Prompt for the campaign
-def campaign_start():
-    prompt = Prompt(120, 80, 400, 300, "DarkRed")
+def campaign_start(native_screen_size):
+
+    prompt = Prompt(native_screen_size[0]/2 - 200, native_screen_size[1]/2 - 150, 400, 300, "DarkRed")
     msg = "On your way back to CSC 245 class from the bathroom," \
           " the earth begins to shake beneath your feet, with an audible rumble." \
           " You hurry back to class, but upon entering Olin 107, you find a room" \
