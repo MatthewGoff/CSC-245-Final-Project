@@ -10,10 +10,8 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - Uncomment the import statement in main_game and then run it to see the battle demo.
 
 ## Todo
-- Have beta version ready for March 6th
 
 ### World Editor
-- Good enough, no more required
 - [ ] (optional) Saving/loading during full screen crashes -> Create popup dialog
     - Create list of available worlds
 - [ ] (optional) Make wold size editable in game
@@ -43,6 +41,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [ ] Background image
 
 ### Other
+- [ ] Make some instruction sheet
 - [ ] Make executable (matt)
 - [ ] (Optional) Add version number to menu
 - [ ] (Optional) Add Credits

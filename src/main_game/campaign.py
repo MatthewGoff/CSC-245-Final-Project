@@ -28,7 +28,7 @@ class Campaign:
         player_rect = pygame.Rect(0, 0, 48, 48)
         player_image = player_image.subsurface(player_rect).copy()
         self.user = Party(self.world.get_border().center,
-                          16,
+                          48/2,
                           player_image,
                           self.world)
         self.world.add_party(self.user)

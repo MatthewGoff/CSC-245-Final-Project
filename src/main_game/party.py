@@ -19,7 +19,7 @@ class Party(pygame.sprite.Sprite):
 
         # 3. Define self.image
         self.image = image
-        self.image = pygame.transform.smoothscale(self.image, (32, 45))
+        self.image = pygame.transform.smoothscale(self.image, (48, 48))
 
         # 4. Positions the Sprite
         self.update_rect()
@@ -36,24 +36,25 @@ class Party(pygame.sprite.Sprite):
                                 self.radius*2)
 
     def simulate(self, dt):
-        next_position = self.position + self.velocity*dt
+        self.position += self.velocity*dt
+        self.update_rect()
+
         parties = self.world.collide_parties(self)
-        for party in parties:
+        '''for party in parties:
             pass
-            # Battle
+            # Battle'''
 
         tiles = self.world.collide_tiles(self)
-        move = True
+        collision = False
         for tile in tiles:
-            if tile.door:
-                pass
-            elif tile.impassible:
-                move = False
+            '''if tile.door:
+                pass'''
+            if not tile.passable:
+                collision = True
 
-        if move:
-            self.position = next_position
-
-        self.update_rect()
+        if collision:
+            self.position -= self.velocity * dt
+            self.update_rect()
 
     def draw(self, window):
         window.blit(self.image,

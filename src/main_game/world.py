@@ -96,7 +96,6 @@ class World:
         :param collider:
         :return:
         '''
-
         pass
 
     def collide_tiles(self, collider):
@@ -106,7 +105,17 @@ class World:
         :return:
         '''
 
-        pass
+        tiles = []
+
+        for column in self.foreground_tiles:
+            for tile in column:
+                if tile != None and tile.rect.colliderect(collider.rect):
+                    tiles += [tile]
+        for column in self.background_tiles:
+            for tile in column:
+                if tile.rect.colliderect(collider.rect):
+                    tiles += [tile]
+        return tiles
 
     def export_world(self, path):
         background_tiles = []
