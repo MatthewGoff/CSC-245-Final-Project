@@ -28,8 +28,10 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [x] Create Demo (Matt, Josh)
     - [x] Restrict user movement
     - [x] Enter battle demo
-- [ ] Create animation (Monica)
+- [x] Create animation (Monica)
+- [ ] Add animation to campaign
 - [ ] Make user inherit from party (Matt)
+- [ ] Add levels
 - [ ] (Optional) Create fog of war
 - [ ] (Future) Inventory
 - [ ] (Future) Tutorial
@@ -47,12 +49,20 @@ right click on src folder>"Mark Directory As">"Sources Root"
     - [ ] Buffs?
 - [ ] (Future) Option to flee
 - [ ] Background image
+- [ ] Add battle text 
 
 ### Other
 - [ ] Make some instruction sheet
 - [ ] Make executable (matt)
+- [ ] Add a 'back' button
 - [ ] (Optional) Add version number to menu
 - [ ] (Optional) Add Credits
 - [ ] (Optional) Drop down menu
 - [ ] (Optional) Menu
 - [ ] (Optional) Improve switching between screens
+
+### Bugs
+
+- [ ] Scrolling bug
+- [ ] Walking "on" tables
+- [ ] Exit when lose (add lose result)
