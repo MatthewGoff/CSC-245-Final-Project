@@ -110,8 +110,8 @@ class Prompt:
 
 '''Prompts. These will probably be moved eventually.'''
 # Prompt for the battle class
-def battle_start():
-    prompt = Prompt(120, 80, 400, 300, "LightGrey")
+def battle_start(native_screen_size):
+    prompt = Prompt(native_screen_size[0]/2 - 200, native_screen_size[1]/2 - 150, 400, 300, "LightGrey")
     msg = "Welcome to the battle demo. Every round, each combatant will take his or her turn." \
                " When it's your turn, an ability bar will appear. Use the mouse to select an ability," \
                " then choose a target on which to use it."
@@ -145,4 +145,27 @@ def campaign_start(native_screen_size):
                       prompt.subsurface.get_height() - 40, 120, 40, "loof")
     return prompt
 
+def death(native_screen_size):
+    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
+    msg = "You are dead."
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text("GAME OVER", "freesansbold.ttf", 25, True, "Black")
+    prompt.add_button("Oh well", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, "loof")
+    return prompt
 
+def battle_won(native_screen_size):
+    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
+    msg = "You won!"
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text("EXTREMELY GOOD STUFF!", "freesansbold.ttf", 25, True, "Black")
+    prompt.add_button("Exit", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, exit)
+    return prompt
+
+def exit():
+    pygame.quit()

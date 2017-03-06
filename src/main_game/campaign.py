@@ -12,7 +12,7 @@ from party import Party
 from battle import demo
 from util import Vec2D
 import constants
-from prompt import campaign_start
+from prompt import campaign_start, death, battle_won
 
 
 class Campaign:
@@ -56,7 +56,7 @@ class Campaign:
 
         self.camera.set_zoom(.4)
 
-        self.prompt = campaign_start(constants.NATIVE_SCREEN_SIZE)
+        self.prompt = campaign_start((self.my_win.get_width(), self.my_win.get_height()))
         self.in_prompt = True
 
     def init_screen(self):
@@ -154,8 +154,12 @@ class Campaign:
         if enemy != self.user:
             if demo(self.my_win):
                 self.world.remove_party(enemy)
+                self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))
+                self.in_prompt = True
             else:
                 self.world.remove_party(self.user)
+                self.prompt = death((self.my_win.get_width(), self.my_win.get_height()))
+                self.in_prompt = True
 
         self.init_screen()
         self.init_camera()
