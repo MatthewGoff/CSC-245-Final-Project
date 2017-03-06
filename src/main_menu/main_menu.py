@@ -86,7 +86,7 @@ class MainMenu:
                   64,
                   self.window)
 
-        draw_text((550, 385),
+        draw_text((550, 387),
                   "Version 0.0.1",
                   20,
                   self.window)
