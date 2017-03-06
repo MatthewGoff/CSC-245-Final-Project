@@ -140,7 +140,10 @@ class Campaign:
     def battle(self, enemy):
         # A battle between the plyer and the enemy party needs resolving
         if enemy != self.user:
-            demo(self.my_win) # demo battle
+            if demo(self.my_win):
+                self.world.remove_party(enemy)
+            else:
+                self.world.remove_party(self.user)
 
     def quit(self):
         pygame.quit()

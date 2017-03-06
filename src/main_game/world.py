@@ -49,6 +49,9 @@ class World:
     def add_party(self, party):
         self.parties += [party]
 
+    def remove_party(self, party):
+        self.parties.remove(party)
+
     def simulate(self):
         for party in self.parties:
             party.simulate(1)

@@ -225,11 +225,7 @@ class Battle:
             # 4. Draw frame
             self.draw(self.window)
 
-            # 5. Check for endgame
-            if not running:
-                self.end_battle()
-
-        self.quit()
+        return self.won
 
 
 def demo(window):
