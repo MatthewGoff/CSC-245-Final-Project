@@ -22,8 +22,8 @@ class Battle:
         self.spritesheet = pygame.image.load(
             "../assets/images/player.png").convert_alpha()
         self.window = window
-        self.width = window.get_width()
-        self.height = window.get_height()
+        self.width = Battle.WINDOW_SIZE[0]
+        self.height = Battle.WINDOW_SIZE[1]
         self.fullscreen = fullscreen
         self.pos = location
         self.party1 = party1

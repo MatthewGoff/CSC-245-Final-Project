@@ -54,8 +54,6 @@ class Campaign:
         self.dx = 0
         self.dy = 0
 
-        self.camera.set_zoom(.4)
-
         self.prompt = campaign_start()
         self.in_prompt = True
 
@@ -73,6 +71,7 @@ class Campaign:
                                   self.window_size[0],
                                   self.window_size[1],
                                   self.world)
+        self.camera.set_zoom(.3)
 
     def handle_events(self):
 
