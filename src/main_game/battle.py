@@ -230,7 +230,7 @@ class Battle:
 
 
 def demo(window):
-    pygame.display.set_mode(Battle.WINDOW_SIZE, pygame.FULLSCREEN)
+    pygame.display.set_mode(Battle.WINDOW_SIZE)
     player = Player(20, 200, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, True)
     player.abilities = [Energize(), Fireball(0,0,0), PowerAttack(), Heal()]
     friend = Player(20, 350, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, False)
