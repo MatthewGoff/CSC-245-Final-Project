@@ -109,11 +109,11 @@ class World:
 
         for column in self.foreground_tiles:
             for tile in column:
-                if tile != None and tile.rect.colliderect(collider.rect):
+                if tile != None and tile.rect.colliderect(collider.hitbox):
                     tiles += [tile]
         for column in self.background_tiles:
             for tile in column:
-                if tile.rect.colliderect(collider.rect):
+                if tile.rect.colliderect(collider.hitbox):
                     tiles += [tile]
         return tiles
 

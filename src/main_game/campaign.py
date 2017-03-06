@@ -15,12 +15,12 @@ import constants
 
 class Campaign:
     WINDOW_SIZE = (640, 480)
-    CAMERA_SPEED = 10
+    USER_SPEED = 5
 
     def __init__(self):
         pygame.init()
 
-        self.fullscreen = False
+        self.fullscreen = True
         self.init_screen()
         self.world = World.load("olin107")
 
@@ -28,7 +28,8 @@ class Campaign:
         player_rect = pygame.Rect(0, 0, 48, 48)
         player_image = player_image.subsurface(player_rect).copy()
         self.user = Party(self.world.get_border().center,
-                          48/2,
+                          32,
+                          (10,10),
                           player_image,
                           self.world)
         self.world.add_party(self.user)
@@ -40,10 +41,12 @@ class Campaign:
         self.dx = 0
         self.dy = 0
 
+        self.camera.set_zoom(.2)
+
     def init_screen(self):
         if self.fullscreen:
             self.window_size = constants.NATIVE_SCREEN_SIZE
-            pygame.display.set_mode(self.window_size,
+            self.my_win = pygame.display.set_mode(self.window_size,
                                     pygame.FULLSCREEN)
         else:
             self.window_size = Campaign.WINDOW_SIZE
@@ -65,13 +68,13 @@ class Campaign:
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:
-                    self.dx += -Campaign.CAMERA_SPEED
+                    self.dx += -Campaign.USER_SPEED
                 elif key_pressed == pygame.K_d:
-                    self.dx += Campaign.CAMERA_SPEED
+                    self.dx += Campaign.USER_SPEED
                 elif key_pressed == pygame.K_w:
-                    self.dy += -Campaign.CAMERA_SPEED
+                    self.dy += -Campaign.USER_SPEED
                 elif key_pressed == pygame.K_s:
-                    self.dy += Campaign.CAMERA_SPEED
+                    self.dy += Campaign.USER_SPEED
                 elif key_pressed == pygame.K_ESCAPE:
                     if self.fullscreen:
                         self.fullscreen = False
@@ -84,13 +87,13 @@ class Campaign:
             elif event.type == pygame.KEYUP:
                 key_released = event.dict['key'] % 256
                 if key_released == pygame.K_a:
-                    self.dx -= -Campaign.CAMERA_SPEED
+                    self.dx -= -Campaign.USER_SPEED
                 elif key_released == pygame.K_d:
-                    self.dx -= Campaign.CAMERA_SPEED
+                    self.dx -= Campaign.USER_SPEED
                 elif key_released == pygame.K_w:
-                    self.dy -= -Campaign.CAMERA_SPEED
+                    self.dy -= -Campaign.USER_SPEED
                 elif key_released == pygame.K_s:
-                    self.dy -= Campaign.CAMERA_SPEED
+                    self.dy -= Campaign.USER_SPEED
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 button_pressed = event.dict['button']
 

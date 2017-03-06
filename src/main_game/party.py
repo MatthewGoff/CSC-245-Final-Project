@@ -9,31 +9,45 @@ from util import Vec2D
 
 class Party(pygame.sprite.Sprite):
 
-    def __init__(self, position, radius, image, world):
+    def __init__(self, position, sprite_width, hitbox, image, world):
+        """
+
+        :param position:
+        :param sprite_width:
+        :param hitbox: A 2-tuple (width, height) of the hitbox centered at param position
+        :param image:
+        :param world:
+        """
         pygame.sprite.Sprite.__init__(self)
 
         self.position = Vec2D(position[0],position[1])
         self.velocity = Vec2D(0, 0)
-        self.radius = radius
+        self.sprite_width = sprite_width
         self.world = world
 
         # 3. Define self.image
         self.image = image
-        self.image = pygame.transform.smoothscale(self.image, (48, 48))
+        self.image = pygame.transform.smoothscale(self.image, (sprite_width, sprite_width))
 
         # 4. Positions the Sprite
-        self.update_rect()
+        self.rect = pygame.Rect(self.position.x - self.sprite_width / 2,
+                                self.position.y - self.sprite_width / 2,
+                                self.sprite_width,
+                                self.sprite_width)
+        self.hitbox = pygame.Rect(self.position.x - hitbox[0] / 2,
+                                  self.position.y - hitbox[1] / 2,
+                                  hitbox[0],
+                                  hitbox[1])
 
-    # Sets the forces from user input to the player.
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
-    # Updates rect instance variable for Sprite to the position the ball is at.
     def update_rect(self):
-        self.rect = pygame.Rect(self.position.x-self.radius,
-                                self.position.y-self.radius,
-                                self.radius*2,
-                                self.radius*2)
+        self.rect.center = self.position.to_tuple()
+        self.hitbox.center = self.position.to_tuple()
+
+    def change_hitbox(self, rect):
+        self.hitbox = rect
 
     def simulate(self, dt):
         self.position += self.velocity*dt
@@ -58,4 +72,4 @@ class Party(pygame.sprite.Sprite):
 
     def draw(self, window):
         window.blit(self.image,
-                    (self.position.x-self.radius, self.position.y-self.radius))
+                    (self.position.x - self.sprite_width / 2, self.position.y - self.sprite_width / 2))

@@ -12,6 +12,9 @@ Winter 17 class project
 right click on src folder>"Mark Directory As">"Sources Root"
 - Uncomment the import statement in main_game and then run it to see the battle demo.
 
+### Known bugs
+- Can't slide on walls when pressing two direction keys
+
 ## Todo
 
 ### World Editor

@@ -17,6 +17,9 @@ class Camera:
 
         self.viewport = None
 
+    def set_zoom(self, zoom):
+        self.zoom = zoom
+
     def zoom_in(self):
         self.zoom *= Camera.ZOOM_FACTOR
 
