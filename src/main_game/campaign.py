@@ -12,6 +12,7 @@ from party import Party
 from battle import demo
 from util import Vec2D
 import constants
+from prompt import campaign_start
 
 
 class Campaign:
@@ -55,6 +56,9 @@ class Campaign:
 
         self.camera.set_zoom(.4)
 
+        self.prompt = campaign_start()
+        self.in_prompt = True
+
     def init_screen(self):
         if self.fullscreen:
             self.window_size = constants.NATIVE_SCREEN_SIZE
@@ -76,7 +80,12 @@ class Campaign:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 keep_going = False
-
+            elif self.in_prompt:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    button_pressed = event.dict['button']
+                    mouse_pos = event.dict['pos']
+                    if button_pressed == 1 and self.prompt.check_collisions(mouse_pos):
+                        self.in_prompt = False
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:
@@ -133,6 +142,8 @@ class Campaign:
                          self.window_size[0],
                          self.window_size[1],
                          self.my_win)
+        if self.in_prompt:
+            self.prompt.draw(self.my_win)
 
         # Swap display
         pygame.display.update()

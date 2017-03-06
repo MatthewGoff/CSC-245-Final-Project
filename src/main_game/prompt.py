@@ -108,21 +108,41 @@ class Prompt:
         if clicked_buttons:
             return True
 
+'''Prompts. These will probably be moved eventually.'''
 # Prompt for the battle class
 def battle_start():
     prompt = Prompt(120, 80, 400, 300, "LightGrey")
-    test_str = "Welcome to the battle demo. Every round, each combatant will take his or her turn." \
+    msg = "Welcome to the battle demo. Every round, each combatant will take his or her turn." \
                " When it's your turn, an ability bar will appear. Use the mouse to select an ability," \
                " then choose a target on which to use it."
-    prompt.add_text(test_str, "freesansbold.ttf", 20, False, "Blue")
+    prompt.add_text(msg, "freesansbold.ttf", 25, False, "Black")
     prompt.v_space(20)
-    prompt.add_text("When you're ready, press 'CONTINUE'.", "freesansbold.ttf", 20, True, "Blue")
+    prompt.add_text("When you're ready, press 'CONTINUE'.", "freesansbold.ttf", 25, True, "Blue")
     prompt.v_space(40)
-    prompt.add_text("Good luck!", "freesansbold.ttf", 25, True, "Green")
+    prompt.add_text("Good luck!", "freesansbold.ttf", 40, True, "Green")
     prompt.add_button("CONTINUE", 25,
                       prompt.subsurface.get_width()/2 - 50,
                       prompt.subsurface.get_height() - 40, 100, 40, "loof")
     return prompt
 
+# Prompt for the campaign
+def campaign_start():
+    prompt = Prompt(120, 80, 400, 300, "DarkRed")
+    msg = "On your way back to CSC 245 class from the bathroom," \
+          " the earth begins to shake beneath your feet, with an audible rumble." \
+          " You hurry back to class, but upon entering Olin 107, you find a room" \
+          " bathed in blood, with no sign of your classmates or Matt." \
+          " You hear moaning noises and irregular footsteps. Some kind of creature" \
+          " or creatures must have done this! It would probably be wise to leave " \
+          "before they return..."
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text("...or are they already here??!", "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(10)
+    prompt.add_text("Use the WASD keys to navigate through Union College", "freesansbold.ttf", 20, True, "White")
+    prompt.add_button("Begin Journey", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, "loof")
+    return prompt
 
 
