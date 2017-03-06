@@ -134,8 +134,7 @@ def campaign_start(native_screen_size):
           " You hurry back to class, but upon entering Olin 107, you find a room" \
           " bathed in blood, with no sign of your classmates or Matt." \
           " You hear moaning noises and irregular footsteps. Some kind of creature" \
-          " or creatures must have done this! It would probably be wise to leave " \
-          "before they return..."
+          " or creatures must have done this! Find the source of evil and destroy it..."
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
     prompt.add_text("...or are they already here??!", "freesansbold.ttf", 25, True, "Black")

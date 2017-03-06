@@ -86,6 +86,11 @@ class MainMenu:
                   64,
                   self.window)
 
+        draw_text((550, 385),
+                  "Version 0.0.1",
+                  20,
+                  self.window)
+
         pygame.draw.line(self.window,
                          pygame.Color("black"),
                          (20, 70),

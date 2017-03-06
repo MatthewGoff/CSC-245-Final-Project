@@ -28,7 +28,7 @@ class Campaign:
         enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
         enemy_rect = pygame.Rect(2016, 224, 32, 32)
         enemy_image = enemy_image.subsurface(enemy_rect).copy()
-        enemy = Party((500, 500),
+        enemy = Party((20, 460),
                       32,
                       (32, 32),
                       enemy_image,
@@ -158,6 +158,9 @@ class Campaign:
                 self.world.remove_party(self.user)
                 self.prompt = death((self.my_win.get_width(), self.my_win.get_height()))
                 self.in_prompt = True
+
+        self.init_screen()
+        self.init_camera()
 
     def quit(self):
         pygame.quit()
