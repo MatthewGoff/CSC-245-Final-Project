@@ -157,6 +157,9 @@ class Campaign:
             else:
                 self.world.remove_party(self.user)
 
+        self.init_screen()
+        self.init_camera()
+
     def quit(self):
         pygame.quit()
 
