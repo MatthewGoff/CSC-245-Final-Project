@@ -8,6 +8,7 @@ from abilities.energize import Energize
 from abilities.heal import Heal
 from abilities.power_attack import PowerAttack
 from prompt import battle_start
+from constants import NATIVE_SCREEN_SIZE
 
 
 TURN_MSG = "Player Turn"
@@ -44,7 +45,7 @@ class Battle:
         self.curr_combatant = -1
         self.next_turn()
         self.in_prompt = True
-        self.prompt = battle_start()
+        self.prompt = battle_start((window.get_width(), window.get_height()))
 
     def place_combatants(self, friends, enemies, p_queue):
         n = 1

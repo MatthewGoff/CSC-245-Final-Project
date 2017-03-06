@@ -12,7 +12,7 @@ from party import Party
 from battle import demo
 from util import Vec2D
 import constants
-from prompt import campaign_start
+from prompt import campaign_start, death
 
 
 class Campaign:
@@ -156,6 +156,8 @@ class Campaign:
                 self.world.remove_party(enemy)
             else:
                 self.world.remove_party(self.user)
+                self.prompt = death((self.my_win.get_width(), self.my_win.get_height()))
+                self.in_prompt = True
 
     def quit(self):
         pygame.quit()
