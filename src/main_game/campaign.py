@@ -73,6 +73,7 @@ class Campaign:
                                   self.window_size[0],
                                   self.window_size[1],
                                   self.world)
+        self.camera.set_zoom(.3)
 
     def handle_events(self):
 
