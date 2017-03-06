@@ -22,7 +22,7 @@ class Campaign:
     def __init__(self):
         pygame.init()
 
-        self.fullscreen = False
+        self.fullscreen = True
         self.init_screen()
         self.world = World.load("olin107")
         enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
