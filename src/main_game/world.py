@@ -42,7 +42,7 @@ class World:
     def load(cls, name):
         data = json.load(open("../assets/worlds/" + name + ".json"))
         world = World(data["width = "], data["height = "], pygame.image.load(
-            "../assets/images/background_sheet.png").convert_alpha())
+            "../assets/images/TheSheet.png").convert_alpha())
         world.import_world("../assets/worlds/"+name+".json")
         return world
 

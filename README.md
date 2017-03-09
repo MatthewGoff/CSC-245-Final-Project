@@ -2,10 +2,10 @@
 Winter 17 class project
 
 ## Sources
-- Buttons: https://pythonprogramming.net/pygame-python-3-part-1-intro/www.2get.com 2gei Free Game Tiled
-- 60 different kinds of tiled
-- http://www.2gei.com/view/4149.html?order=name&page=4
-- RPG Maker VX Ace Tiled
+- Buttons: https://pythonprogramming.net/pygame-python-3-part-1-intro/
+- Tiles:
+- 2gei Free Game Tiled, 60 different kinds of tiled: http://www.2gei.com/view/4149.html?order=name&page=4
+- RPG Maker VX Ace Tiled: http://www.rpgmakerweb.com/
 
 ## Dev Notes
 - Pycharm will claim that it can't find modules even if it runs. To resolve this

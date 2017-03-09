@@ -49,7 +49,7 @@ class Campaign:
         self.init_camera()
 
         self.spritesheet = pygame.image.load(
-            "../assets/images/background_sheet.png").convert_alpha()
+            "../assets/images/TheSheet.png").convert_alpha()
 
         self.dx = 0
         self.dy = 0
