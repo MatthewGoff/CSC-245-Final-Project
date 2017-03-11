@@ -5,6 +5,7 @@
 import pygame
 
 from button import Button
+from util import TextInputBox
 
 BORDER = 4
 BORDER_COLOR = "Black"
@@ -23,6 +24,9 @@ class Prompt:
         self.subsurface.fill(pygame.color.Color(bg_color))
         self.curr_line_y = 0
         self.buttons = []
+        self.text_boxes = []
+        self.output_dict = {}
+        self.active_text_box = None
 
     # In case we want to get fancy and allow movable prompts
     def update_rect(self):
@@ -87,7 +91,22 @@ class Prompt:
         for line_tuple in lines:
             self.draw_line(line_tuple, centered)
 
+    def add_text_by_pos(self, string, font, font_size, color, x, y):
+        font = pygame.font.SysFont(font, font_size)
+        txt = font.render(string, True, pygame.color.Color(color))
+        self.subsurface.blit(txt, (x,y))
+
+    def handle_keydown(self, key_pressed):
+        # For debugging; delete later
+        if key_pressed == pygame.K_RETURN:
+            self.print_output()
+        #
+        elif self.active_text_box is not None:
+            self.active_text_box.handle_keydown(key_pressed)
+
     def draw(self, window):
+        for box in self.text_boxes:
+            box.draw(self.subsurface)
         self.surface.blit(self.subsurface, (BORDER, BORDER))
         window.blit(self.surface, (self.x, self.y))
 
@@ -97,18 +116,34 @@ class Prompt:
         self.buttons += [button]
         button.draw(self.subsurface)
 
+    def add_text_box(self, x, y, width, key):
+        box = TextInputBox(x, y, width, key, self.output_dict)
+        self.text_boxes += [box]
+
     # Add height pixels of vertical space
     def v_space(self, height):
         self.curr_line_y += height
 
+    def print_output(self):
+        print str(self.output_dict)
+
     def check_collisions(self, mouse_pos):
+        clicked_obj = None
         adj_pos = (mouse_pos[0] - (self.x + BORDER), mouse_pos[1] - (self.y + BORDER))
         clicked_buttons = [button for button in self.buttons if
                            button.rect.collidepoint(adj_pos)]
-        #if clicked_buttons and clicked_buttons[0].action == exit:
-            #pygame.quit()
+        clicked_txt_boxes = [box for box in self.text_boxes if
+                           box.rect.collidepoint(adj_pos)]
+
         if clicked_buttons:
-            return (True, clicked_buttons[0].action == exit)
+            clicked_obj = clicked_buttons[0]
+        elif clicked_txt_boxes:
+            if self.active_text_box is not None:
+                self.active_text_box.deselect()
+            clicked_txt_boxes[0].select()
+            self.active_text_box = clicked_txt_boxes[0]
+            clicked_obj = clicked_txt_boxes[0]
+        return clicked_obj
 
 '''Prompts. These will probably be moved eventually.'''
 # Prompt for the battle class
@@ -145,8 +180,8 @@ def campaign_start(native_screen_size):
     prompt.add_text("Use the scoll wheel to zoom in and out",
                     "freesansbold.ttf", 20, True, "White")
     prompt.add_button("Begin Journey", 25,
-                      prompt.subsurface.get_width() / 2 - 60,
-                      prompt.subsurface.get_height() - 40, 120, 40, "loof")
+                      prompt.subsurface.get_width() / 2 - 70,
+                      prompt.subsurface.get_height() - 40, 140, 40, "okay")
     return prompt
 
 def death(native_screen_size):
@@ -157,7 +192,7 @@ def death(native_screen_size):
     prompt.add_text("GAME OVER", "freesansbold.ttf", 25, True, "Black")
     prompt.add_button("Oh well", 25,
                       prompt.subsurface.get_width() / 2 - 60,
-                      prompt.subsurface.get_height() - 40, 120, 40, "loof")
+                      prompt.subsurface.get_height() - 40, 120, 40, "okay")
     return prompt
 
 def battle_won(native_screen_size):
@@ -168,8 +203,27 @@ def battle_won(native_screen_size):
     prompt.add_text("EXTREMELY GOOD STUFF!", "freesansbold.ttf", 25, True, "Black")
     prompt.add_button("Exit", 25,
                       prompt.subsurface.get_width() / 2 - 60,
-                      prompt.subsurface.get_height() - 40, 120, 40, exit)
+                      prompt.subsurface.get_height() - 40, 120, 40, "exit")
     return prompt
 
-def exit():
-    pygame.quit()
+def input_example(native_screen_size):
+    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
+    msg = "Input Demo"
+    prompt.add_text(msg, "freesansbold.ttf", 30, True, "Black")
+    msg = "Please enter stats for the first player"
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    msg = "Press ENTER while in prompt to print output to console. " \
+          "Currently the only way to switch between boxes is by clicking, I may add the ability to use tab/enter"
+    prompt.add_text(msg, "freesansbold.ttf", 20, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text_by_pos("strength:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
+    prompt.add_text_by_pos("stamina:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
+    prompt.add_text_by_pos("intellect:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
+    prompt.add_text_box(80, prompt.curr_line_y, 160, "str")
+    prompt.add_text_box(80, prompt.curr_line_y + 20, 160, "stam")
+    prompt.add_text_box(80, prompt.curr_line_y + 40, 160, "int")
+    prompt.add_button("Continue", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, "okay")
+    return prompt

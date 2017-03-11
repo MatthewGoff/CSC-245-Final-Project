@@ -10,9 +10,10 @@ from camera import BoundCamera
 from world import World
 from party import Party
 from battle import demo
+from button import Button
 from util import Vec2D
 import constants
-from prompt import campaign_start, death, battle_won
+from prompt import campaign_start, death, battle_won, input_example
 
 
 class Campaign:
@@ -85,14 +86,20 @@ class Campaign:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     button_pressed = event.dict['button']
                     mouse_pos = event.dict['pos']
-                    tup = self.prompt.check_collisions(mouse_pos)
-                    if button_pressed == 1 and tup[0]:
-                        if tup[1]:
-                            keep_going = False
-                        else:
-                            self.in_prompt = False
+                    clicked_obj = self.prompt.check_collisions(mouse_pos)
+                    if button_pressed == 1:
+                        if isinstance(clicked_obj, Button):
+                            if clicked_obj.action is "okay":
+                                self.in_prompt = False
+                            elif clicked_obj.action is "exit":
+                                keep_going = False
+                elif event.type == pygame.KEYDOWN:
+                    key_pressed = event.dict['key'] % 256
+                    self.prompt.handle_keydown(key_pressed)
+
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
+                print "|" + str(key_pressed) + "|"
                 if key_pressed == pygame.K_a:
                     self.dx += -Campaign.USER_SPEED
                 elif key_pressed == pygame.K_d:

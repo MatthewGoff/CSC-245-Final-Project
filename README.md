@@ -10,7 +10,7 @@ Winter 17 class project
 ## Dev Notes
 - Pycharm will claim that it can't find modules even if it runs. To resolve this
 right click on src folder>"Mark Directory As">"Sources Root"
-- Uncomment the import statement in main_game and then run it to see the battle demo.
+- Change prompt in campaign from campaign_start to input_example w/ same parameters to see an example of text input
 
 ### Known bugs
 - Can't slide on walls when pressing two direction keys
@@ -55,6 +55,7 @@ right click on src folder>"Mark Directory As">"Sources Root"
 - [ ] Make some instruction sheet
 - [ ] Make executable (matt)
 - [ ] Add a 'back' button
+- [x] Add text input functionality
 - [ ] (Optional) Add version number to menu
 - [ ] (Optional) Add Credits
 - [ ] (Optional) Drop down menu

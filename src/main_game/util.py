@@ -66,3 +66,64 @@ def draw_text(center, text, font_size, window):
     text_rect = text_surface.get_rect()
     text_rect.center = center
     window.blit(text_surface, text_rect)
+
+# A text input box in pygame that writes to a given dictionary
+# Note that x and y are relative to the surface on which it's drawn
+class TextInputBox:
+    def __init__(self, x, y, width, key, output_dict):
+        pygame.init()
+        self.font = pygame.font.SysFont("monospace", 14)
+        self.x = x
+        self.y = y
+        self.width = width
+        self.rect = pygame.Rect(x, y, width, 16)
+        self.surface = pygame.Surface((width, 16))
+        self.surface.fill(pygame.color.Color("darkgrey"))
+        self.text = None
+        self.active = False
+        output_dict[key] = ""
+        self.key = key
+        self.output_dict = output_dict
+
+    def select(self):
+        self.active = True
+        self.surface.fill(pygame.color.Color("lightgrey"))
+        if self.text is not None:
+            self.surface.blit(self.text, (0,0))
+
+    def deselect(self):
+        self.active = False
+        self.surface.fill(pygame.color.Color("darkgrey"))
+        if self.text is not None:
+            self.surface.blit(self.text, (0,0))
+
+    # key_pressed is the mod 256 number for the pressed key
+    def handle_keydown(self, key_pressed):
+        update_img = False
+        # Letters, numbers and space
+        if 48 <= key_pressed <= 57 or 97 <= key_pressed <= 122 or key_pressed == pygame.K_SPACE:
+            self.output_dict[self.key] += str(chr(key_pressed))
+            update_img = True
+        elif key_pressed == pygame.K_BACKSPACE and not self.output_dict[self.key] == "":
+            self.output_dict[self.key] = self.output_dict[self.key][0:-1]
+            update_img = True
+        #
+        if update_img:
+            self.surface = pygame.Surface((self.width, 16))
+            self.surface.fill(pygame.color.Color("lightgrey"))
+            self.text = self.font.render(self.output_dict[self.key], True, pygame.color.Color("Black"))
+            self.surface.blit(self.text, (0,0))
+
+    def draw(self, window):
+        window.blit(self.surface, (self.x, self.y))
+
+
+
+
+
+
+
+
+
+
+
