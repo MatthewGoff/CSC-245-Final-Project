@@ -100,9 +100,13 @@ class TextInputBox:
     # key_pressed is the mod 256 number for the pressed key
     def handle_keydown(self, key_pressed):
         update_img = False
+        print key_pressed
         # Letters, numbers and space
         if 48 <= key_pressed <= 57 or 97 <= key_pressed <= 122 or key_pressed == pygame.K_SPACE:
             self.output_dict[self.key] += str(chr(key_pressed))
+            update_img = True
+        elif key_pressed == pygame.K_MINUS and pygame.key.get_mods() & pygame.KMOD_SHIFT:
+            self.output_dict[self.key] += "_"
             update_img = True
         elif key_pressed == pygame.K_BACKSPACE and not self.output_dict[self.key] == "":
             self.output_dict[self.key] = self.output_dict[self.key][0:-1]

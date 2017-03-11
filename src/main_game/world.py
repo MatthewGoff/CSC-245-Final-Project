@@ -116,6 +116,7 @@ class World:
                         tile.world_loc,
                         dest_world,
                         dest_coords)
+            door.swap_image()
             self.background_tiles[x][y] = door
             self.bg_sprites.remove(tile)
             self.bg_sprites.add(door)

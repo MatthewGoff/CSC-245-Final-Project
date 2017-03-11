@@ -293,11 +293,11 @@ class LevelBuilder:
             print "Successfully loaded "+name
             for row in self.world.foreground_tiles:
                 for tile in row:
-                    if tile is not None and not tile.passable:
+                    if tile is not None and (isinstance(tile, Door) or not tile.passable):
                         tile.swap_image()
             for row in self.world.background_tiles:
                 for tile in row:
-                    if not tile.passable:
+                    if isinstance(tile, Door) or not tile.passable:
                         tile.swap_image()
         except IOError:
             print "Couldn't load world '"+name+"'"

@@ -18,6 +18,8 @@ class Door(Tile):
         width = constants.TILE_WIDTH
         door_overlay = pygame.image.load(constants.DOOR_OVERLAY_PATH).convert_alpha()
         self.door_overlay = pygame.transform.smoothscale(door_overlay, (width, width))
+        self.alt_img = self.image.copy()
+        self.alt_img.blit(self.door_overlay, (0,0))
 
     def to_json(self):
         return {
@@ -34,3 +36,6 @@ class Door(Tile):
         self.sprite_loc = [rect.left, rect.top]
         image = self.spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (self.width, self.width))
+        self.alt_img = pygame.transform.smoothscale(image, (self.width, self.width))
+        self.alt_img.blit(self.door_overlay, (0, 0))
+
