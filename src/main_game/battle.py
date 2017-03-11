@@ -165,12 +165,18 @@ class Battle:
                 self.friendlies.remove(p)
                 self.combatants.remove(p)
                 self.friendly_sprites.remove(p)
+                self.friendly_sprites.remove(p.hp)
+                self.friendly_sprites.remove(p.energy)
+                self.bars.remove(p.bar_bg)
 
         for p in self.enemies:
             if p.dead:
                 self.enemies.remove(p)
                 self.combatants.remove(p)
                 self.enemy_sprites.remove(p)
+                self.enemy_sprites.remove(p.hp)
+                self.enemy_sprites.remove(p.energy)
+                self.bars.remove(p.bar_bg)
 
         if self.curr_combatant >= len(self.combatants):
             self.curr_combatant = 0

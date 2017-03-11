@@ -4,9 +4,13 @@
 
 import pygame, json
 
+import main_game.prompt
 from sprite_viewer import SpriteViewer
 from main_game.camera import UnboundCamera
 from main_game.world import World
+from main_game.button import Button
+from main_game.door import Door
+from main_game.tile import Tile
 
 
 class LevelBuilder:
@@ -55,6 +59,9 @@ class LevelBuilder:
         self.dx = 0
         self.dy = 0
 
+        self.prompt = None
+        self.in_prompt = False
+
     # Place the correct sprite on the clicked tile
     def click_tile(self, loc, is_foreground):
 
@@ -88,12 +95,27 @@ class LevelBuilder:
             tile = self.world.foreground_tiles[loc[0]][loc[1]]
         else:
             tile = self.world.get_bg_tile(loc[0], loc[1])
-        if tile is not None:
+        if tile is not None and not isinstance(tile, Door):
             if tile.passable:
                 tile.passable = False
             else:
                 tile.passable = True
             tile.swap_image()
+        return True
+
+    def toggle_door(self, loc, is_foreground):
+        if is_foreground:
+            tile = self.world.foreground_tiles[loc[0]][loc[1]]
+        else:
+            tile = self.world.get_bg_tile(loc[0], loc[1])
+        if tile is not None and tile.passable:
+            if isinstance(tile, Door):
+                self.world.replace_door_with_tile(tile.world_loc[0], tile.world_loc[1], is_foreground)
+            else:
+                self.prompt = main_game.prompt.door_placement(self.my_win.get_width(),
+                                                              self.my_win.get_height(),
+                                                              loc, is_foreground)
+                self.in_prompt = True
         return True
 
     # Process user input
@@ -103,7 +125,28 @@ class LevelBuilder:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 keep_going = False
-
+            elif self.in_prompt:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    button_pressed = event.dict['button']
+                    mouse_pos = event.dict['pos']
+                    clicked_obj = self.prompt.check_collisions(mouse_pos)
+                    if button_pressed == 1:
+                        if isinstance(clicked_obj, Button):
+                            if clicked_obj.action is "okay":
+                                self.in_prompt = False
+                            elif clicked_obj.action is "exit":
+                                keep_going = False
+                            elif clicked_obj.action is "door":
+                                self.world.replace_tile_with_door(self.prompt.output_dict["column"],
+                                                                  self.prompt.output_dict["row"],
+                                                                  self.prompt.output_dict["fg"],
+                                                                  self.prompt.output_dict["world"],
+                                                                  (self.prompt.output_dict["x"],
+                                                                   self.prompt.output_dict["y"]))
+                                self.in_prompt = False
+                elif event.type == pygame.KEYDOWN:
+                    key_pressed = event.dict['key'] % 256
+                    self.prompt.handle_keydown(key_pressed)
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 # WASD keys pan the camera
@@ -164,9 +207,6 @@ class LevelBuilder:
 
                         if clicked_tiles:
                             click_loc = clicked_tiles[0].world_loc
-                            if button_pressed == 1 and pygame.key.get_mods() & pygame.KMOD_ALT:
-                                # For debugging, currently
-                                return keep_going
                             if button_pressed == 1:
                                 # Apply selected sprite to background tile
                                 is_foreground = False
@@ -176,6 +216,8 @@ class LevelBuilder:
                             # Toggle tile passability
                             if pygame.key.get_mods() & pygame.KMOD_CTRL:
                                 keep_going = self.toggle_tile_passability(click_loc, is_foreground)
+                            elif pygame.key.get_mods() & pygame.KMOD_ALT:
+                                keep_going = self.toggle_door(click_loc, is_foreground)
                             else:
                                 keep_going = self.click_tile(click_loc, is_foreground)
                     # Scroll wheel/ball zooms the camera
@@ -216,6 +258,9 @@ class LevelBuilder:
                          self.my_win)
         # Draw sprite browser sidebar
         self.sprite_viewer.draw(self.my_win)
+
+        if self.in_prompt:
+            self.prompt.draw(self.my_win)
         # Swap display
         pygame.display.update()
 

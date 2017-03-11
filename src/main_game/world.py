@@ -7,6 +7,7 @@ import json
 import pygame
 
 from main_game.tile import Tile
+from main_game.door import Door
 from constants import TILE_WIDTH
 
 
@@ -53,8 +54,12 @@ class World:
         self.parties.remove(party)
 
     def simulate(self):
+        door = None
         for party in self.parties:
-            party.simulate(1)
+            door_to_test = party.simulate(1)
+            if isinstance(door_to_test, Door):
+                door = door_to_test
+        return door
 
     def draw(self, window):
         self.bg_sprites.draw(window)
@@ -92,6 +97,46 @@ class World:
         tile.change_sprite(sprite_rect)
         self.fg_sprites.add(tile)
         self.foreground_tiles[x][y] = tile
+
+    def replace_tile_with_door(self, x, y, fg, dest_world, dest_coords):
+        if fg:
+            tile = self.get_fg_tile(x, y)
+            door = Door(tile.spritesheet,
+                        tile.sprite_loc,
+                        tile.world_loc,
+                        dest_world,
+                        dest_coords)
+            self.foreground_tiles[x][y] = door
+            self.fg_sprites.remove(tile)
+            self.fg_sprites.add(door)
+        else:
+            tile = self.get_bg_tile(x, y)
+            door = Door(tile.spritesheet,
+                        tile.sprite_loc,
+                        tile.world_loc,
+                        dest_world,
+                        dest_coords)
+            self.background_tiles[x][y] = door
+            self.bg_sprites.remove(tile)
+            self.bg_sprites.add(door)
+
+    def replace_door_with_tile(self, x, y, fg):
+        if fg:
+            door = self.get_fg_tile(x, y)
+            tile = Tile(door.spritesheet,
+                        door.sprite_loc,
+                        door.world_loc)
+            self.foreground_tiles[x][y] = tile
+            self.fg_sprites.remove(door)
+            self.fg_sprites.add(tile)
+        else:
+            door = self.get_bg_tile(x, y)
+            tile = Tile(door.spritesheet,
+                        door.sprite_loc,
+                        door.world_loc)
+            self.background_tiles[x][y] = tile
+            self.bg_sprites.remove(door)
+            self.bg_sprites.add(tile)
 
     def collide_parties(self, collider):
         '''
@@ -167,10 +212,18 @@ class World:
             for row in range(self.height):
                 background_tile_data = data["background"][column][row]
                 foreground_tile_data = data["foreground"][column][row]
-
-                background_tile = Tile(self.spritesheet,
-                                       background_tile_data["sprite_loc"],
-                                       (column, row))
+                if "dest_world" in background_tile_data:
+                    dest_x = int(background_tile_data["dest_x"])
+                    dest_y = int(background_tile_data["dest_y"])
+                    background_tile = Door(self.spritesheet,
+                                           background_tile_data["sprite_loc"],
+                                           (column, row),
+                                           background_tile_data["dest_world"],
+                                           (dest_x, dest_y))
+                else:
+                    background_tile = Tile(self.spritesheet,
+                                           background_tile_data["sprite_loc"],
+                                           (column, row))
                 if not background_tile_data["passable"]:
                     background_tile.passable = False
                 if background_tile_data["flipped"]:
@@ -182,9 +235,18 @@ class World:
                 self.background_tiles[column] += [background_tile]
 
                 if foreground_tile_data:
-                    foreground_tile = Tile(self.spritesheet,
-                                           foreground_tile_data["sprite_loc"],
-                                           (column, row))
+                    if "dest_world" in foreground_tile_data:
+                        dest_x = int(foreground_tile_data["dest_x"])
+                        dest_y = int(foreground_tile_data["dest_y"])
+                        foreground_tile = Door(self.spritesheet,
+                                               foreground_tile_data["sprite_loc"],
+                                               (column, row),
+                                               foreground_tile_data["dest_world"],
+                                               (dest_x, dest_y))
+                    else:
+                        foreground_tile = Tile(self.spritesheet,
+                                               foreground_tile_data["sprite_loc"],
+                                               (column, row))
                     if not foreground_tile_data["passable"]:
                         foreground_tile.passable = False
                     if foreground_tile_data["flipped"]:

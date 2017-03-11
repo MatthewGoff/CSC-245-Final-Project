@@ -100,6 +100,14 @@ class Prompt:
         # For debugging; delete later
         if key_pressed == pygame.K_RETURN:
             self.print_output()
+        elif key_pressed == pygame.K_TAB:
+            if self.active_text_box is not None:
+                index = self.text_boxes.index(self.active_text_box)
+                if index + 1 == len(self.text_boxes):
+                    index = -1
+                self.active_text_box.deselect()
+                self.active_text_box = self.text_boxes[index + 1]
+                self.active_text_box.select()
         #
         elif self.active_text_box is not None:
             self.active_text_box.handle_keydown(key_pressed)
@@ -192,7 +200,7 @@ def death(native_screen_size):
     prompt.add_text("GAME OVER", "freesansbold.ttf", 25, True, "Black")
     prompt.add_button("Oh well", 25,
                       prompt.subsurface.get_width() / 2 - 60,
-                      prompt.subsurface.get_height() - 40, 120, 40, "okay")
+                      prompt.subsurface.get_height() - 40, 120, 40, "exit")
     return prompt
 
 def battle_won(native_screen_size):
@@ -214,7 +222,7 @@ def input_example(native_screen_size):
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
     msg = "Press ENTER while in prompt to print output to console. " \
-          "Currently the only way to switch between boxes is by clicking, I may add the ability to use tab/enter"
+          "You can click to select boxes, or tab through them."
     prompt.add_text(msg, "freesansbold.ttf", 20, True, "Black")
     prompt.v_space(15)
     prompt.add_text_by_pos("strength:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
@@ -226,4 +234,25 @@ def input_example(native_screen_size):
     prompt.add_button("Continue", 25,
                       prompt.subsurface.get_width() / 2 - 60,
                       prompt.subsurface.get_height() - 40, 120, 40, "okay")
+    return prompt
+
+def door_placement(win_w, win_h, loc, fg):
+    prompt = Prompt(win_w / 2 - 200, win_h / 2 - 150, 400, 300, "DarkRed")
+    prompt.output_dict["column"] = loc[0]
+    prompt.output_dict["row"] = loc[1]
+    prompt.output_dict["fg"] = fg
+    msg = "New Door"
+    prompt.add_text(msg, "freesansbold.ttf", 30, True, "Black")
+    msg = "Please enter the attributes for the door"
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text_by_pos("world:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
+    prompt.add_text_by_pos("start x:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
+    prompt.add_text_by_pos("start y:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
+    prompt.add_text_box(80, prompt.curr_line_y, 160, "world")
+    prompt.add_text_box(80, prompt.curr_line_y + 20, 160, "x")
+    prompt.add_text_box(80, prompt.curr_line_y + 40, 160, "y")
+    prompt.add_button("Place", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, "door")
     return prompt

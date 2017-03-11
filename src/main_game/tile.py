@@ -4,7 +4,6 @@
 
 import pygame
 import constants
-from constants import IMPASSIBLE_OVERLAY_PATH
 
 
 class Tile(pygame.sprite.Sprite):
@@ -26,7 +25,7 @@ class Tile(pygame.sprite.Sprite):
         image = spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (width, width))
         # Stores an alternate image, for purposes of the level editor
-        impassible_overlay = pygame.image.load(IMPASSIBLE_OVERLAY_PATH).convert_alpha()
+        impassible_overlay = pygame.image.load(constants.IMPASSIBLE_OVERLAY_PATH).convert_alpha()
         self.impassible_overlay = pygame.transform.smoothscale(impassible_overlay, (width, width))
         self.alt_img = pygame.transform.smoothscale(image, (width, width))
         self.alt_img.blit(self.impassible_overlay, (0, 0))

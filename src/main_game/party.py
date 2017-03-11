@@ -5,6 +5,7 @@
 import pygame
 
 from util import Vec2D
+from door import Door
 
 
 class Party(pygame.sprite.Sprite):
@@ -44,6 +45,9 @@ class Party(pygame.sprite.Sprite):
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
+    def set_pos(self, pos):
+        self.position = Vec2D(pos[0], pos[1])
+
     def update_rect(self):
         self.rect.center = self.position.to_tuple()
         self.hitbox.center = self.position.to_tuple()
@@ -52,6 +56,7 @@ class Party(pygame.sprite.Sprite):
         self.hitbox = rect
 
     def simulate(self, dt):
+        door = None
         self.position += self.velocity*dt
         self.update_rect()
 
@@ -61,14 +66,15 @@ class Party(pygame.sprite.Sprite):
         tiles = self.world.collide_tiles(self)
         collision = False
         for tile in tiles:
-            '''if tile.door:
-                pass'''
+            if isinstance(tile, Door):
+                door = tile
             if not tile.passable:
                 collision = True
-
         if collision:
             self.position -= self.velocity * dt
             self.update_rect()
+
+        return door
 
     def draw(self, window):
         window.blit(self.image,

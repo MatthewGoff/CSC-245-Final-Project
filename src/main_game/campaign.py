@@ -25,11 +25,11 @@ class Campaign:
 
         self.fullscreen = True
         self.init_screen()
-        self.world = World.load("olin107")
+        self.world = World.load("door_demo1")
         enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
         enemy_rect = pygame.Rect(2016, 224, 32, 32)
         enemy_image = enemy_image.subsurface(enemy_rect).copy()
-        enemy = Party((20, 460),
+        enemy = Party((52, 460),
                       32,
                       (32, 32),
                       enemy_image,
@@ -76,6 +76,13 @@ class Campaign:
                                   self.world)
         self.camera.set_zoom(.3)
 
+    def change_world(self, world, party_coords):
+        self.world = World.load(world)
+        self.user.world = self.world
+        self.user.set_pos(party_coords)
+        self.world.add_party(self.user)
+        self.init_camera()
+
     def handle_events(self):
 
         keep_going = True
@@ -99,6 +106,7 @@ class Campaign:
 
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
+                print chr(key_pressed)
                 if key_pressed == pygame.K_a:
                     self.dx += -Campaign.USER_SPEED
                 elif key_pressed == pygame.K_d:
@@ -141,7 +149,9 @@ class Campaign:
         self.user.set_velocity(self.dx, self.dy)
 
     def simulate(self):
-        self.world.simulate()
+        door = self.world.simulate()
+        if door is not None:
+            self.change_world(door.dest_world, door.dest_coords)
 
     def draw(self):
         # Draw Background
@@ -194,7 +204,7 @@ class Campaign:
             self.apply_rules()
 
             # 3. Simulate
-            self.world.simulate()
+            self.simulate()
 
             # 4. Draw frame
             self.draw()
