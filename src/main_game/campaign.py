@@ -99,7 +99,6 @@ class Campaign:
 
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
-                print "|" + str(key_pressed) + "|"
                 if key_pressed == pygame.K_a:
                     self.dx += -Campaign.USER_SPEED
                 elif key_pressed == pygame.K_d:
