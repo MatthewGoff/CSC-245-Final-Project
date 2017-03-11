@@ -33,6 +33,9 @@ class AbilityBar:
             self.abilities[i].draw_icon(x, self.y + PADDING, window)
             x += ICON_SIZE + PADDING
 
+        pos = pygame.mouse.get_pos()
+        self.show_tooltip(window, pos)
+
     def click_ability(self, pos):
         x, y = pos[0], pos[1]
         left_bound = self.x + self.width/2 - (NUM_ABILITIES*ICON_SIZE + (NUM_ABILITIES - 1)*PADDING)/2
@@ -41,6 +44,16 @@ class AbilityBar:
         bot_bound = self.y + self.height - PADDING
         if x > left_bound and x < right_bound and y > top_bound and y < bot_bound:
             self.selected_ability = self.abilities[(x - left_bound)/(ICON_SIZE + PADDING)]
+
+    def show_tooltip(self, window, pos):
+        x, y = pos[0], pos[1]
+        left_bound = self.x + self.width / 2 - (NUM_ABILITIES * ICON_SIZE + (NUM_ABILITIES - 1) * PADDING) / 2
+        right_bound = self.x + self.width / 2 + (NUM_ABILITIES * ICON_SIZE + (NUM_ABILITIES - 1) * PADDING) / 2
+        top_bound = self.y + PADDING
+        bot_bound = self.y + self.height - PADDING
+        if x > left_bound and x < right_bound and y > top_bound and y < bot_bound:
+            tooltip = self.abilities[(x - left_bound) / (ICON_SIZE + PADDING)].tooltip
+            tooltip.draw(window)
 
     def get_valid_targets(self, friends, enemies):
         valid_targets = []

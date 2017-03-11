@@ -4,6 +4,7 @@
 
 import pygame
 from ability import Ability
+from tooltip import Tooltip
 
 WIDTH = 20
 HEIGHT = 20
@@ -12,9 +13,8 @@ ICON_HEIGHT = 40
 ENERGY_COST = 30
 DAMAGE = 25
 
+
 class Fireball(Ability):
-
-
 
     def __init__(self, x, y, int):
         pygame.sprite.Sprite.__init__(self)
@@ -37,6 +37,10 @@ class Fireball(Ability):
         self.melee = False
         self.friends_usable = False
         self.enemies_usable = True
+
+        self.tooltip = Tooltip("Fireball",
+                               "30 Energy",
+                               "Hurls a fiery ball at the enemy")
 
     @classmethod
     def apply_effects(cls, enemy):

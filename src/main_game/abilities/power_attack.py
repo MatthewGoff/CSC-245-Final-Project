@@ -4,6 +4,7 @@
 
 import pygame
 from ability import Ability
+from tooltip import Tooltip
 
 ICON_WIDTH = 40
 ICON_HEIGHT = 40
@@ -27,6 +28,11 @@ class PowerAttack(Ability):
         self.melee = True
         self.friends_usable = False
         self.enemies_usable = True
+
+        self.tooltip = Tooltip("Power Attack",
+                               "25 Health",
+                               "An all-out melee attack, the execution of which "
+                               "will be painful for both you and the enemy")
 
     @classmethod
     def apply_effects(cls, enemy):

@@ -4,6 +4,7 @@
 
 import pygame
 from ability import Ability
+from tooltip import Tooltip
 
 ICON_WIDTH = 40
 ICON_HEIGHT = 40
@@ -29,6 +30,10 @@ class Heal(Ability):
         self.melee = False
         self.friends_usable = True
         self.enemies_usable = False
+
+        self.tooltip = Tooltip("Heal",
+                               "40 Energy",
+                               "Restores the health of an ally (or yourself!)")
 
     @classmethod
     def apply_effects(cls, friend):
