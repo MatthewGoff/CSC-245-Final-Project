@@ -53,6 +53,7 @@ class Party(pygame.sprite.Sprite):
     def update_rect(self):
         self.rect.center = self.position.to_tuple()
         self.hitbox.center = self.position.to_tuple()
+        self.hitbox.center = (self.hitbox.center[0], self.hitbox.center[1] + 10)
 
     def change_hitbox(self, rect):
         self.hitbox = rect

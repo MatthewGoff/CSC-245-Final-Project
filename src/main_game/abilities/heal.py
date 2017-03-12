@@ -17,7 +17,6 @@ class Heal(Ability):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-
         self.name = "Heal"
 
         self.rect = None

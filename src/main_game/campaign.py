@@ -20,6 +20,7 @@ from abilities.power_attack import PowerAttack
 from party_layouts import PartyTracker
 import __main__
 
+START_WORLD = "olin107"
 
 class Campaign:
     WINDOW_SIZE = (640, 480)
@@ -30,13 +31,13 @@ class Campaign:
 
         self.fullscreen = True
         self.init_screen()
-        self.world = World.load("door_demo1")
+        self.world = World.load(START_WORLD)
 
         self.user = None
         self.enemy = None
 
         self.party_tracker = PartyTracker()
-        self.party_tracker.init_olin107(self, self.battle)
+        self.party_tracker.init(START_WORLD, self, self.battle)
         self.init_camera()
 
         self.spritesheet = pygame.image.load(
@@ -70,7 +71,7 @@ class Campaign:
         self.world.parties.remove(self.user)
         self.party_tracker.save_world_state(self.world)
         self.world = World.load(world)
-        self.world.parties = self.party_tracker.get_parties(world)
+        self.world.parties = self.party_tracker.get_parties(world, self, self.battle)
         self.user.world = self.world
         self.user.set_pos(party_coords)
         self.world.add_party(self.user)
@@ -102,7 +103,6 @@ class Campaign:
 
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
-                print chr(key_pressed)
                 if key_pressed == pygame.K_a:
                     self.dx += -Campaign.USER_SPEED
                 elif key_pressed == pygame.K_d:
@@ -170,7 +170,7 @@ class Campaign:
         if enemy != self.user:
             self.dx = 0
             self.dy = 0
-            if battle.battle(self.my_win, self.user, self.enemy):
+            if battle.battle(self.my_win, self.user, enemy):
                 self.world.remove_party(enemy)
                 self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))
                 self.in_prompt = True
