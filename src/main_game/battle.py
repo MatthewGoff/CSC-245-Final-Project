@@ -144,7 +144,7 @@ class Battle:
                 target = t
         player = self.combatants[self.curr_combatant]
         if not target is None and player.can_use(self.ability_bar.selected_ability, target):
-            player.use_ability(self.ability_bar.selected_ability, target)
+            player.use_ability(self.ability_bar.selected_ability, target, self.effects)
             self.next_turn()
 
     # Attacks random opponent
@@ -155,14 +155,14 @@ class Battle:
 
             if self.friendlies.count(curr_combatant) > 0:
                 if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
-                    curr_combatant.use_ability(Heal, curr_combatant)
+                    curr_combatant.use_ability(Heal, curr_combatant, self.effects)
                 else:
                     rand_index = random.randint(0, len(self.enemies)-1)
                     curr_combatant.attack(self.enemies[rand_index])
                 self.next_turn()
             else:
                 if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
-                    curr_combatant.use_ability(Heal, curr_combatant)
+                    curr_combatant.use_ability(Heal, curr_combatant, self.effects)
                 else:
                     rand_index = random.randint(0, len(self.friendlies) - 1)
                     curr_combatant.attack(self.friendlies[rand_index])
@@ -193,9 +193,12 @@ class Battle:
                 self.enemy_sprites.remove(p.energy)
                 self.bars.remove(p.bar_bg)
 
-    '''def apply_effects(self):
+    def apply_effects(self):
         for e in self.effects:
-            if e.end < self.round:'''
+            if e.end < self.round:
+                self.effects.remove(e)
+            elif e.start <= self.round <= e.end:
+                e.affect_targets(self.round)
 
     # Gets rids of dead combatants and checks for win
     def apply_rules(self):

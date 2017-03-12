@@ -50,8 +50,9 @@ class Player(pygame.sprite.Sprite):
         if enemy.hp.curr == 0:
             enemy.dead = True
 
-    def use_ability(self, ability, target):
+    def use_ability(self, ability, target, effects):
         ability.apply_cost(self)
+        ability.add_effect(effects)
         ability.apply_effects(target)
 
     def can_use(self, ability, target):

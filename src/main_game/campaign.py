@@ -12,6 +12,7 @@ from button import Button
 from util import Vec2D
 import constants
 from prompt import campaign_start, death, battle_won, input_example
+import __main__
 
 
 class Campaign:
@@ -98,6 +99,9 @@ class Campaign:
                                 self.in_prompt = False
                             elif clicked_obj.action is "exit":
                                 keep_going = False
+                            elif clicked_obj.action is "restart":
+                                keep_going = False
+                                __main__.main()
                 elif event.type == pygame.KEYDOWN:
                     key_pressed = event.dict['key'] % 256
                     self.prompt.handle_keydown(key_pressed)
@@ -207,6 +211,7 @@ class Campaign:
             self.simulate()
 
             # 4. Draw frame
-            self.draw()
+            if keep_going:
+                self.draw()
 
         self.quit()

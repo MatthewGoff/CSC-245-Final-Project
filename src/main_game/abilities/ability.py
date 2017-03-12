@@ -33,3 +33,7 @@ class Ability(pygame.sprite.Sprite):
     @classmethod
     def can_be_used_on(cls, target):
         return True
+
+    @classmethod
+    def add_effect(cls, effects):
+        pass
