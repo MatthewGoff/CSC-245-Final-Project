@@ -214,7 +214,7 @@ def battle_won(native_screen_size):
     prompt.add_text("EXTREMELY GOOD STUFF!", "freesansbold.ttf", 25, True, "Black")
     prompt.add_button("Exit", 25,
                       prompt.subsurface.get_width() / 2 - 60,
-                      prompt.subsurface.get_height() - 40, 120, 40, "exit")
+                      prompt.subsurface.get_height() - 40, 120, 40, "okay")
     return prompt
 
 # A demo for text input

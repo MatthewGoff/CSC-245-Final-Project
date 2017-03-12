@@ -170,6 +170,8 @@ class Campaign:
     def battle(self, enemy):
         # A battle between the plyer and the enemy party needs resolving
         if enemy != self.user:
+            self.dx = 0
+            self.dy = 0
             if demo(self.my_win):
                 self.world.remove_party(enemy)
                 self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))

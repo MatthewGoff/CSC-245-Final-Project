@@ -55,6 +55,11 @@ class Party(pygame.sprite.Sprite):
     def change_hitbox(self, rect):
         self.hitbox = rect
 
+    '''def merge_with(self, party2):
+        for player in party2.members:
+            self.members += [player]
+        party2.world.remove_party(party2)'''
+
     def simulate(self, dt):
         door = None
         self.position += self.velocity*dt
