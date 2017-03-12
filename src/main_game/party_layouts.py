@@ -87,7 +87,7 @@ class PartyTracker:
                             battle_listener)
         enemy1 = Player(550, 200, 72, 72, "../assets/images/zombie_magic.png", 48*4, 0, 48, 48, False)
         enemy2 = Player(550, 200, 72, 72, "../assets/images/zombie2.png", 48*4, 0, 48, 48, False)
-        enemy3 = Player(550, 200, 72, 72, "../assets/images/zombie1.png", 48*4, 0, 48, 48, False)
+        enemy3 = Player(550, 200, 72, 72, "../assets/images/zombie.png", 48*4, 0, 48, 48, False)
         enemies = [enemy1, enemy2, enemy3]
         for e in enemies:
             e.change_hp(-35)
