@@ -64,7 +64,7 @@ class PartyTracker:
 
     def olinhallway(self, campaign, battle_listener):
         enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
-        enemy_rect = pygame.Rect(2016, 224, 32, 32)
+        enemy_rect = pygame.Rect(384, 160, 32, 32)
         enemy_image = enemy_image.subsurface(enemy_rect).copy()
         enemy_party = Party((532, 540),
                       32,
@@ -72,21 +72,25 @@ class PartyTracker:
                       enemy_image,
                       campaign.world,
                       battle_listener)
-        enemy1 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
+        enemy1 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 384, 160, 32, 32, False)
         enemy1.change_hp(100)
         enemy_party.members += [enemy1]
+
+        enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
+        enemy_rect = pygame.Rect(64, 128, 32, 32)
+        enemy_image = enemy_image.subsurface(enemy_rect).copy()
         enemy_party2 = Party((320, 400),
                             32,
                             (32, 32),
                             enemy_image,
                             campaign.world,
                             battle_listener)
-        enemy1 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
-        enemy2 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
-        enemy3 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
+        enemy1 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 64, 128, 32, 32, False)
+        enemy2 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 64, 128, 32, 32, False)
+        enemy3 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 64, 128, 32, 32, False)
         enemies = [enemy1, enemy2, enemy3]
         for e in enemies:
-            e.change_hp(-30)
+            e.change_hp(-35)
         enemy_party2.members += enemies
         parties = [enemy_party, enemy_party2]
         self.party_data["olinhallway"] = parties

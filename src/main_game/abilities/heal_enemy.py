@@ -1,4 +1,4 @@
-# Heals self or ally
+# The enemy's version of Heal
 # Author: Caleb
 # Winter 2017
 
@@ -8,7 +8,7 @@ from tooltip import Tooltip
 
 ICON_WIDTH = 40
 ICON_HEIGHT = 40
-HEAL_AMOUNT = 200
+HEAL_AMOUNT = 30
 ENERGY_COST = 40
 
 class Heal(Ability):

@@ -8,7 +8,6 @@ from main_game.button import Button
 from main_game.util import draw_text
 from world_editor.level_builder import LevelBuilder
 from main_game.campaign import Campaign
-from main_game.battle import demo
 
 class MainMenu:
     WINDOW_SIZE = (600, 400)

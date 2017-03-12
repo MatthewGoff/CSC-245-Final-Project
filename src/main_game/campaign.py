@@ -170,7 +170,7 @@ class Campaign:
         if enemy != self.user:
             self.dx = 0
             self.dy = 0
-            if battle.battle(self.my_win, self.user, enemy):
+            if battle.battle(self.user, enemy, self.my_win, self.world.name):
                 self.world.remove_party(enemy)
                 self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))
                 self.in_prompt = True

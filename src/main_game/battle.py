@@ -7,7 +7,7 @@ from player import Player
 from ability_bar import AbilityBar
 from abilities.fireball import Fireball
 from abilities.energize import Energize
-from abilities.heal import Heal
+from abilities.heal_enemy import Heal
 from abilities.power_attack import PowerAttack
 from prompt import battle_start
 from constants import NATIVE_SCREEN_SIZE
@@ -31,8 +31,11 @@ class Battle:
         self.fullscreen = fullscreen
 
         self.loc = location
-        if location == "demo":
+        if location == "olin107":
             self.bg = pygame.image.load("../assets/images/battle_demo_bg.jpg").convert_alpha()
+            self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
+        elif location == "olinhallway":
+            self.bg = pygame.image.load("../assets/images/olinhallway_bg.jpg").convert_alpha()
             self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
 
         self.party1 = party1
@@ -278,22 +281,8 @@ class Battle:
 
         return self.won
 
-
-'''def demo(window):
+def battle(party1, party2, window, location):
     pygame.display.set_mode(Battle.WINDOW_SIZE, pygame.FULLSCREEN)
-    player = Player(20, 200, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, True)
-    player.abilities = [Energize(), Fireball(0,0,0), PowerAttack(), Heal()]
-    friend = Player(20, 350, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, False)
-    enemy = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png",2016, 224, 32, 32, False)
-    enemy2 = Player(550, 50, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
-    battle = Battle([player, friend], [enemy, enemy2], "demo", window, False)
-    return battle.run()'''
-
-def demo(window):
-    pass
-
-def battle(window, party1, party2):
-    pygame.display.set_mode(Battle.WINDOW_SIZE, pygame.FULLSCREEN)
-    battle = Battle(party1, party2, "demo", window, False)
+    battle = Battle(party1, party2, location, window, False)
     return battle.run()
 
