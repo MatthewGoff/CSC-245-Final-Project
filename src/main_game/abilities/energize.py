@@ -29,6 +29,7 @@ class Energize(Ability):
         self.melee = False
         self.friends_usable = True
         self.enemies_usable = False
+        self.has_effect = False
 
         self.tooltip = Tooltip("Energize",
                                "No Cost",

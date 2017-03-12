@@ -31,6 +31,10 @@ class ResourceBar(pygame.sprite.Sprite):
         self.image = pygame.Surface((int(self.width*scalar), BAR_WIDTH,))
         self.image.fill(pygame.color.Color(self.color))
 
+    def change_max(self, amount):
+        self.max += amount
+        self.curr += amount
+
     def set_pos(self, x, y):
         self.rect = pygame.Rect(x, y, self.width, BAR_WIDTH)
 

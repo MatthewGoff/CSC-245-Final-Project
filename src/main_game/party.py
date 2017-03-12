@@ -42,6 +42,8 @@ class Party(pygame.sprite.Sprite):
 
         self.battle_listener = battle_listener
 
+        self.members = []
+
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
@@ -55,10 +57,10 @@ class Party(pygame.sprite.Sprite):
     def change_hitbox(self, rect):
         self.hitbox = rect
 
-    '''def merge_with(self, party2):
+    def merge_with(self, party2):
         for player in party2.members:
             self.members += [player]
-        party2.world.remove_party(party2)'''
+        party2.world.remove_party(party2)
 
     def simulate(self, dt):
         door = None

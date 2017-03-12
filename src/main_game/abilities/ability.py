@@ -5,7 +5,6 @@
 import pygame
 
 class Ability(pygame.sprite.Sprite):
-    pass
 
     def draw_icon(self, x, y, window):
         window.blit(self.icon, (x, y))
@@ -34,6 +33,8 @@ class Ability(pygame.sprite.Sprite):
     def can_be_used_on(cls, target):
         return True
 
-    @classmethod
-    def add_effect(cls, effects):
-        pass
+    def add_effect(self, effects, target, round):
+        self.effect.start = round + 1
+        self.effect.end = self.effect.start + self.effect.duration
+        self.effect.target = target
+        effects += [self.effect]

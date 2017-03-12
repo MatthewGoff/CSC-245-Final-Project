@@ -42,6 +42,9 @@ class Player(pygame.sprite.Sprite):
         self.hp.set_pos(x, y - BAR_WIDTH*2)
         self.bar_bg.set_pos(x, y - BAR_WIDTH*2)
 
+    def change_hp(self, amount):
+        self.hp.change_max(amount)
+
     def attack(self, enemy):
         amount = random.randint(15, 25)
 
@@ -50,9 +53,10 @@ class Player(pygame.sprite.Sprite):
         if enemy.hp.curr == 0:
             enemy.dead = True
 
-    def use_ability(self, ability, target, effects):
+    def use_ability(self, ability, target, effects, round):
         ability.apply_cost(self)
-        ability.add_effect(effects)
+        if ability.has_effect:
+            ability.add_effect(effects, target, round)
         ability.apply_effects(target)
 
     def can_use(self, ability, target):

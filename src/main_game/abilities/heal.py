@@ -12,6 +12,9 @@ HEAL_AMOUNT = 50
 ENERGY_COST = 40
 
 class Heal(Ability):
+
+    has_effect = False
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 

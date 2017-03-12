@@ -32,13 +32,13 @@ class MainMenu:
         rect.top += 80
         self.buttons += [Button(rect.copy(),
                                 40,
-                                "Battle Demo",
-                                self.battle)]
+                                "World Editor",
+                                self.editor)]
         rect.top += 80
         self.buttons += [Button(rect.copy(),
                                 40,
-                                "World Editor",
-                                self.editor)]
+                                "Credits",
+                                self.credits)]
 
         self.icon = pygame.image.load("../assets/icon/icon_new2.png").convert_alpha()
         self.icon = pygame.transform.smoothscale(self.icon, MainMenu.ICON_SIZE)
@@ -60,6 +60,9 @@ class MainMenu:
         pygame.quit()
         level_builder = LevelBuilder()
         level_builder.run()
+
+    def credits(self):
+        pass
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -87,7 +90,7 @@ class MainMenu:
                   self.window)
 
         draw_text((550, 387),
-                  "Version 0.0.1",
+                  "Version 0.0.2",
                   20,
                   self.window)
 

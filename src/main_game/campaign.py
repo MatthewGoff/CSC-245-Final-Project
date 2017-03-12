@@ -7,11 +7,17 @@ import pygame
 from camera import BoundCamera
 from world import World
 from party import Party
-from battle import demo
+import battle
 from button import Button
 from util import Vec2D
 import constants
 from prompt import campaign_start, death, battle_won, input_example
+from player import Player
+from abilities.fireball import Fireball
+from abilities.energize import Energize
+from abilities.heal import Heal
+from abilities.power_attack import PowerAttack
+from party_layouts import PartyTracker
 import __main__
 
 
@@ -25,27 +31,12 @@ class Campaign:
         self.fullscreen = True
         self.init_screen()
         self.world = World.load("door_demo1")
-        enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
-        enemy_rect = pygame.Rect(2016, 224, 32, 32)
-        enemy_image = enemy_image.subsurface(enemy_rect).copy()
-        enemy = Party((52, 460),
-                      32,
-                      (32, 32),
-                      enemy_image,
-                      self.world,
-                      self.battle)
-        self.world.add_party(enemy)
 
-        player_image = pygame.image.load("../assets/images/player.png").convert_alpha()
-        player_rect = pygame.Rect(0, 0, 48, 48)
-        player_image = player_image.subsurface(player_rect).copy()
-        self.user = Party(self.world.get_border().center,
-                          32,
-                          (10,10),
-                          player_image,
-                          self.world,
-                          self.battle)
-        self.world.add_party(self.user)
+        self.user = None
+        self.enemy = None
+
+        self.party_tracker = PartyTracker()
+        self.party_tracker.init_olin107(self, self.battle)
         self.init_camera()
 
         self.spritesheet = pygame.image.load(
@@ -76,7 +67,10 @@ class Campaign:
         self.camera.set_zoom(.3)
 
     def change_world(self, world, party_coords):
+        self.world.parties.remove(self.user)
+        self.party_tracker.save_world_state(self.world)
         self.world = World.load(world)
+        self.world.parties = self.party_tracker.get_parties(world)
         self.user.world = self.world
         self.user.set_pos(party_coords)
         self.world.add_party(self.user)
@@ -172,11 +166,11 @@ class Campaign:
         pygame.display.update()
 
     def battle(self, enemy):
-        # A battle between the plyer and the enemy party needs resolving
+        # A battle between the player and the enemy party needs resolving
         if enemy != self.user:
             self.dx = 0
             self.dy = 0
-            if demo(self.my_win):
+            if battle.battle(self.my_win, self.user, self.enemy):
                 self.world.remove_party(enemy)
                 self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))
                 self.in_prompt = True

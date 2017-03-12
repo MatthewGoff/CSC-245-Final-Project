@@ -37,8 +37,8 @@ class Battle:
 
         self.party1 = party1
         self.party2 = party2
-        self.friendlies = party1#.members
-        self.enemies = party2#.members
+        self.friendlies = party1.members
+        self.enemies = party2.members
 
         self.friendly_sprites = pygame.sprite.Group()
         self.enemy_sprites = pygame.sprite.Group()
@@ -59,8 +59,9 @@ class Battle:
 
         self.turn_indicator = pygame.image.load("../assets/images/turn_indicator.png").convert_alpha()
 
-        self.round = 0
+        self.round = 1
         self.curr_combatant = -1
+        self.effects_applied = False
         self.next_turn()
 
         self.in_prompt = True
@@ -124,9 +125,11 @@ class Battle:
         return keep_going
 
     def next_turn(self):
-        self.round += 1
+        print self.round
         if self.curr_combatant == len(self.combatants) - 1:
             self.curr_combatant = 0
+            self.round += 1
+            self.effects_applied = False
         else:
             self.curr_combatant += 1
         if self.combatants[self.curr_combatant].is_human:
@@ -144,7 +147,7 @@ class Battle:
                 target = t
         player = self.combatants[self.curr_combatant]
         if not target is None and player.can_use(self.ability_bar.selected_ability, target):
-            player.use_ability(self.ability_bar.selected_ability, target, self.effects)
+            player.use_ability(self.ability_bar.selected_ability, target, self.effects, self.round)
             self.next_turn()
 
     # Attacks random opponent
@@ -155,14 +158,14 @@ class Battle:
 
             if self.friendlies.count(curr_combatant) > 0:
                 if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
-                    curr_combatant.use_ability(Heal, curr_combatant, self.effects)
+                    curr_combatant.use_ability(Heal, curr_combatant, self.effects, self.round)
                 else:
                     rand_index = random.randint(0, len(self.enemies)-1)
                     curr_combatant.attack(self.enemies[rand_index])
                 self.next_turn()
             else:
                 if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
-                    curr_combatant.use_ability(Heal, curr_combatant, self.effects)
+                    curr_combatant.use_ability(Heal, curr_combatant, self.effects, self.round)
                 else:
                     rand_index = random.randint(0, len(self.friendlies) - 1)
                     curr_combatant.attack(self.friendlies[rand_index])
@@ -194,11 +197,13 @@ class Battle:
                 self.bars.remove(p.bar_bg)
 
     def apply_effects(self):
-        for e in self.effects:
-            if e.end < self.round:
-                self.effects.remove(e)
-            elif e.start <= self.round <= e.end:
-                e.affect_targets(self.round)
+        if not self.effects_applied:
+            for e in self.effects:
+                if e.end < self.round:
+                    self.effects.remove(e)
+                elif e.start <= self.round <= e.end:
+                    e.affect_targets(self.round)
+            self.effects_applied = True
 
     # Gets rids of dead combatants and checks for win
     def apply_rules(self):
@@ -209,7 +214,7 @@ class Battle:
         if self.curr_combatant >= len(self.combatants):
             self.curr_combatant = 0
 
-        #self.apply_effects()
+        self.apply_effects()
 
         if len(self.friendlies) == 0:
             keep_going = False
@@ -274,7 +279,7 @@ class Battle:
         return self.won
 
 
-def demo(window):
+'''def demo(window):
     pygame.display.set_mode(Battle.WINDOW_SIZE, pygame.FULLSCREEN)
     player = Player(20, 200, 68, 98, "../assets/images/player.png", 384, 0, 38, 48, True)
     player.abilities = [Energize(), Fireball(0,0,0), PowerAttack(), Heal()]
@@ -282,5 +287,13 @@ def demo(window):
     enemy = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png",2016, 224, 32, 32, False)
     enemy2 = Player(550, 50, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
     battle = Battle([player, friend], [enemy, enemy2], "demo", window, False)
+    return battle.run()'''
+
+def demo(window):
+    pass
+
+def battle(window, party1, party2):
+    pygame.display.set_mode(Battle.WINDOW_SIZE, pygame.FULLSCREEN)
+    battle = Battle(party1, party2, "demo", window, False)
     return battle.run()
 

@@ -13,6 +13,8 @@ from constants import TILE_WIDTH
 class World:
 
     def __init__(self, x, y, spritesheet):
+        self.name = None
+
         # x = columns, y = rows
         self.width = x
         self.height = y
@@ -47,6 +49,7 @@ class World:
         world = World(data["width = "], data["height = "], pygame.image.load(
             "../assets/images/TheSheet.png").convert_alpha())
         world.import_world("../assets/worlds/"+name+".json")
+        world.name = name
         return world
 
     def add_party(self, party):

@@ -5,13 +5,15 @@
 import pygame
 from ability import Ability
 from tooltip import Tooltip
+from effect import Effect
 
 WIDTH = 20
 HEIGHT = 20
 ICON_WIDTH = 40
 ICON_HEIGHT = 40
 ENERGY_COST = 30
-DAMAGE = 25
+DAMAGE = 40
+BURN_DAMAGE = 10
 
 
 class Fireball(Ability):
@@ -37,10 +39,13 @@ class Fireball(Ability):
         self.melee = False
         self.friends_usable = False
         self.enemies_usable = True
+        self.has_effect = True
+
+        self.effect = Burning()
 
         self.tooltip = Tooltip("Fireball",
                                "30 Energy",
-                               "Hurls a fiery ball at the enemy")
+                               "Hurls a fiery ball at the enemy, causing it to burn over time")
 
     @classmethod
     def apply_effects(cls, enemy):
@@ -55,3 +60,15 @@ class Fireball(Ability):
     @classmethod
     def can_be_used_by(cls, user):
         return user.energy.curr >= ENERGY_COST
+
+class Burning(Effect):
+
+    def __init__(self):
+        Effect.__init__(self)
+        self.duration = 2
+
+    def affect_targets(self, round):
+        print str(self.target) + " hp -10"
+        print "round: " + str(round)
+        print str(self.end)
+        self.target.hp.change(-BURN_DAMAGE)

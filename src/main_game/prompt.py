@@ -6,6 +6,7 @@ import pygame
 
 from button import Button
 from util import TextInputBox
+from constants import TILE_WIDTH
 
 BORDER = 4
 BORDER_COLOR = "Black"
@@ -215,7 +216,7 @@ def battle_won(native_screen_size):
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
     prompt.add_text("EXTREMELY GOOD STUFF!", "freesansbold.ttf", 25, True, "Black")
-    prompt.add_button("Exit", 25,
+    prompt.add_button("Continue", 25,
                       prompt.subsurface.get_width() / 2 - 60,
                       prompt.subsurface.get_height() - 40, 120, 40, "okay")
     return prompt
@@ -250,6 +251,27 @@ def door_placement(win_w, win_h, loc, fg):
     prompt.output_dict["column"] = loc[0]
     prompt.output_dict["row"] = loc[1]
     prompt.output_dict["fg"] = fg
+    msg = "New Door"
+    prompt.add_text(msg, "freesansbold.ttf", 30, True, "Black")
+    msg = "Please enter the attributes for the door"
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text_by_pos("world:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
+    prompt.add_text_by_pos("start x:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
+    prompt.add_text_by_pos("start y:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
+    prompt.add_text_box(80, prompt.curr_line_y, 160, "world")
+    prompt.add_text_box(80, prompt.curr_line_y + 20, 160, "x")
+    prompt.add_text_box(80, prompt.curr_line_y + 40, 160, "y")
+    prompt.add_button("Place", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, "door")
+    return prompt
+
+# In progress/draft
+def party_placement(win_w, win_h, loc, player_num):
+    prompt = Prompt(win_w / 2 - 200, win_h / 2 - 150, 400, 300, "DarkRed")
+    prompt.output_dict["x"] = loc[0]
+    prompt.output_dict["y"] = loc[1]
     msg = "New Door"
     prompt.add_text(msg, "freesansbold.ttf", 30, True, "Black")
     msg = "Please enter the attributes for the door"

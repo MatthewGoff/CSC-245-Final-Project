@@ -8,7 +8,7 @@ from tooltip import Tooltip
 
 ICON_WIDTH = 40
 ICON_HEIGHT = 40
-DAMAGE = 40
+DAMAGE = 60
 HP_COST = 25
 
 class PowerAttack(Ability):
@@ -28,6 +28,7 @@ class PowerAttack(Ability):
         self.melee = True
         self.friends_usable = False
         self.enemies_usable = True
+        self.has_effect = False
 
         self.tooltip = Tooltip("Power Attack",
                                "25 Health",
