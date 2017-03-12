@@ -41,6 +41,7 @@ class Party(pygame.sprite.Sprite):
                                   hitbox[1])
 
         self.battle_listener = battle_listener
+        self.friendly = False
 
         self.members = []
 
@@ -54,6 +55,9 @@ class Party(pygame.sprite.Sprite):
         self.rect.center = self.position.to_tuple()
         self.hitbox.center = self.position.to_tuple()
         self.hitbox.center = (self.hitbox.center[0], self.hitbox.center[1] + 10)
+
+    def make_friendly(self):
+        self.friendly = True
 
     def change_hitbox(self, rect):
         self.hitbox = rect
@@ -70,7 +74,10 @@ class Party(pygame.sprite.Sprite):
 
         parties = self.world.collide_parties(self)
         for party in parties:
-            self.battle_listener(party)
+            if not party.friendly:
+                self.battle_listener(party)
+            else:
+                self.merge_with(party)
         tiles = self.world.collide_tiles(self)
         collision = False
         for tile in tiles:

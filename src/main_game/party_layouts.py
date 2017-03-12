@@ -55,6 +55,7 @@ class PartyTracker:
                      player_image,
                      campaign.world,
                      battle_listener)
+        user.make_friendly()
         campaign.user = user
         player = Player(20, 200, 72, 72, "../assets/images/player.png", 384, 0, 48, 48, True)
         player.abilities = [Energize(), Fireball(0, 0, 0), PowerAttack(), Heal()]
@@ -92,7 +93,21 @@ class PartyTracker:
         for e in enemies:
             e.change_hp(-35)
         enemy_party2.members += enemies
-        parties = [enemy_party, enemy_party2]
+
+        friend_image = pygame.image.load("../assets/images/player2.png").convert_alpha()
+        friend_rect = pygame.Rect(48, 0, 48, 48)
+        friend_image = friend_image.subsurface(friend_rect).copy()
+        friend_party = Party((320, 500),
+                             48,
+                             (48, 48),
+                              friend_image,
+                             campaign.world,
+                             battle_listener)
+        friend = Player(550, 200, 72, 72, "../assets/images/player2.png", 48 * 7, 0, 48, 48, False)
+        friend_party.members += [friend]
+        friend_party.make_friendly()
+
+        parties = [enemy_party, enemy_party2, friend_party]
         self.party_data["olinhallway"] = parties
         return parties
 
