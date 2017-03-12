@@ -34,7 +34,7 @@ class PartyTracker:
         enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
         enemy_rect = pygame.Rect(2016, 224, 32, 32)
         enemy_image = enemy_image.subsurface(enemy_rect).copy()
-        enemy = Party((90, 460),
+        enemy_party = Party((90, 460),
                       32,
                       (32, 32),
                       enemy_image,
@@ -42,9 +42,9 @@ class PartyTracker:
                       battle_listener)
         enemy1 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
         enemy2 = Player(550, 50, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
-        enemy.members += [enemy1, enemy2]
-        campaign.enemy = enemy
-        campaign.world.add_party(enemy)
+        enemy_party.members += [enemy1, enemy2]
+        campaign.enemy = enemy_party
+        campaign.world.add_party(enemy_party)
 
         player_image = pygame.image.load("../assets/images/player.png").convert_alpha()
         player_rect = pygame.Rect(0, 0, 48, 48)
@@ -66,16 +66,29 @@ class PartyTracker:
         enemy_image = pygame.image.load("../assets/images/OtherSheet.png").convert_alpha()
         enemy_rect = pygame.Rect(2016, 224, 32, 32)
         enemy_image = enemy_image.subsurface(enemy_rect).copy()
-        enemy = Party((90, 460),
+        enemy_party = Party((532, 540),
                       32,
                       (32, 32),
                       enemy_image,
                       campaign.world,
                       battle_listener)
         enemy1 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
-        enemy2 = Player(550, 50, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
-        enemy.members += [enemy1, enemy2]
-        parties = [enemy]
+        enemy1.change_hp(100)
+        enemy_party.members += [enemy1]
+        enemy_party2 = Party((320, 400),
+                            32,
+                            (32, 32),
+                            enemy_image,
+                            campaign.world,
+                            battle_listener)
+        enemy1 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
+        enemy2 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
+        enemy3 = Player(550, 200, 68, 98, "../assets/images/OtherSheet.png", 2016, 224, 32, 32, False)
+        enemies = [enemy1, enemy2, enemy3]
+        for e in enemies:
+            e.change_hp(-30)
+        enemy_party2.members += enemies
+        parties = [enemy_party, enemy_party2]
         self.party_data["olinhallway"] = parties
         return parties
 
