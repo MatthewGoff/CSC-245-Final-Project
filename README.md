@@ -3,6 +3,7 @@ Winter 17 class project
 
 ## Sources
 - Buttons: https://pythonprogramming.net/pygame-python-3-part-1-intro/
+- Avatars: http://www.chimakier.com/games/chimaki/avata/
 - Tiles:
 - 2gei Free Game Tiled, 60 different kinds of tiled: http://www.2gei.com/view/4149.html?order=name&page=4
 - RPG Maker VX Ace Tiled: http://www.rpgmakerweb.com/
