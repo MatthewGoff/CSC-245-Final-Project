@@ -200,9 +200,12 @@ def death(native_screen_size):
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
     prompt.add_text("GAME OVER", "freesansbold.ttf", 25, True, "Black")
-    prompt.add_button("Oh well", 25,
-                      prompt.subsurface.get_width() / 2 - 60,
+    prompt.add_button("Restart", 25,
+                      prompt.subsurface.get_width() / 2 - 130,
                       prompt.subsurface.get_height() - 40, 120, 40, "restart")
+    prompt.add_button("Exit", 25,
+                      prompt.subsurface.get_width() / 2 + 10,
+                      prompt.subsurface.get_height() - 40, 120, 40, "exit")
     return prompt
 
 # Post-battle message. The button resumes the campaign
