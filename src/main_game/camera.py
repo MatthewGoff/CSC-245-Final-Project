@@ -21,10 +21,12 @@ class Camera:
         self.zoom = zoom
 
     def zoom_in(self):
-        self.zoom *= Camera.ZOOM_FACTOR
+        if self.zoom > .2:
+            self.zoom *= Camera.ZOOM_FACTOR
 
     def zoom_out(self):
-        self.zoom /= Camera.ZOOM_FACTOR
+        if self.zoom < 1.2:
+            self.zoom /= Camera.ZOOM_FACTOR
 
     def update_viewport(self):
         pass
