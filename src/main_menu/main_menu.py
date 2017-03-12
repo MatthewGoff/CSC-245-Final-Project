@@ -26,7 +26,7 @@ class MainMenu:
                            MainMenu.BUTTON_SIZE[1])
         self.buttons += [Button(rect.copy(),
                                 40,
-                                "Campaign Demo",
+                                "Campaign",
                                 self.campaign)]
         rect.top += 80
         self.buttons += [Button(rect.copy(),
