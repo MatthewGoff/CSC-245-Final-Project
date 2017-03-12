@@ -205,7 +205,7 @@ def death(native_screen_size):
                       prompt.subsurface.get_height() - 40, 120, 40, "exit")
     return prompt
 
-# Closes game, currently
+# Post-battle message. The button resumes the campaign
 def battle_won(native_screen_size):
     prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
     msg = "You won!"

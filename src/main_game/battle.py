@@ -24,31 +24,45 @@ class Battle:
         self.won = False
         self.spritesheet = pygame.image.load(
             "../assets/images/player.png").convert_alpha()
+
         self.window = window
         self.width = Battle.WINDOW_SIZE[0]
         self.height = Battle.WINDOW_SIZE[1]
         self.fullscreen = fullscreen
-        self.pos = location
+
+        self.loc = location
         if location == "demo":
             self.bg = pygame.image.load("../assets/images/battle_demo_bg.jpg").convert_alpha()
             self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
+
         self.party1 = party1
         self.party2 = party2
         self.friendlies = party1#.members
         self.enemies = party2#.members
+
         self.friendly_sprites = pygame.sprite.Group()
         self.enemy_sprites = pygame.sprite.Group()
         self.bars = pygame.sprite.Group()
+
         self.font = pygame.font.SysFont("monospace", 25)
         self.turn_msg =  self.font.render(TURN_MSG, 0, (0, 0, 0))
+
         combatants = Queue.PriorityQueue()
         self.place_combatants(self.friendlies, self.enemies, combatants)
+
         self.ability_bar = AbilityBar(0, self.height - ABIL_BAR_HEIGHT, self.width, ABIL_BAR_HEIGHT, self.abilities)
         self.combatants = []
         for i in range(len(self.friendlies)+len(self.enemies)):
             self.combatants.append(combatants.get()[1])
+
+        self.effects = []
+
+        self.turn_indicator = pygame.image.load("../assets/images/turn_indicator.png").convert_alpha()
+
+        self.round = 0
         self.curr_combatant = -1
         self.next_turn()
+
         self.in_prompt = True
         self.prompt = battle_start((window.get_width(), window.get_height()))
 
@@ -110,6 +124,7 @@ class Battle:
         return keep_going
 
     def next_turn(self):
+        self.round += 1
         if self.curr_combatant == len(self.combatants) - 1:
             self.curr_combatant = 0
         else:
@@ -157,9 +172,7 @@ class Battle:
     def simulate(self):
         pass
 
-    # Gets rids of dead combatants and checks for win
-    def apply_rules(self):
-        keep_going = True
+    def remove_dead(self):
         for p in self.friendlies:
             if p.dead:
                 if p.is_human:
@@ -180,8 +193,20 @@ class Battle:
                 self.enemy_sprites.remove(p.energy)
                 self.bars.remove(p.bar_bg)
 
+    '''def apply_effects(self):
+        for e in self.effects:
+            if e.end < self.round:'''
+
+    # Gets rids of dead combatants and checks for win
+    def apply_rules(self):
+        keep_going = True
+
+        self.remove_dead()
+
         if self.curr_combatant >= len(self.combatants):
             self.curr_combatant = 0
+
+        #self.apply_effects()
 
         if len(self.friendlies) == 0:
             keep_going = False
@@ -191,6 +216,10 @@ class Battle:
 
         return keep_going
 
+    def draw_turn_indicator(self, window):
+        loc = (self.combatants[self.curr_combatant].x + 15, self.combatants[self.curr_combatant].y - 50)
+        window.blit(self.turn_indicator, loc)
+
     def draw(self, window):
         # Fill BG
         window.blit(self.bg, (0,0))
@@ -199,6 +228,7 @@ class Battle:
         self.bars.draw(window)
         self.friendly_sprites.draw(window)
         self.enemy_sprites.draw(window)
+        self.draw_turn_indicator(window)
         if self.in_prompt:
             self.prompt.draw(window)
         elif self.player_turn:
