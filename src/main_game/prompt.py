@@ -96,11 +96,10 @@ class Prompt:
         txt = font.render(string, True, pygame.color.Color(color))
         self.subsurface.blit(txt, (x,y))
 
+
     def handle_keydown(self, key_pressed):
-        # For debugging; delete later
-        if key_pressed == pygame.K_RETURN:
-            self.print_output()
-        elif key_pressed == pygame.K_TAB:
+        # Cycle through the text input boxes in the prompt
+        if key_pressed == pygame.K_TAB or key_pressed == pygame.K_RETURN:
             if self.active_text_box is not None:
                 index = self.text_boxes.index(self.active_text_box)
                 if index + 1 == len(self.text_boxes):
@@ -108,7 +107,7 @@ class Prompt:
                 self.active_text_box.deselect()
                 self.active_text_box = self.text_boxes[index + 1]
                 self.active_text_box.select()
-        #
+        # Make the active box handle input
         elif self.active_text_box is not None:
             self.active_text_box.handle_keydown(key_pressed)
 
@@ -124,6 +123,7 @@ class Prompt:
         self.buttons += [button]
         button.draw(self.subsurface)
 
+    # Key refers to the text box's corresponding key in the output dictionary
     def add_text_box(self, x, y, width, key):
         box = TextInputBox(x, y, width, key, self.output_dict)
         self.text_boxes += [box]
@@ -132,9 +132,11 @@ class Prompt:
     def v_space(self, height):
         self.curr_line_y += height
 
+    # For debugging
     def print_output(self):
         print str(self.output_dict)
 
+    # Returns the object the user clicked on
     def check_collisions(self, mouse_pos):
         clicked_obj = None
         adj_pos = (mouse_pos[0] - (self.x + BORDER), mouse_pos[1] - (self.y + BORDER))
@@ -142,7 +144,6 @@ class Prompt:
                            button.rect.collidepoint(adj_pos)]
         clicked_txt_boxes = [box for box in self.text_boxes if
                            box.rect.collidepoint(adj_pos)]
-
         if clicked_buttons:
             clicked_obj = clicked_buttons[0]
         elif clicked_txt_boxes:
@@ -192,6 +193,7 @@ def campaign_start(native_screen_size):
                       prompt.subsurface.get_height() - 40, 140, 40, "okay")
     return prompt
 
+# Game over death prompt (closes game, currently)
 def death(native_screen_size):
     prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
     msg = "You are dead."
@@ -203,6 +205,7 @@ def death(native_screen_size):
                       prompt.subsurface.get_height() - 40, 120, 40, "exit")
     return prompt
 
+# Closes game, currently
 def battle_won(native_screen_size):
     prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
     msg = "You won!"
@@ -214,6 +217,7 @@ def battle_won(native_screen_size):
                       prompt.subsurface.get_height() - 40, 120, 40, "exit")
     return prompt
 
+# A demo for text input
 def input_example(native_screen_size):
     prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
     msg = "Input Demo"
@@ -236,6 +240,8 @@ def input_example(native_screen_size):
                       prompt.subsurface.get_height() - 40, 120, 40, "okay")
     return prompt
 
+# Prompt that appears in editor when placing a door,
+# so the user can specify to where the door leads
 def door_placement(win_w, win_h, loc, fg):
     prompt = Prompt(win_w / 2 - 200, win_h / 2 - 150, 400, 300, "DarkRed")
     prompt.output_dict["column"] = loc[0]

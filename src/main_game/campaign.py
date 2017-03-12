@@ -1,6 +1,4 @@
 # Class runs the game loop for the campaign portion of the game.
-
-# Level Builder
 # Author: Caleb, Matt
 # Winter 2017
 

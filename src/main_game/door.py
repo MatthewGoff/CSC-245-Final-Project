@@ -1,6 +1,6 @@
 # Doors are tiles that act as portals between worlds.
-# Author Caleb
-# Version Winter 2017
+# Author: Caleb
+# Version: Winter 2017
 
 import pygame
 import constants
@@ -16,11 +16,13 @@ class Door(Tile):
         self.dest_coords = dest_coords
 
         width = constants.TILE_WIDTH
+        # The alternate image for a door makes obvious that it's a door in level editor
         door_overlay = pygame.image.load(constants.DOOR_OVERLAY_PATH).convert_alpha()
         self.door_overlay = pygame.transform.smoothscale(door_overlay, (width, width))
         self.alt_img = self.image.copy()
         self.alt_img.blit(self.door_overlay, (0,0))
 
+    # Exports the extra destination data
     def to_json(self):
         return {
             "world_loc": self.world_loc,

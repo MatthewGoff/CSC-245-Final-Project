@@ -1,4 +1,4 @@
-#
+# A sidebar sprite browser
 # Author: Caleb
 # Winter 17
 

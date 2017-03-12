@@ -71,15 +71,18 @@ class LevelBuilder:
             if tile is None:
                 self.world.add_foreground_tile(loc[0], loc[1], self.sprite_viewer.get_rect())
                 tile = self.world.foreground_tiles[loc[0]][loc[1]]
+                # Display the alternate image if the tile is impassible
                 if not tile.passable:
                     tile.swap_image()
             else:
                 tile.change_sprite(self.sprite_viewer.get_rect())
+                # Display the alternate image if the tile is impassible
                 if not tile.passable:
                     tile.swap_image()
         else:
             tile = self.world.get_bg_tile(loc[0], loc[1])
             tile.change_sprite(self.sprite_viewer.get_rect())
+            # Display the alternate image if the tile is impassible
             if not tile.passable:
                 tile.swap_image()
         # If the user has flipped the sprite horizontally, flip the tile's sprite
@@ -125,6 +128,7 @@ class LevelBuilder:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 keep_going = False
+            # Prompt has separate event handling
             elif self.in_prompt:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     button_pressed = event.dict['button']
@@ -132,6 +136,7 @@ class LevelBuilder:
                     clicked_obj = self.prompt.check_collisions(mouse_pos)
                     if button_pressed == 1:
                         if isinstance(clicked_obj, Button):
+                            # Do the correct action for the clicked button
                             if clicked_obj.action is "okay":
                                 self.in_prompt = False
                             elif clicked_obj.action is "exit":
@@ -146,7 +151,10 @@ class LevelBuilder:
                                 self.in_prompt = False
                 elif event.type == pygame.KEYDOWN:
                     key_pressed = event.dict['key'] % 256
+                    # Prompts handle their own input
                     self.prompt.handle_keydown(key_pressed)
+
+            # Regular input handling
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 # WASD keys pan the camera
@@ -199,6 +207,7 @@ class LevelBuilder:
                     if button_pressed == 1 or button_pressed == 3:
                         camera_pos = (mouse_pos[0] - LevelBuilder.SIDEBAR_WIDTH,
                                       mouse_pos[1])
+                        # Translates from absolute pixel position of click to column/row
                         world_pos = self.camera.get_click_location(camera_pos)
 
                         clicked_tiles = [tile for tile in self.world.bg_sprites
@@ -216,8 +225,10 @@ class LevelBuilder:
                             # Toggle tile passability
                             if pygame.key.get_mods() & pygame.KMOD_CTRL:
                                 keep_going = self.toggle_tile_passability(click_loc, is_foreground)
+                            # Toggle whether the tile is a door
                             elif pygame.key.get_mods() & pygame.KMOD_ALT:
                                 keep_going = self.toggle_door(click_loc, is_foreground)
+                            # Apply sprite
                             else:
                                 keep_going = self.click_tile(click_loc, is_foreground)
                     # Scroll wheel/ball zooms the camera
@@ -258,7 +269,7 @@ class LevelBuilder:
                          self.my_win)
         # Draw sprite browser sidebar
         self.sprite_viewer.draw(self.my_win)
-
+        # Draw the prompt if it's open
         if self.in_prompt:
             self.prompt.draw(self.my_win)
         # Swap display
@@ -285,6 +296,7 @@ class LevelBuilder:
             self.world = World(data["width = "],
                            data["height = "],
                            self.spritesheet)
+            # Re-init camera
             self.camera = UnboundCamera((400, 400),
                                  LevelBuilder.DISPLAY_WIDTH,
                                  LevelBuilder.DISPLAY_HEIGHT,
@@ -293,10 +305,12 @@ class LevelBuilder:
             print "Successfully loaded "+name
             for row in self.world.foreground_tiles:
                 for tile in row:
+                    # Swap to alternate image if tile is a door or is impassible
                     if tile is not None and (isinstance(tile, Door) or not tile.passable):
                         tile.swap_image()
             for row in self.world.background_tiles:
                 for tile in row:
+                    # Swap to alternate image if tile is a door or is impassible
                     if isinstance(tile, Door) or not tile.passable:
                         tile.swap_image()
         except IOError:

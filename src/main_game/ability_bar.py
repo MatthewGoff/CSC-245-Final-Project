@@ -1,4 +1,4 @@
-# UI for choosing abilities (might be a placeholder; graphics certainly are)
+# UI for choosing abilities
 # Author: Caleb
 # "Winter" 2017
 

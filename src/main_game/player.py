@@ -1,4 +1,6 @@
 # Player class, player objects can be NPCs or user controlled
+# Author: Caleb
+# Vers: Winter 2017
 
 import pygame, random
 from resource_bar import ResourceBar, BarBG

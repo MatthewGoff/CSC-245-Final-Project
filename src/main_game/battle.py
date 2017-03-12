@@ -1,4 +1,6 @@
 # Class runs the game loop for Battle portion of the game
+# Author: Caleb
+# Vers: Winter 2017
 
 import pygame, Queue, random
 from player import Player

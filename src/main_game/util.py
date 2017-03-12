@@ -1,5 +1,5 @@
 # Some utilities
-# Author: Matthew Goff
+# Author: Matthew Goff, Caleb Seymour
 # Winter 2017
 
 import pygame

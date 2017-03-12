@@ -1,4 +1,4 @@
-#
+# Worlds are made up of tiles
 # Author: Caleb, Matt
 # Winter 2017
 
@@ -12,12 +12,16 @@ class Tile(pygame.sprite.Sprite):
 
         x = world_coords[0] * constants.TILE_WIDTH
         y = world_coords[1] * constants.TILE_WIDTH
-        width = constants.TILE_WIDTH
-        self.rect = pygame.Rect(x, y, width, width)
+        # tile position
         self.world_loc = world_coords
+        # pixel position
         self.x = x
         self.y = y
+
+        width = constants.TILE_WIDTH
         self.width = width
+
+        self.rect = pygame.Rect(x, y, width, width)
         self.spritesheet = spritesheet
         self.sprite_loc = sprite_loc
         self.spriteWidth = width
@@ -33,6 +37,7 @@ class Tile(pygame.sprite.Sprite):
         self.sprite_flipped = False
         self.passable = True
 
+    # Export tile as dictionary to be written to file
     def to_json(self):
         return {
             "world_loc": self.world_loc,
@@ -54,6 +59,7 @@ class Tile(pygame.sprite.Sprite):
         self.sprite_loc = [rect.left, rect.top]
         image = self.spritesheet.subsurface(rect).copy()
         self.image = pygame.transform.smoothscale(image, (self.width, self.width))
+        # Alternate image has an overlay (denoting impassibility)
         self.alt_img = pygame.transform.smoothscale(image, (self.width, self.width))
         self.alt_img.blit(self.impassible_overlay, (0, 0))
 

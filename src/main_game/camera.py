@@ -1,5 +1,5 @@
 # A camera class
-# Author: Matthew Anderson
+# Author: Matthew Anderson, Matthew Goff
 # Winter 2017
 
 import pygame
