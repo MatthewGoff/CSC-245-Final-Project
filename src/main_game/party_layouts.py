@@ -3,7 +3,7 @@
 import pygame
 
 from party import Party
-from player import Player
+from combatant import Combatant
 from abilities.fireball import Fireball
 from abilities.energize import Energize
 from abilities.heal import Heal
@@ -40,8 +40,8 @@ class PartyTracker:
                       enemy_image,
                       campaign.world,
                       battle_listener)
-        enemy1 = Player(550, 200, 72, 72, "../assets/images/zombie.png", 48*4, 0, 48, 48, False)
-        enemy2 = Player(550, 50, 72, 72, "../assets/images/zombie_magic.png", 48*5, 0, 48, 48, False)
+        enemy1 = Combatant(550, 200, 72, 72, "../assets/images/zombie.png", 48 * 4, 0, 48, 48, False)
+        enemy2 = Combatant(550, 50, 72, 72, "../assets/images/zombie_magic.png", 48 * 5, 0, 48, 48, False)
         enemy_party.members += [enemy1, enemy2]
         campaign.enemy = enemy_party
         campaign.world.add_party(enemy_party)
@@ -57,7 +57,7 @@ class PartyTracker:
                      battle_listener)
         user.make_friendly()
         campaign.user = user
-        player = Player(20, 200, 72, 72, "../assets/images/player.png", 384, 0, 48, 48, True)
+        player = Combatant(20, 200, 72, 72, "../assets/images/player.png", 384, 0, 48, 48, True)
         player.abilities = [Energize(), Fireball(0, 0, 0), PowerAttack(), Heal()]
         player.change_hp(100)
         campaign.user.members += [player]
@@ -73,7 +73,7 @@ class PartyTracker:
                       enemy_image,
                       campaign.world,
                       battle_listener)
-        enemy1 = Player(550, 200, 72, 72, "../assets/images/zombie2.png", 48*4, 0, 48, 48, False)
+        enemy1 = Combatant(550, 200, 72, 72, "../assets/images/zombie2.png", 48 * 4, 0, 48, 48, False)
         enemy1.change_hp(100)
         enemy_party.members += [enemy1]
 
@@ -86,9 +86,9 @@ class PartyTracker:
                             enemy_image,
                             campaign.world,
                             battle_listener)
-        enemy1 = Player(550, 200, 72, 72, "../assets/images/zombie_magic.png", 48*4, 0, 48, 48, False)
-        enemy2 = Player(550, 200, 72, 72, "../assets/images/zombie2.png", 48*4, 0, 48, 48, False)
-        enemy3 = Player(550, 200, 72, 72, "../assets/images/zombie.png", 48*4, 0, 48, 48, False)
+        enemy1 = Combatant(550, 200, 72, 72, "../assets/images/zombie_magic.png", 48 * 4, 0, 48, 48, False)
+        enemy2 = Combatant(550, 200, 72, 72, "../assets/images/zombie2.png", 48 * 4, 0, 48, 48, False)
+        enemy3 = Combatant(550, 200, 72, 72, "../assets/images/zombie.png", 48 * 4, 0, 48, 48, False)
         enemies = [enemy1, enemy2, enemy3]
         for e in enemies:
             e.change_hp(-35)
@@ -103,7 +103,7 @@ class PartyTracker:
                               friend_image,
                              campaign.world,
                              battle_listener)
-        friend = Player(550, 200, 72, 72, "../assets/images/player2.png", 48 * 7, 0, 48, 48, False)
+        friend = Combatant(550, 200, 72, 72, "../assets/images/player2.png", 48 * 7, 0, 48, 48, False)
         friend_party.members += [friend]
         friend_party.make_friendly()
 

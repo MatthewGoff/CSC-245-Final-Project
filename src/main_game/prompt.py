@@ -287,3 +287,15 @@ def party_placement(win_w, win_h, loc, player_num):
                       prompt.subsurface.get_width() / 2 - 60,
                       prompt.subsurface.get_height() - 40, 120, 40, "door")
     return prompt
+
+# prompt displayed on encountering the second party member
+def meet_player2(native_screen_size):
+    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
+    msg = "Ran into <name>"
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text("<player 2 meeting text>", "freesansbold.ttf", 25, True, "Black")
+    prompt.add_button("Place", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, "okay")
+    return prompt

@@ -12,7 +12,7 @@ from button import Button
 from util import Vec2D
 import constants
 from prompt import campaign_start, death, battle_won, input_example
-from player import Player
+from combatant import Combatant
 from abilities.fireball import Fireball
 from abilities.energize import Energize
 from abilities.heal import Heal
@@ -170,7 +170,7 @@ class Campaign:
         if enemy != self.user:
             self.dx = 0
             self.dy = 0
-            if battle.battle(self.user, enemy, self.my_win, self.world.name):
+            if battle.battle(self.user, enemy, self.my_win, self.world.name, self.fullscreen):
                 self.world.remove_party(enemy)
                 self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))
                 self.in_prompt = True

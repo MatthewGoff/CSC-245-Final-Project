@@ -3,7 +3,7 @@
 # Vers: Winter 2017
 
 import pygame, Queue, random
-from player import Player
+from combatant import Combatant
 from ability_bar import AbilityBar
 from abilities.fireball import Fireball
 from abilities.energize import Energize
@@ -115,9 +115,9 @@ class Battle:
                         pygame.display.set_mode(Battle.WINDOW_SIZE)
                         self.fullscreen = False
                     else:
+                        self.fullscreen = True
                         pygame.display.set_mode(Battle.WINDOW_SIZE,
                                                 pygame.FULLSCREEN)
-                        self.fullscreen = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # print "Button pressed:", event.dict['button'], "@", event.dict['pos']
                 button_pressed = event.dict['button']
@@ -157,7 +157,7 @@ class Battle:
     def ai_turn(self):
         if not self.player_turn:
             curr_combatant = self.combatants[self.curr_combatant]
-            pygame.time.wait(1000)
+            pygame.time.wait(2000)
 
             if self.friendlies.count(curr_combatant) > 0:
                 if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
@@ -281,8 +281,8 @@ class Battle:
 
         return self.won
 
-def battle(party1, party2, window, location):
+def battle(party1, party2, window, location, fullscreen):
     pygame.display.set_mode(Battle.WINDOW_SIZE, pygame.FULLSCREEN)
-    battle = Battle(party1, party2, location, window, False)
+    battle = Battle(party1, party2, location, window, fullscreen)
     return battle.run()
 
