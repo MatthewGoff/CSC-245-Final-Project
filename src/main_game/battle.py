@@ -173,7 +173,7 @@ class Battle:
                     rand_index = random.randint(0, len(self.friendlies) - 1)
                     curr_combatant.attack(self.friendlies[rand_index])
                 self.next_turn()
-                pygame.time.wait(1000)
+                pygame.time.wait(100)
 
     # Will use to animate, probably
     def simulate(self):

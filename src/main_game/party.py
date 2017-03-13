@@ -69,7 +69,9 @@ class Party(pygame.sprite.Sprite):
         self.controllable = False
         self.direction = 0
 
+        pygame.mixer.init()
         self.walk_sound = pygame.mixer.Sound("../assets/sounds/player_walk.wav")
+        self.party_get_sound = pygame.mixer.Sound("../assets/sounds/party_get.wav")
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
@@ -121,6 +123,7 @@ class Party(pygame.sprite.Sprite):
         for player in party2.members:
             self.members += [player]
         party2.world.remove_party(party2)
+        self.party_get_sound.play(0, 500)
 
     def simulate(self, dt, time):
         door = None

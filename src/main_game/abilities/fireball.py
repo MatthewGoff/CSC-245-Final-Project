@@ -56,7 +56,7 @@ class Fireball(Ability):
         if enemy.hp.curr == 0:
             enemy.dead = True
 
-        cls.sound.play(0,500)
+        cls.sound.play(0,1000)
 
     @classmethod
     def apply_cost(cls, user):
