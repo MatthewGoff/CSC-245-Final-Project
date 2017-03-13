@@ -11,11 +11,13 @@ import battle
 from button import Button
 from util import Vec2D
 import constants
-from prompt import campaign_start, death, battle_won, input_example, meet_ally, olin_outside
+from prompt import campaign_start, death, battle_won, meet_ally, olin_outside, game_won
 from combatant import Combatant
 from party_layouts import PartyTracker
 from door import Door
+from abilities.last_hope import LastHope
 import __main__
+from credits import Credits
 
 START_WORLD = "olin107"
 
@@ -112,6 +114,13 @@ class Campaign:
                             elif clicked_obj.action is "restart":
                                 keep_going = False
                                 __main__.main()
+                            elif clicked_obj.action is "artifact":
+                                self.in_prompt = False
+                                self.user.members[0].abilities += [LastHope()]
+                            elif clicked_obj.action is "credits":
+                                keep_going = False
+                                credits = Credits()
+                                credits.run()
                 elif event.type == pygame.KEYDOWN:
                     key_pressed = event.dict['key'] % 256
                     self.prompt.handle_keydown(key_pressed)
@@ -194,9 +203,14 @@ class Campaign:
             self.dx = 0
             self.dy = 0
             if battle.battle(self.user, enemy, self.my_win, self.world.name, self.fullscreen):
-                self.world.remove_party(enemy)
-                self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))
-                self.in_prompt = True
+                if self.world.name == "nott_interior":
+                    self.world.remove_party(enemy)
+                    self.prompt = game_won((self.my_win.get_width(), self.my_win.get_height()))
+                    self.in_prompt = True
+                else:
+                    self.world.remove_party(enemy)
+                    self.prompt = battle_won((self.my_win.get_width(), self.my_win.get_height()))
+                    self.in_prompt = True
             else:
                 self.world.remove_party(self.user)
                 self.prompt = death((self.my_win.get_width(), self.my_win.get_height()))

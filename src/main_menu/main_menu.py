@@ -8,6 +8,7 @@ from main_game.button import Button
 from main_game.util import draw_text
 from world_editor.level_builder import LevelBuilder
 from main_game.campaign import Campaign
+from main_game.credits import Credits
 
 class MainMenu:
     WINDOW_SIZE = (600, 400)
@@ -50,10 +51,6 @@ class MainMenu:
         campaign = Campaign()
         campaign.run()
 
-    def battle(self):
-        self.keep_going = False
-        demo(self.window)
-
     def editor(self):
         self.keep_going = False
         pygame.quit()
@@ -61,7 +58,10 @@ class MainMenu:
         level_builder.run()
 
     def credits(self):
-        pass
+        self.keep_going = False
+        pygame.quit()
+        credits = Credits()
+        credits.run()
 
     def handle_events(self):
         for event in pygame.event.get():

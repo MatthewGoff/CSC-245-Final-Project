@@ -140,7 +140,7 @@ class PartyTracker:
         boss = Combatant(550, 200, 72, 72, "../assets/images/boss.png", 48 * 4, 0, 48, 48, False)
         boss.change_hp(9900)
         boss.change_energy(400)
-        boss.set_dmg(33,66)
+        boss.set_dmg(50, 75)
         enemy_party.members += [boss]
 
         self.party_data["nott_interior"] = [friend_party, enemy_party]

@@ -328,13 +328,26 @@ def meet_ally(native_screen_size, party):
               " out there we stand a better shot of figuring out what's going on," \
               " or escaping at the very least!"
         prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+        prompt.add_button("Welcome!", 25,
+                          prompt.subsurface.get_width() / 2 - 60,
+                          prompt.subsurface.get_height() - 40, 120, 40, "okay")
     elif party.world.name == "nott_interior":
+        msg = "The Professor"
+        prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
         prompt.v_space(15)
-        prompt.add_text("Thanks for freeing me! I'll help you fight... whatever that thing is.",
-                        "freesansbold.ttf", 25, True, "Black")
-    prompt.add_button("Welcome!", 25,
-                      prompt.subsurface.get_width() / 2 - 60,
-                      prompt.subsurface.get_height() - 40, 120, 40, "okay")
+        msg = "Thanks for freeing me! I'll help you fight... whatever that thing is."
+        prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+        prompt.v_space(15)
+        msg = "My research was focused on occult rituals..." \
+              " When I found the artifact," \
+              " I couldn't resist the urge to try the ritual associated with it..." \
+              " I never thought something like this could happen!" \
+              " Here, take the artifact! I never want to see it again."
+        prompt.add_text(msg, "freesansbold.ttf", 25, False, "Black")
+        prompt.add_button("Take Artifact", 25,
+                          prompt.subsurface.get_width() / 2 - 70,
+                          prompt.subsurface.get_height() - 40, 140, 40, "artifact")
+
     return prompt
 
 def olin_outside(native_screen_size):
@@ -349,4 +362,18 @@ def olin_outside(native_screen_size):
     prompt.add_button("Continue", 25,
                       prompt.subsurface.get_width() / 2 - 60,
                       prompt.subsurface.get_height() - 40, 120, 40, "okay")
+    return prompt
+
+def game_won(native_screen_size):
+    prompt = Prompt(native_screen_size[0] / 2 - 200,
+                    native_screen_size[1] / 2 - 150,
+                    400, 300, "DarkRed")
+    msg = "Congratulations! You've defeated the demon who was creating the zombies."
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text("That was an ordeal. Time to destroy the cursed artifact!",
+                    "freesansbold.ttf", 25, True, "Black")
+    prompt.add_button("Destroy Artifact", 25,
+                      prompt.subsurface.get_width() / 2 - 80,
+                      prompt.subsurface.get_height() - 40, 160, 40, "credits")
     return prompt

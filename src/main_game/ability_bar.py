@@ -4,7 +4,6 @@
 
 import pygame
 
-NUM_ABILITIES = 4
 PADDING = 10
 ICON_SIZE = 40
 SELECTOR_COLOR = "Blue"
@@ -26,8 +25,8 @@ class AbilityBar:
 
     def draw(self, window):
         window.blit(self.image, (self.x, self.y))
-        x = self.x + self.width/2 - (NUM_ABILITIES*ICON_SIZE + (NUM_ABILITIES - 1)*PADDING)/2
-        for i in range(NUM_ABILITIES):
+        x = self.x + self.width/2 - (len(self.abilities)*ICON_SIZE + (len(self.abilities) - 1)*PADDING)/2
+        for i in range(len(self.abilities)):
             if self.abilities[i] is self.selected_ability:
                 window.blit(self.selector, (x - 2, self.y + PADDING - 2))
             self.abilities[i].draw_icon(x, self.y + PADDING, window)
@@ -38,8 +37,8 @@ class AbilityBar:
 
     def click_ability(self, pos):
         x, y = pos[0], pos[1]
-        left_bound = self.x + self.width/2 - (NUM_ABILITIES*ICON_SIZE + (NUM_ABILITIES - 1)*PADDING)/2
-        right_bound = self.x + self.width/2 + (NUM_ABILITIES*ICON_SIZE + (NUM_ABILITIES - 1)*PADDING)/2
+        left_bound = self.x + self.width/2 - (len(self.abilities)*ICON_SIZE + (len(self.abilities) - 1)*PADDING)/2
+        right_bound = self.x + self.width/2 + (len(self.abilities)*ICON_SIZE + (len(self.abilities) - 1)*PADDING)/2
         top_bound = self.y + PADDING
         bot_bound = self.y + self.height - PADDING
         if x > left_bound and x < right_bound and y > top_bound and y < bot_bound:
@@ -47,8 +46,8 @@ class AbilityBar:
 
     def show_tooltip(self, window, pos):
         x, y = pos[0], pos[1]
-        left_bound = self.x + self.width / 2 - (NUM_ABILITIES * ICON_SIZE + (NUM_ABILITIES - 1) * PADDING) / 2
-        right_bound = self.x + self.width / 2 + (NUM_ABILITIES * ICON_SIZE + (NUM_ABILITIES - 1) * PADDING) / 2
+        left_bound = self.x + self.width / 2 - (len(self.abilities) * ICON_SIZE + (len(self.abilities) - 1) * PADDING) / 2
+        right_bound = self.x + self.width / 2 + (len(self.abilities) * ICON_SIZE + (len(self.abilities) - 1) * PADDING) / 2
         top_bound = self.y + PADDING
         bot_bound = self.y + self.height - PADDING
         if x > left_bound and x < right_bound and y > top_bound and y < bot_bound:
