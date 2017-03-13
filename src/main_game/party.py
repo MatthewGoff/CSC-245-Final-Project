@@ -10,6 +10,9 @@ from door import Door
 
 class Party(pygame.sprite.Sprite):
 
+    # Initialize sound
+    pygame.mixer.init()
+
     # The width and height of the player sprite sheet.
     _width = 576
     _height = 48
@@ -165,6 +168,8 @@ class Party(pygame.sprite.Sprite):
 
     # When pressing s, player moves down to the screen by steps
     def face_moving(self, time):
+        sound = pygame.mixer.Sound("../assets/sounds/player_walk.wav")
+        sound.play(0, 500)
         if time % 12 < 2:
             self.index += 1
         if not 0 <= self.index <= 1:
@@ -173,6 +178,8 @@ class Party(pygame.sprite.Sprite):
 
     # When pressing w, player moves up to the screen by steps
     def back_moving(self, time):
+        sound = pygame.mixer.Sound("../assets/sounds/player_walk.wav")
+        sound.play(0, 500)
         if time % 12 < 2:
             self.index += 1
         if not 8 <= self.index <= 9:
@@ -181,6 +188,8 @@ class Party(pygame.sprite.Sprite):
 
     # When pressing a, player moves left to the screen by steps
     def left_moving(self, time):
+        sound = pygame.mixer.Sound("../assets/sounds/player_walk.wav")
+        sound.play(0, 500)
         if time % 6 < 3:
             self.index += 1
         if not 2 <= self.index <= 4:
@@ -189,6 +198,8 @@ class Party(pygame.sprite.Sprite):
 
     # When pressing d, player moves right to the screen by steps
     def right_moving(self, time):
+        sound = pygame.mixer.Sound("../assets/sounds/player_walk.wav")
+        sound.play(0, 500)
         if time%6 < 3:
             self.index += 1
         if not 5 <= self.index <= 7:
