@@ -15,56 +15,66 @@ right click on src folder>"Mark Directory As">"Sources Root"
 
 ### Known bugs
 - Can't slide on walls when pressing two direction keys
-- Fullscreen in battle
+- Fullscreen
 
 ## Todo
 
 ### World Editor
 - [ ] (optional) Saving/loading during full screen crashes -> Create popup dialog
     - Create list of available worlds
-- [ ] (optional) Make wold size editable in game
+- [ ] (optional) Make world size editable in game
 - [x] Place impassible tiles (with some visual indication)
 
 #### Campaign
+- [ ] Add enemies and boss to final 3 worlds
+- [ ] (Optional) Make winning a battle increase ability strength
+- [ ] Fix fullscreen in switch between campaign/battle and back
 - [x] Create Demo (Matt, Josh)
     - [x] Restrict user movement
     - [x] Enter battle demo
 - [x] Create animation (Monica)
-- [ ] Add animation to campaign
-- [ ] Make user inherit from party (Matt)
-- [ ] Add levels
+- [x] Add animation to campaign
+- [x] Make user inherit from party (Matt)
+- [x] Add levels
 - [ ] (Optional) Create fog of war
-- [ ] (Future) Inventory
+- [ ] (Cancelled) Inventory
 - [ ] (Future) Tutorial
     - Make a state machine
 
 #### Battle
+- [ ] Script boss
 - [x] Basic Demo (Caleb)
     - [x] Add abilities functionality
     - [x] Add non-arbitrary player placement
     - [x] Add more players to each team
-    - [ ] Animations
+    - [ ] (Cancelled) Animations
         - [ ] Melee
         - [ ] Projectile
         - [ ] Effects? (death, non-offensive ability use, melee animations, collision anims)
-    - [ ] Buffs?
-- [ ] (Future) Option to flee
-- [ ] Background image
-- [ ] Add battle text 
+    - [x] Ability buff/debuff functionality
+- [ ] (Optional) Option to flee
+- Background images
+    - [x] olin 107
+    - [x] olin hallway
+    - [ ] olin lobby
+    - [ ] nott approach
+    - [ ] nott interior
+- [x] Add battle text - make the tutorial message only appear once
 
 ### Other
 - [ ] Make some instruction sheet
 - [ ] Make executable (matt)
-- [ ] Add a 'back' button
+- [x] Add a 'back' button - still need this for editor
 - [x] Add text input functionality
-- [ ] (Optional) Add version number to menu
-- [ ] (Optional) Add Credits
+- [x] (Optional) Add version number to menu
+- [ ] (Extremely Important) Add Credits
 - [ ] (Optional) Drop down menu
 - [ ] (Optional) Menu
 - [ ] (Optional) Improve switching between screens
 
 ### Bugs
 
-- [ ] Scrolling bug
-- [ ] Walking "on" tables
-- [ ] Exit when lose (add lose result)
+- [x] Scrolling bug
+- [x] Walking "on" tables
+- [x] Exit when lose (add lose result)
+- [ ] Fullscreen

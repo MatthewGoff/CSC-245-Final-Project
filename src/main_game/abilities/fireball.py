@@ -73,9 +73,6 @@ class Burning(Effect):
         self.duration = 2
 
     def affect_targets(self, round):
-        print str(self.target) + " hp -10"
-        print "round: " + str(round)
-        print str(self.end)
         self.target.hp.change(-BURN_DAMAGE)
         if self.target.hp.curr == 0:
             self.target.dead = True
