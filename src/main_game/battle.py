@@ -157,7 +157,7 @@ class Battle:
     def ai_turn(self):
         if not self.player_turn:
             curr_combatant = self.combatants[self.curr_combatant]
-            pygame.time.wait(2000)
+            pygame.time.wait(1000)
 
             if self.friendlies.count(curr_combatant) > 0:
                 if curr_combatant.hp.curr < .25*curr_combatant.hp.max and curr_combatant.can_use(Heal, curr_combatant):
@@ -173,6 +173,7 @@ class Battle:
                     rand_index = random.randint(0, len(self.friendlies) - 1)
                     curr_combatant.attack(self.friendlies[rand_index])
                 self.next_turn()
+                pygame.time.wait(1000)
 
     # Will use to animate, probably
     def simulate(self):
