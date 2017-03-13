@@ -40,6 +40,10 @@ class PowerAttack(Ability):
         enemy.hp.change(-DAMAGE)
         if enemy.hp.curr == 0:
             enemy.dead = True
+        # Initialize sound
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound("../assets/sounds/player_attk.wav")
+        sound.play(0,250)
 
     @classmethod
     def apply_cost(cls, user):

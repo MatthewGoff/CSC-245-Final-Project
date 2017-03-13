@@ -53,6 +53,11 @@ class Fireball(Ability):
         if enemy.hp.curr == 0:
             enemy.dead = True
 
+        # Initialize sound
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound("../assets/sounds/player_fireball.wav")
+        sound.play(0,500)
+
     @classmethod
     def apply_cost(cls, user):
         user.energy.change(-ENERGY_COST)

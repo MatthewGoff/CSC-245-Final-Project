@@ -40,6 +40,10 @@ class Heal(Ability):
     @classmethod
     def apply_effects(cls, friend):
         friend.hp.change(HEAL_AMOUNT)
+        # Initialize sound
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound("../assets/sounds/player_heal.wav")
+        sound.play(0,500)
 
     @classmethod
     def apply_cost(cls, user):
