@@ -80,6 +80,10 @@ class Campaign:
         self.user.set_pos(party_coords)
         self.world.add_party(self.user)
         self.init_camera()
+        if self.world.name == "nott_approach":
+            self.camera.zoom = .8
+        elif self.world.name == "nott_interior":
+            self.camera.zoom = .6
 
     def handle_events(self):
 

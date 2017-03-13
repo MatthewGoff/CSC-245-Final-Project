@@ -30,10 +30,14 @@ class Battle:
         self.height = Battle.WINDOW_SIZE[1]
         self.fullscreen = fullscreen
 
+        self.in_prompt = False
+
         self.loc = location
         if location == "olin107":
             self.bg = pygame.image.load("../assets/images/battle_demo_bg.jpg").convert_alpha()
             self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
+            self.in_prompt = True
+            self.prompt = battle_start((window.get_width(), window.get_height()))
         elif location == "olinhallway":
             self.bg = pygame.image.load("../assets/images/olinhallway_bg.jpg").convert_alpha()
             self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
@@ -66,9 +70,6 @@ class Battle:
         self.curr_combatant = -1
         self.effects_applied = False
         self.next_turn()
-
-        self.in_prompt = True
-        self.prompt = battle_start((window.get_width(), window.get_height()))
 
     def place_combatants(self, friends, enemies, p_queue):
         n = 1
