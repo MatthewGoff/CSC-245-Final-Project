@@ -1,5 +1,5 @@
 # Class runs the game loop for the campaign portion of the game.
-# Author: Caleb, Matt
+# Author: Caleb, Matt, Yunmeng Li
 # Winter 2017
 
 import pygame
@@ -29,7 +29,7 @@ class Campaign:
         pygame.init()
         pygame.mixer.init()
         self.door_sound = pygame.mixer.Sound("../assets/sounds/door.wav")
-
+        self.enemy_sound = pygame.mixer.Sound("../assets/sounds/zombie_growl.wav")
         self.fullscreen = True
         self.init_screen()
         self.world = World.load(START_WORLD)
@@ -186,6 +186,8 @@ class Campaign:
                 self.world.remove_party(self.user)
                 self.prompt = death((self.my_win.get_width(), self.my_win.get_height()))
                 self.in_prompt = True
+
+            self.enemy_sound.play(0, 500)
 
         self.init_screen()
         self.init_camera()

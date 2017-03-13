@@ -42,7 +42,7 @@ class Heal(Ability):
         friend.hp.change(HEAL_AMOUNT)
         # Initialize sound
         pygame.mixer.init()
-        sound = pygame.mixer.Sound("../assets/sounds/zombie_heal.wav")
+        sound = pygame.mixer.Sound("../assets/sounds/player_heal.wav")
         sound.play(0,500)
 
     @classmethod
