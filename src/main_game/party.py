@@ -154,14 +154,26 @@ class Party(pygame.sprite.Sprite):
     def apply_animation(self, time):
         if self.velocity.x > 0:
             self.right_moving(time)
+            self.direction = 1
         elif self.velocity.x < 0:
             self.left_moving(time)
+            self.direction = 2
         elif self.velocity.y > 0:
             self.face_moving(time)
+            self.direction = 3
         elif self.velocity.y < 0:
             self.back_moving(time)
+            self.direction = 4
         else:
-            self.face_stop()
+            if self.direction == 1:
+                self.right_stop()
+            elif self.direction == 2:
+                self.left_stop()
+            elif self.direction == 3:
+                self.face_stop()
+            elif self.direction == 4:
+                self.back_stop()
+            self.direction = 0
 
     def stop(self):
         self.velocity = Vec2D(0,0)
