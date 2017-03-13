@@ -14,6 +14,9 @@ ENERGY_COST = 40
 class Heal(Ability):
 
     has_effect = False
+    # Initialize sound
+    pygame.mixer.init()
+    sound = pygame.mixer.Sound("../assets/sounds/player_heal.wav")
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -40,10 +43,7 @@ class Heal(Ability):
     @classmethod
     def apply_effects(cls, friend):
         friend.hp.change(HEAL_AMOUNT)
-        # Initialize sound
-        pygame.mixer.init()
-        sound = pygame.mixer.Sound("../assets/sounds/player_heal.wav")
-        sound.play(0,500)
+        cls.sound.play(0,500)
 
     @classmethod
     def apply_cost(cls, user):

@@ -12,6 +12,10 @@ DAMAGE = 60
 HP_COST = 25
 
 class PowerAttack(Ability):
+    # Initialize sound
+    pygame.mixer.init()
+    sound = pygame.mixer.Sound("../assets/sounds/player_attk.wav")
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
@@ -40,10 +44,7 @@ class PowerAttack(Ability):
         enemy.hp.change(-DAMAGE)
         if enemy.hp.curr == 0:
             enemy.dead = True
-        # Initialize sound
-        pygame.mixer.init()
-        sound = pygame.mixer.Sound("../assets/sounds/player_attk.wav")
-        sound.play(0,250)
+        cls.sound.play(0,250)
 
     @classmethod
     def apply_cost(cls, user):

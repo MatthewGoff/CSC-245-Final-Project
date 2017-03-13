@@ -34,6 +34,10 @@ class Combatant(pygame.sprite.Sprite):
         self.dead = False
         self.abilities = []
 
+        # Initialize sound
+        pygame.mixer.init()
+        self.atk_sound = pygame.mixer.Sound("../assets/sounds/player_attk.wav")
+
     def set_pos(self, x, y):
         self.x = x
         self.y = y
@@ -50,6 +54,7 @@ class Combatant(pygame.sprite.Sprite):
 
         self.energy.change(-10)
         enemy.hp.change(-amount)
+        self.atk_sound.play(0, 250)
         if enemy.hp.curr == 0:
             enemy.dead = True
 

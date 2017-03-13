@@ -17,6 +17,9 @@ BURN_DAMAGE = 10
 
 
 class Fireball(Ability):
+    # Initialize sound
+    pygame.mixer.init()
+    sound = pygame.mixer.Sound("../assets/sounds/player_fireball.wav")
 
     def __init__(self, x, y, int):
         pygame.sprite.Sprite.__init__(self)
@@ -53,10 +56,7 @@ class Fireball(Ability):
         if enemy.hp.curr == 0:
             enemy.dead = True
 
-        # Initialize sound
-        pygame.mixer.init()
-        sound = pygame.mixer.Sound("../assets/sounds/player_fireball.wav")
-        sound.play(0,500)
+        cls.sound.play(0,500)
 
     @classmethod
     def apply_cost(cls, user):
@@ -77,3 +77,5 @@ class Burning(Effect):
         print "round: " + str(round)
         print str(self.end)
         self.target.hp.change(-BURN_DAMAGE)
+        if self.target.hp.curr == 0:
+            self.target.dead = True
