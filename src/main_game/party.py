@@ -20,13 +20,8 @@ class Party(pygame.sprite.Sprite):
     _number = 12
     # The height and width of one player sprite is 48 pixels.
     _length = 48
-    # Keeps all the moving sprites
-    mov_imgs = []
-    # Keeps all the standing/stop sprites
-    stp_imgs = []
 
     def __init__(self, position, sprite_width, hitbox, image, world, battle_listener):
-    #def __init__(self, position, sprite_width, hitbox, world, battle_listener):
         """
 
         :param position:
@@ -43,12 +38,12 @@ class Party(pygame.sprite.Sprite):
         self.world = world
 
         # 3. Define self.image
-        'Old'
         self.image = image
         self.image = pygame.transform.smoothscale(self.image, (sprite_width, sprite_width))
 
-        'New'
+        # Keeps all the moving sprites
         self.mov_imgs = []
+        # Keeps all the standing/stop sprites
         self.stp_imgs = []
 
         self.rect = pygame.Rect(self.position.x - hitbox[0] / 2,
@@ -72,6 +67,7 @@ class Party(pygame.sprite.Sprite):
         pygame.mixer.init()
         self.walk_sound = pygame.mixer.Sound("../assets/sounds/player_walk.wav")
         self.party_get_sound = pygame.mixer.Sound("../assets/sounds/party_get.wav")
+
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
