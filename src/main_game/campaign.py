@@ -27,6 +27,8 @@ class Campaign:
 
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
+        self.door_sound = pygame.mixer.Sound("../assets/sounds/door.wav")
 
         self.fullscreen = True
         self.init_screen()
@@ -69,8 +71,7 @@ class Campaign:
         self.camera.set_zoom(.3)
 
     def change_world(self, world, party_coords):
-        sound = pygame.mixer.Sound("../assets/sounds/door.wav")
-        sound.play(0, 500)
+        self.door_sound.play(0, 500)
         self.world.parties.remove(self.user)
         self.party_tracker.save_world_state(self.world)
         self.world = World.load(world)
