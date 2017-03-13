@@ -41,34 +41,17 @@ class Party(pygame.sprite.Sprite):
 
         # 3. Define self.image
         'Old'
-        #self.image = image
-        #self.image = pygame.transform.smoothscale(self.image, (sprite_width, sprite_width))
+        self.image = image
+        self.image = pygame.transform.smoothscale(self.image, (sprite_width, sprite_width))
 
         'New'
-        # Loads the full player image as a surface, sets the
-        # index to default zero
-        self.full_img = pygame.image.load("../assets/images/player.png").convert_alpha()
-        self.index = 0
+        self.mov_imgs = []
+        self.stp_imgs = []
 
-        # Adds each part of player action pic as a subsurface
-        if len(self.mov_imgs) == 0:
-            self.mov_imgs = [self.full_img.subsurface(pygame.Rect((i * self._length,0),(self._length,self._length)))
-                         for i in xrange(self._number)]
-
-        # Separates sprites into two list: one keeps all moving
-        # sprites, one keeps all standing/stop sprites.
-        self.stp_imgs = [self.mov_imgs[1], self.mov_imgs[10], self.mov_imgs[4], self.mov_imgs[7]]
-
-        # Why len - 2 here? Because when the player is moving
-        # to the left or right, three sprites (left step, stand,
-        # right step)
-        for i in range(0, len(self.stp_imgs)-2):
-            self.mov_imgs.remove(self.stp_imgs[i])
-
-        # Standard requirements of Sprite obj for drawing
-        self.image = self.stp_imgs[self.index]
-        self.rect = pygame.Rect(self.position.x, self.position.y, self._width, self._height)
-
+        self.rect = pygame.Rect(self.position.x - hitbox[0] / 2,
+                                  self.position.y - hitbox[1] / 2,
+                                  hitbox[0],
+                                  hitbox[1])
         # 4. Positions the Sprite
         self.hitbox = pygame.Rect(self.position.x - hitbox[0] / 2,
                                   self.position.y - hitbox[1] / 2,
@@ -80,16 +63,49 @@ class Party(pygame.sprite.Sprite):
 
         self.members = []
 
+        self.controllable = False
+        self.direction = 0
+
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
     def set_pos(self, pos):
         self.position = Vec2D(pos[0], pos[1])
 
+    def change_img(self, path):
+        self.full_img = pygame.image.load(path).convert_alpha()
+
     def update_rect(self):
         self.rect.center = self.position.to_tuple()
         self.hitbox.center = self.position.to_tuple()
         self.hitbox.center = (self.hitbox.center[0], self.hitbox.center[1] + 10)
+
+    def make_controllable(self, image):
+        # Loads the full player image as a surface, sets the
+        # index to default zero
+        self.full_img = pygame.image.load(image).convert_alpha()
+        self.index = 0
+
+        # Adds each part of player action pic as a subsurface
+        if len(self.mov_imgs) == 0:
+            self.mov_imgs = [self.full_img.subsurface(pygame.Rect((i * self._length, 0), (self._length, self._length)))
+                             for i in xrange(self._number)]
+
+        # Separates sprites into two list: one keeps all moving
+        # sprites, one keeps all standing/stop sprites.
+        self.stp_imgs = [self.mov_imgs[1], self.mov_imgs[10], self.mov_imgs[4], self.mov_imgs[7]]
+
+        # Why len - 2 here? Because when the player is moving
+        # to the left or right, three sprites (left step, stand,
+        # right step)
+        for i in range(0, len(self.stp_imgs) - 2):
+            self.mov_imgs.remove(self.stp_imgs[i])
+
+        # Standard requirements of Sprite obj for drawing
+        self.image = self.stp_imgs[self.index]
+        self.rect = pygame.Rect(self.position.x, self.position.y, self._width, self._height)
+
+        self.controllable = True
 
     def make_friendly(self):
         self.friendly = True
@@ -102,10 +118,12 @@ class Party(pygame.sprite.Sprite):
             self.members += [player]
         party2.world.remove_party(party2)
 
-    def simulate(self, dt):
+    def simulate(self, dt, time):
         door = None
         self.position += self.velocity*dt
         self.update_rect()
+        if self.controllable:
+            self.apply_animation(time)
 
         parties = self.world.collide_parties(self)
         for party in parties:
@@ -130,35 +148,49 @@ class Party(pygame.sprite.Sprite):
         window.blit(self.image,
                     (self.position.x - self.sprite_width / 2, self.position.y - self.sprite_width / 2))
 
-    # Makes the player walk by updating its position
-    def walk(self, dx, dy):
-        self.velocity = Vec2D(dx, dy)
-        self.position += self.velocity
+    def apply_animation(self, time):
+        if self.velocity.x > 0:
+            self.right_moving(time)
+        elif self.velocity.x < 0:
+            self.left_moving(time)
+        elif self.velocity.y > 0:
+            self.face_moving(time)
+        elif self.velocity.y < 0:
+            self.back_moving(time)
+        else:
+            self.face_stop()
+
+    def stop(self):
+        self.velocity = Vec2D(0,0)
 
     # When pressing s, player moves down to the screen by steps
-    def face_moving(self):
-        self.index += 1
+    def face_moving(self, time):
+        if time % 12 < 2:
+            self.index += 1
         if not 0 <= self.index <= 1:
             self.index = 0
         self.image = self.mov_imgs[self.index]
 
     # When pressing w, player moves up to the screen by steps
-    def back_moving(self):
-        self.index += 1
+    def back_moving(self, time):
+        if time % 12 < 2:
+            self.index += 1
         if not 8 <= self.index <= 9:
             self.index = 8
         self.image = self.mov_imgs[self.index]
 
     # When pressing a, player moves left to the screen by steps
-    def left_moving(self):
-        self.index += 1
+    def left_moving(self, time):
+        if time % 6 < 3:
+            self.index += 1
         if not 2 <= self.index <= 4:
             self.index = 2
         self.image = self.mov_imgs[self.index]
 
     # When pressing d, player moves right to the screen by steps
-    def right_moving(self):
-        self.index += 1
+    def right_moving(self, time):
+        if time%6 < 3:
+            self.index += 1
         if not 5 <= self.index <= 7:
             self.index = 5
         self.image = self.mov_imgs[self.index]

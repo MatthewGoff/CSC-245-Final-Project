@@ -60,10 +60,10 @@ class World:
 
     # Simulate parties
     # Pass up a door if the player walks into it
-    def simulate(self):
+    def simulate(self, time):
         door = None
         for party in self.parties:
-            door_to_test = party.simulate(1)
+            door_to_test = party.simulate(1, time)
             if isinstance(door_to_test, Door):
                 door = door_to_test
         return door

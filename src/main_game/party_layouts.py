@@ -56,6 +56,7 @@ class PartyTracker:
                      campaign.world,
                      battle_listener)
         user.make_friendly()
+        user.make_controllable("../assets/images/player.png")
         campaign.user = user
         player = Combatant(20, 200, 72, 72, "../assets/images/player.png", 384, 0, 48, 48, True)
         player.abilities = [Energize(), Fireball(0, 0, 0), PowerAttack(), Heal()]
