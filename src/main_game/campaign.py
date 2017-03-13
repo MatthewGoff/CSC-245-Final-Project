@@ -84,7 +84,7 @@ class Campaign:
         if self.world.name == "nott_approach":
             self.camera.zoom = .8
         elif self.world.name == "nott_interior":
-            self.camera.zoom = .6
+            self.camera.zoom = .8
         elif self.world.name == "olin_outside":
             self.dx = 0
             self.dy = 0

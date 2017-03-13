@@ -27,6 +27,8 @@ class PartyTracker:
             parties = self.olin107(campaign, battle_listener)
         elif name == "olinhallway":
             parties = self.olinhallway(campaign, battle_listener)
+        elif name == "nott_interior":
+            parties = self.nott_interior(campaign, battle_listener)
         return parties
 
 
@@ -112,6 +114,22 @@ class PartyTracker:
         self.party_data["olinhallway"] = parties
         return parties
 
+    def nott_interior(self, campaign, battle_listener):
+        friend_image = pygame.image.load("../assets/images/player3.png").convert_alpha()
+        friend_rect = pygame.Rect(48, 0, 48, 48)
+        friend_image = friend_image.subsurface(friend_rect).copy()
+        friend_party = Party((85, 290),
+                             48,
+                             (48, 48),
+                             friend_image,
+                             campaign.world,
+                             battle_listener)
+        friend = Combatant(550, 200, 72, 72, "../assets/images/player3.png", 48 * 7, 0, 48, 48, False)
+        friend_party.members += [friend]
+        friend_party.make_friendly()
+
+        self.party_data["nott_interior"] = [friend_party]
+        return [friend_party]
 
     def save_world_state(self, world):
         self.party_data[world.name] = world.parties
