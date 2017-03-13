@@ -41,6 +41,9 @@ class Battle:
         elif location == "olinhallway":
             self.bg = pygame.image.load("../assets/images/olinhallway_bg.jpg").convert_alpha()
             self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
+        elif location == "nott_interior":
+            self.bg = pygame.image.load("../assets/images/olinhallway_bg.jpg").convert_alpha()
+            self.bg = pygame.transform.smoothscale(self.bg, (self.window.get_width(), self.window.get_height()))
 
         self.party1 = party1
         self.party2 = party2

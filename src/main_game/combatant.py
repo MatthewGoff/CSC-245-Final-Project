@@ -31,6 +31,10 @@ class Combatant(pygame.sprite.Sprite):
         self.dex = 0
         self.int = 0
         self.stam = 0
+
+        self.min_dmg = 15
+        self.max_dmg = 25
+
         self.dead = False
         self.abilities = []
 
@@ -46,11 +50,18 @@ class Combatant(pygame.sprite.Sprite):
         self.hp.set_pos(x, y - BAR_WIDTH*2)
         self.bar_bg.set_pos(x, y - BAR_WIDTH*2)
 
+    def set_dmg(self, min, max):
+        self.min_dmg = min
+        self.max_dmg = max
+
     def change_hp(self, amount):
         self.hp.change_max(amount)
 
+    def change_energy(self, amount):
+        self.energy.change_max(amount)
+
     def attack(self, enemy):
-        amount = random.randint(15, 25)
+        amount = random.randint(self.min_dmg, self.max_dmg)
 
         self.energy.change(-10)
         enemy.hp.change(-amount)
