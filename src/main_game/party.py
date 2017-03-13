@@ -68,6 +68,17 @@ class Party(pygame.sprite.Sprite):
         self.walk_sound = pygame.mixer.Sound("../assets/sounds/player_walk.wav")
         self.party_get_sound = pygame.mixer.Sound("../assets/sounds/party_get.wav")
 
+    def change_size(self, factor):
+        self.rect = pygame.Rect(self.position.x - (self.rect.w*factor)/2,
+                                self.position.y - (self.rect.h*factor)/2,
+                                self.rect.w*factor,
+                                self.rect.h*factor)
+        self.hitbox = pygame.Rect(self.position.x - (self.hitbox.w*factor)/2,
+                                self.position.y - (self.hitbox.h*factor)/2,
+                                self.hitbox.w*factor,
+                                self.hitbox.h*factor)
+        self.sprite_width *= factor
+
     def set_velocity(self, x, y):
         self.velocity = Vec2D(x, y)
 
@@ -132,7 +143,7 @@ class Party(pygame.sprite.Sprite):
         for party in parties:
             if not party.friendly:
                 self.battle_listener(party)
-            else:
+            elif not party.controllable:
                 self.merge_with(party)
                 door = "meet_prompt"
         tiles = self.world.collide_tiles(self)

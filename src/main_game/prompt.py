@@ -167,7 +167,7 @@ def battle_start(native_screen_size):
                " When it's your turn, an ability bar will appear." \
           " Use the mouse to select an ability," \
                " then choose a target on which to use it. Be careful, abilities cost resources," \
-          "so be strategic."
+          " so be strategic."
     prompt.add_text(msg, "freesansbold.ttf", 25, False, "White")
     prompt.v_space(20)
     prompt.add_text("When you're ready, press 'CONTINUE'.", "freesansbold.ttf", 25, True, "White")
@@ -322,13 +322,13 @@ def meet_ally(native_screen_size, party):
     msg = "Ally Encountered"
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
-    if len(party.members) == 2:
+    if party.world.name == "olinhallway":
         msg = "Hi! I thought I might be the only one left." \
               " I'm trying to fight my way outside;" \
               " out there we stand a better shot of figuring out what's going on," \
               " or escaping at the very least!"
         prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
-    elif len(party.members) == 3:
+    elif party.world.name == "nott_interior":
         prompt.v_space(15)
         prompt.add_text("Thanks for freeing me! I'll help you fight... whatever that thing is.",
                         "freesansbold.ttf", 25, True, "Black")

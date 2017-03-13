@@ -118,7 +118,7 @@ class PartyTracker:
         friend_image = pygame.image.load("../assets/images/player3.png").convert_alpha()
         friend_rect = pygame.Rect(48, 0, 48, 48)
         friend_image = friend_image.subsurface(friend_rect).copy()
-        friend_party = Party((85, 290),
+        friend_party = Party((100, 290),
                              48,
                              (48, 48),
                              friend_image,
@@ -128,8 +128,21 @@ class PartyTracker:
         friend_party.members += [friend]
         friend_party.make_friendly()
 
-        self.party_data["nott_interior"] = [friend_party]
-        return [friend_party]
+        enemy_image = pygame.image.load("../assets/images/boss.png").convert_alpha()
+        enemy_rect = pygame.Rect(48, 0, 48, 48)
+        enemy_image = enemy_image.subsurface(enemy_rect).copy()
+        enemy_party = Party((320, 300),
+                            100,
+                            (100, 100),
+                            enemy_image,
+                            campaign.world,
+                            battle_listener)
+        boss = Combatant(550, 200, 72, 72, "../assets/images/boss.png", 48 * 4, 0, 48, 48, False)
+        boss.change_hp(9900)
+        enemy_party.members += [boss]
+
+        self.party_data["nott_interior"] = [friend_party, enemy_party]
+        return [friend_party, enemy_party]
 
     def save_world_state(self, world):
         self.party_data[world.name] = world.parties
