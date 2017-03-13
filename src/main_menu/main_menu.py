@@ -84,8 +84,8 @@ class MainMenu:
 
         draw_text((MainMenu.WINDOW_SIZE[0]/2,
                    40),
-                  "A Scheme to Adventure",
-                  64,
+                  "Nott Your Typical Adventure",
+                  60,
                   self.window)
 
         draw_text((550, 387),
