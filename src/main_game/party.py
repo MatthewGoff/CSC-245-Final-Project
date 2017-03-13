@@ -138,6 +138,7 @@ class Party(pygame.sprite.Sprite):
                 self.battle_listener(party)
             else:
                 self.merge_with(party)
+                door = "meet_prompt"
         tiles = self.world.collide_tiles(self)
         collision = False
         for tile in tiles:

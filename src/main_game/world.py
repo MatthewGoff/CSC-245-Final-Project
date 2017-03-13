@@ -66,6 +66,8 @@ class World:
             door_to_test = party.simulate(1, time)
             if isinstance(door_to_test, Door):
                 door = door_to_test
+            elif isinstance(door_to_test, str):
+                door = door_to_test
         return door
 
     def draw(self, window):

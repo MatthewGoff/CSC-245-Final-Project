@@ -158,35 +158,46 @@ class Prompt:
 '''Prompts. These will probably be moved eventually.'''
 # Prompt for the battle class
 def battle_start(native_screen_size):
-    prompt = Prompt(native_screen_size[0]/2 - 200, native_screen_size[1]/2 - 150, 400, 300, "LightGrey")
-    msg = "Welcome to the battle demo. Every round, each combatant will take his or her turn." \
-               " When it's your turn, an ability bar will appear. Use the mouse to select an ability," \
-               " then choose a target on which to use it."
-    prompt.add_text(msg, "freesansbold.ttf", 25, False, "Black")
+    prompt = Prompt(native_screen_size[0]/2 - 200,
+                    native_screen_size[1]/2 - 150,
+                    400,
+                    300,
+                    "DarkBlue")
+    msg = "Ah, the thrill of battle! Every round, each combatant will take his or her turn." \
+               " When it's your turn, an ability bar will appear." \
+          " Use the mouse to select an ability," \
+               " then choose a target on which to use it. Be careful, abilities cost resources," \
+          "so be strategic."
+    prompt.add_text(msg, "freesansbold.ttf", 25, False, "White")
     prompt.v_space(20)
-    prompt.add_text("When you're ready, press 'CONTINUE'.", "freesansbold.ttf", 25, True, "Blue")
+    prompt.add_text("When you're ready, press 'CONTINUE'.", "freesansbold.ttf", 25, True, "White")
     prompt.v_space(40)
-    prompt.add_text("Good luck!", "freesansbold.ttf", 40, True, "Green")
+    prompt.add_text("Good luck!", "freesansbold.ttf", 40, True, "White")
     prompt.add_button("CONTINUE", 25,
                       prompt.subsurface.get_width()/2 - 50,
-                      prompt.subsurface.get_height() - 40, 100, 40, "loof")
+                      prompt.subsurface.get_height() - 40, 100, 40, "beef")
     return prompt
 
 # Prompt for the campaign
 def campaign_start(native_screen_size):
 
-    prompt = Prompt(native_screen_size[0]/2 - 200, native_screen_size[1]/2 - 150, 400, 300, "DarkRed")
+    prompt = Prompt(native_screen_size[0]/2 - 200,
+                    native_screen_size[1]/2 - 150,
+                    400, 325, "DarkRed")
     msg = "On your way back to CSC 245 class from the bathroom," \
           " the earth begins to shake beneath your feet, with an audible rumble." \
           " You hurry back to class, but upon entering Olin 107, you find a room" \
           " bathed in blood, with no sign of your classmates or Matt." \
           " You hear moaning noises and irregular footsteps. Some kind of creature" \
-          " or creatures must have done this! Find the source of evil and destroy it..."
+          " or creatures must have done this! Find the source of evil and destroy it." \
+          " Save Union College!"
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
-    prompt.add_text("...or are they already here??!", "freesansbold.ttf", 25, True, "Black")
+    prompt.add_text("The footsteps get closer. This can't be good.",
+                    "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(10)
-    prompt.add_text("Use the WASD keys to navigate through Union College", "freesansbold.ttf", 20, True, "White")
+    prompt.add_text("Use the WASD keys to navigate through Union College",
+                    "freesansbold.ttf", 20, True, "White")
     prompt.add_text("Use the scoll wheel to zoom in and out",
                     "freesansbold.ttf", 20, True, "White")
     prompt.add_button("Begin Journey", 25,
@@ -196,7 +207,9 @@ def campaign_start(native_screen_size):
 
 # Game over death prompt (closes game, currently)
 def death(native_screen_size):
-    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
+    prompt = Prompt(native_screen_size[0] / 2 - 200,
+                    native_screen_size[1] / 2 - 150,
+                    400, 300, "DarkRed")
     msg = "You are dead."
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
@@ -211,11 +224,13 @@ def death(native_screen_size):
 
 # Post-battle message. The button resumes the campaign
 def battle_won(native_screen_size):
-    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
-    msg = "You won!"
+    prompt = Prompt(native_screen_size[0] / 2 - 200,
+                    native_screen_size[1] / 2 - 150,
+                    400, 300, "DarkRed")
+    msg = "Well fought! but that wasn't the last of them."
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
-    prompt.add_text("EXTREMELY GOOD STUFF!", "freesansbold.ttf", 25, True, "Black")
+    prompt.add_text("Be careful out there!", "freesansbold.ttf", 25, True, "Black")
     prompt.add_button("Continue", 25,
                       prompt.subsurface.get_width() / 2 - 60,
                       prompt.subsurface.get_height() - 40, 120, 40, "okay")
@@ -223,7 +238,9 @@ def battle_won(native_screen_size):
 
 # A demo for text input
 def input_example(native_screen_size):
-    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
+    prompt = Prompt(native_screen_size[0] / 2 - 200,
+                    native_screen_size[1] / 2 - 150,
+                    400, 300, "DarkRed")
     msg = "Input Demo"
     prompt.add_text(msg, "freesansbold.ttf", 30, True, "Black")
     msg = "Please enter stats for the first player"
@@ -233,9 +250,12 @@ def input_example(native_screen_size):
           "You can click to select boxes, or tab through them."
     prompt.add_text(msg, "freesansbold.ttf", 20, True, "Black")
     prompt.v_space(15)
-    prompt.add_text_by_pos("strength:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
-    prompt.add_text_by_pos("stamina:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
-    prompt.add_text_by_pos("intellect:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
+    prompt.add_text_by_pos("strength:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
+    prompt.add_text_by_pos("stamina:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
+    prompt.add_text_by_pos("intellect:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
     prompt.add_text_box(80, prompt.curr_line_y, 160, "str")
     prompt.add_text_box(80, prompt.curr_line_y + 20, 160, "stam")
     prompt.add_text_box(80, prompt.curr_line_y + 40, 160, "int")
@@ -256,9 +276,12 @@ def door_placement(win_w, win_h, loc, fg):
     msg = "Please enter the attributes for the door"
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
-    prompt.add_text_by_pos("world:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
-    prompt.add_text_by_pos("start x:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
-    prompt.add_text_by_pos("start y:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
+    prompt.add_text_by_pos("world:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
+    prompt.add_text_by_pos("start x:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
+    prompt.add_text_by_pos("start y:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
     prompt.add_text_box(80, prompt.curr_line_y, 160, "world")
     prompt.add_text_box(80, prompt.curr_line_y + 20, 160, "x")
     prompt.add_text_box(80, prompt.curr_line_y + 40, 160, "y")
@@ -277,9 +300,12 @@ def party_placement(win_w, win_h, loc, player_num):
     msg = "Please enter the attributes for the door"
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
-    prompt.add_text_by_pos("world:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
-    prompt.add_text_by_pos("start x:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
-    prompt.add_text_by_pos("start y:", "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
+    prompt.add_text_by_pos("world:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y)
+    prompt.add_text_by_pos("start x:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 20)
+    prompt.add_text_by_pos("start y:",
+                           "freesansbold.ttf", 20, "Black", 10, prompt.curr_line_y + 40)
     prompt.add_text_box(80, prompt.curr_line_y, 160, "world")
     prompt.add_text_box(80, prompt.curr_line_y + 20, 160, "x")
     prompt.add_text_box(80, prompt.curr_line_y + 40, 160, "y")
@@ -289,13 +315,38 @@ def party_placement(win_w, win_h, loc, player_num):
     return prompt
 
 # prompt displayed on encountering the second party member
-def meet_player2(native_screen_size):
-    prompt = Prompt(native_screen_size[0] / 2 - 200, native_screen_size[1] / 2 - 150, 400, 300, "DarkRed")
-    msg = "Ran into <name>"
+def meet_ally(native_screen_size, party):
+    prompt = Prompt(native_screen_size[0] / 2 - 200,
+                    native_screen_size[1] / 2 - 150,
+                    400, 300, "DarkRed")
+    msg = "Ally Encountered"
     prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
     prompt.v_space(15)
-    prompt.add_text("<player 2 meeting text>", "freesansbold.ttf", 25, True, "Black")
-    prompt.add_button("Place", 25,
+    if len(party.members) == 2:
+        msg = "Hi! I thought I might be the only one left." \
+              " I'm trying to fight my way outside;" \
+              " out there we stand a better shot of figuring out what's going on," \
+              " or escaping at the very least!"
+        prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    elif len(party.members) == 3:
+        prompt.v_space(15)
+        prompt.add_text("Thanks for freeing me! I'll help you fight... whatever that thing is.",
+                        "freesansbold.ttf", 25, True, "Black")
+    prompt.add_button("Welcome!", 25,
+                      prompt.subsurface.get_width() / 2 - 60,
+                      prompt.subsurface.get_height() - 40, 120, 40, "okay")
+    return prompt
+
+def olin_outside(native_screen_size):
+    prompt = Prompt(native_screen_size[0] / 2 - 200,
+                    native_screen_size[1] / 2 - 150,
+                    400, 300, "DarkRed")
+    msg = "Out here, you try to get your bearings."
+    prompt.add_text(msg, "freesansbold.ttf", 25, True, "Black")
+    prompt.v_space(15)
+    prompt.add_text("The ground trembles again; it seems to come from the Nott Memorial!",
+                    "freesansbold.ttf", 25, True, "Black")
+    prompt.add_button("Continue", 25,
                       prompt.subsurface.get_width() / 2 - 60,
                       prompt.subsurface.get_height() - 40, 120, 40, "okay")
     return prompt

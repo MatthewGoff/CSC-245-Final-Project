@@ -11,9 +11,10 @@ import battle
 from button import Button
 from util import Vec2D
 import constants
-from prompt import campaign_start, death, battle_won, input_example
+from prompt import campaign_start, death, battle_won, input_example, meet_ally, olin_outside
 from combatant import Combatant
 from party_layouts import PartyTracker
+from door import Door
 import __main__
 
 START_WORLD = "olin107"
@@ -84,6 +85,12 @@ class Campaign:
             self.camera.zoom = .8
         elif self.world.name == "nott_interior":
             self.camera.zoom = .6
+        elif self.world.name == "olin_outside":
+            self.dx = 0
+            self.dy = 0
+            self.prompt = olin_outside((self.my_win.get_width(),
+                                       self.my_win.get_height()))
+            self.in_prompt = True
 
     def handle_events(self):
 
@@ -154,8 +161,16 @@ class Campaign:
 
     def simulate(self):
         door = self.world.simulate(self.time)
-        if door is not None:
+        if door is not None and isinstance(door, Door):
             self.change_world(door.dest_world, door.dest_coords)
+        elif door is not None and isinstance(door, str):
+            if door is "meet_prompt":
+                self.prompt = meet_ally((self.my_win.get_width(),
+                                        self.my_win.get_height()),
+                                        self.user)
+                self.dx = 0
+                self.dy = 0
+                self.in_prompt = True
 
     def draw(self):
         # Draw Background
