@@ -10,6 +10,7 @@ ICON_WIDTH = 40
 ICON_HEIGHT = 40
 RECHARGE_AMOUNT = 60
 
+
 class Energize(Ability):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -38,6 +39,10 @@ class Energize(Ability):
     @classmethod
     def apply_effects(cls, friend):
         friend.energy.change(RECHARGE_AMOUNT)
+        # Initialize sound
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound("../assets/sounds/player_heal.wav")
+        sound.play(0,500)
 
     @classmethod
     def can_be_used_on(cls, target):
