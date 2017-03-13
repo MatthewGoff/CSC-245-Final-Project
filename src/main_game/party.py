@@ -10,7 +10,20 @@ from door import Door
 
 class Party(pygame.sprite.Sprite):
 
+    # The width and height of the player sprite sheet.
+    _width = 576
+    _height = 48
+    # The numbers of player sprites on the sprite sheet
+    _number = 12
+    # The height and width of one player sprite is 48 pixels.
+    _length = 48
+    # Keeps all the moving sprites
+    mov_imgs = []
+    # Keeps all the standing/stop sprites
+    stp_imgs = []
+
     def __init__(self, position, sprite_width, hitbox, image, world, battle_listener):
+    #def __init__(self, position, sprite_width, hitbox, world, battle_listener):
         """
 
         :param position:
@@ -27,14 +40,36 @@ class Party(pygame.sprite.Sprite):
         self.world = world
 
         # 3. Define self.image
-        self.image = image
-        self.image = pygame.transform.smoothscale(self.image, (sprite_width, sprite_width))
+        'Old'
+        #self.image = image
+        #self.image = pygame.transform.smoothscale(self.image, (sprite_width, sprite_width))
+
+        'New'
+        # Loads the full player image as a surface, sets the
+        # index to default zero
+        self.full_img = pygame.image.load("../assets/images/player.png").convert_alpha()
+        self.index = 0
+
+        # Adds each part of player action pic as a subsurface
+        if len(self.mov_imgs) == 0:
+            self.mov_imgs = [self.full_img.subsurface(pygame.Rect((i * self._length,0),(self._length,self._length)))
+                         for i in xrange(self._number)]
+
+        # Separates sprites into two list: one keeps all moving
+        # sprites, one keeps all standing/stop sprites.
+        self.stp_imgs = [self.mov_imgs[1], self.mov_imgs[10], self.mov_imgs[4], self.mov_imgs[7]]
+
+        # Why len - 2 here? Because when the player is moving
+        # to the left or right, three sprites (left step, stand,
+        # right step)
+        for i in range(0, len(self.stp_imgs)-2):
+            self.mov_imgs.remove(self.stp_imgs[i])
+
+        # Standard requirements of Sprite obj for drawing
+        self.image = self.stp_imgs[self.index]
+        self.rect = pygame.Rect(self.position.x, self.position.y, self._width, self._height)
 
         # 4. Positions the Sprite
-        self.rect = pygame.Rect(self.position.x - self.sprite_width / 2,
-                                self.position.y - self.sprite_width / 2,
-                                self.sprite_width,
-                                self.sprite_width)
         self.hitbox = pygame.Rect(self.position.x - hitbox[0] / 2,
                                   self.position.y - hitbox[1] / 2,
                                   hitbox[0],
@@ -94,3 +129,52 @@ class Party(pygame.sprite.Sprite):
     def draw(self, window):
         window.blit(self.image,
                     (self.position.x - self.sprite_width / 2, self.position.y - self.sprite_width / 2))
+
+    # Makes the player walk by updating its position
+    def walk(self, dx, dy):
+        self.velocity = Vec2D(dx, dy)
+        self.position += self.velocity
+
+    # When pressing s, player moves down to the screen by steps
+    def face_moving(self):
+        self.index += 1
+        if not 0 <= self.index <= 1:
+            self.index = 0
+        self.image = self.mov_imgs[self.index]
+
+    # When pressing w, player moves up to the screen by steps
+    def back_moving(self):
+        self.index += 1
+        if not 8 <= self.index <= 9:
+            self.index = 8
+        self.image = self.mov_imgs[self.index]
+
+    # When pressing a, player moves left to the screen by steps
+    def left_moving(self):
+        self.index += 1
+        if not 2 <= self.index <= 4:
+            self.index = 2
+        self.image = self.mov_imgs[self.index]
+
+    # When pressing d, player moves right to the screen by steps
+    def right_moving(self):
+        self.index += 1
+        if not 5 <= self.index <= 7:
+            self.index = 5
+        self.image = self.mov_imgs[self.index]
+
+    # Sets the player to stop, facing to the screen
+    def face_stop(self):
+        self.image = self.stp_imgs[0]
+
+    # Sets the player to stop, turning back to the screen
+    def back_stop(self):
+        self.image = self.stp_imgs[1]
+
+    # Sets the player to stop, facing to the left
+    def left_stop(self):
+        self.image = self.stp_imgs[2]
+
+    # Sets the player to stop, facing to the right
+    def right_stop(self):
+        self.image = self.stp_imgs[3]

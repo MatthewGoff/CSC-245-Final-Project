@@ -30,7 +30,7 @@ class PlayerAnimation(pygame.sprite.Sprite):
 
         # Loads the full player image as a surface, sets the
         # index to default zero
-        self.full_img = pygame.image.load("player.png").convert_alpha()
+        self.full_img = pygame.image.load("../assets/images/player.png").convert_alpha()
         self.index = 0
 
         # Adds each part of player action pic as a subsurface
@@ -49,7 +49,6 @@ class PlayerAnimation(pygame.sprite.Sprite):
             self.mov_imgs.remove(self.stp_imgs[i])
 
         # Standard requirements of Sprite obj for drawing
-        self.image = self.stp_imgs[self.index]
         self.image = self.stp_imgs[self.index]
         self.rect = pygame.Rect(x, y, self._width, self._height)
 

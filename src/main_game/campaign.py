@@ -1,5 +1,5 @@
 # Class runs the game loop for the campaign portion of the game.
-# Author: Caleb, Matt
+# Author: Caleb, Matt, Yunmeng Li
 # Winter 2017
 
 import pygame
@@ -22,9 +22,17 @@ import __main__
 
 START_WORLD = "olin107"
 
+
 class Campaign:
+    
     WINDOW_SIZE = (640, 480)
-    USER_SPEED = 5
+    USER_SPEED = 15
+    # Instead of boolean, int is used here to determine which direction
+    # is the player moving to.
+    # 0 - stop
+    # 1 - 's', move down; 2 - 'w', move up
+    # 3 - 'a', move left; 4 - 'd', move right
+    direction = 0
 
     def __init__(self):
         pygame.init()
@@ -104,13 +112,13 @@ class Campaign:
             elif event.type == pygame.KEYDOWN:
                 key_pressed = event.dict['key'] % 256
                 if key_pressed == pygame.K_a:
-                    self.dx += -Campaign.USER_SPEED
+                    self.direction = 3
                 elif key_pressed == pygame.K_d:
-                    self.dx += Campaign.USER_SPEED
+                    self.direction = 4
                 elif key_pressed == pygame.K_w:
-                    self.dy += -Campaign.USER_SPEED
+                    self.direction = 2
                 elif key_pressed == pygame.K_s:
-                    self.dy += Campaign.USER_SPEED
+                    self.direction = 1
                 elif key_pressed == pygame.K_ESCAPE:
                     if self.fullscreen:
                         self.fullscreen = False
@@ -123,13 +131,18 @@ class Campaign:
             elif event.type == pygame.KEYUP:
                 key_released = event.dict['key'] % 256
                 if key_released == pygame.K_a:
-                    self.dx -= -Campaign.USER_SPEED
+                    self.direction = 0
+                    self.user.left_stop()
                 elif key_released == pygame.K_d:
-                    self.dx -= Campaign.USER_SPEED
+                    self.direction = 0
+                    self.user.right_stop()
                 elif key_released == pygame.K_w:
-                    self.dy -= -Campaign.USER_SPEED
+                    self.direction = 0
+                    self.user.back_stop()
                 elif key_released == pygame.K_s:
-                    self.dy -= Campaign.USER_SPEED
+                    self.direction = 0
+                    self.user.face_stop()
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 button_pressed = event.dict['button']
 
@@ -148,6 +161,21 @@ class Campaign:
         door = self.world.simulate()
         if door is not None:
             self.change_world(door.dest_world, door.dest_coords)
+
+    def apply_animation(self):
+        # Checks the direction, and call the animation function to update imgs
+        if self.direction == 1:  # 's', move down
+            self.user.face_moving()
+            self.user.walk(0, Campaign.USER_SPEED)
+        elif self.direction == 2:  # 'w', move up
+            self.user.back_moving()
+            self.user.walk(0, -Campaign.USER_SPEED)
+        elif self.direction == 3:  # 'a', move left
+            self.user.left_moving()
+            self.user.walk(-Campaign.USER_SPEED, 0)
+        elif self.direction == 4:  # 'd', move right
+            self.user.right_moving()
+            self.user.walk(Campaign.USER_SPEED, 0)
 
     def draw(self):
         # Draw Background
@@ -190,15 +218,31 @@ class Campaign:
         frame_rate = 30
         tick_time = int(1.0 / frame_rate * 1000)
 
+        # Current frame - the current number of frame, also means how many
+        #           frames have passed.
+        current_frame = 0
+        # Animation frame - how many frames should passed before switching
+        #           to next animation
+        animation_frame = frame_rate / 10
+
         # The game loop starts here.
         keep_going = True
         while keep_going:
             pygame.time.wait(tick_time)
 
+            # Keeps track of frames since last image was changed
+            current_frame += 1
+
             # 1. Handle events.
             keep_going = self.handle_events()
 
             # 2. Apply rules
+            # Changes images when it's time to change
+            if current_frame > animation_frame:
+                self.apply_animation()
+                # Resets tracking frame to zero again to restart
+                # a new checking progress
+                current_frame = 0
             self.apply_rules()
 
             # 3. Simulate
